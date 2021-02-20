@@ -21,6 +21,26 @@ class AuthController extends Controller
         'gessicazanon',
         'ana.silveira'
     ];
+
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function webLogin(Request $request){
+        $practice_services =array("mural");
+        $service = $request->service ;
+        $BASE = "";
+        if(in_array($service,$practice_services)){
+            if(env('TEST','default_value')==true){
+                $BASE = "qa.";
+            }
+            $token =  $this->login($request)->original;
+            return redirect()->away("https://$BASE$service.practice.uffs.cc/login")->with('token', $token);
+        }
+        // TODO: Página de ERRO404
+        return abort(404);
+    }
         /**
      * Get a JWT via given credentials.
      *
