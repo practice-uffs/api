@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -35,8 +36,8 @@ class AuthController extends Controller
             if(env('TEST','default_value')==true){
                 $BASE = "qa.";
             }
-            $token =  $this->login($request)->original;
-            return redirect()->away("https://$BASE$service.practice.uffs.cc/login")->with('token', $token);
+            $token =  $this->login($request)->original['access_token'];
+            return redirect()->to("https://$BASE$service.practice.uffs.cc/auth?token=$token");
         }
         // TODO: Página de ERRO404
         return abort(404);
