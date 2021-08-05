@@ -11,6 +11,7 @@
         "php": "^7.3|^8.0",
         "betterapp/laravel-db-encrypter": "^1.0",
         "ccuffs/auth-iduffs": "^1.1",
+        "darkaonline/l5-swagger": "^8.0",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "firebase/php-jwt": "^5.2",

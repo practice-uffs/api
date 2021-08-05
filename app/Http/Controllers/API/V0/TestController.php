@@ -10,6 +10,27 @@ use \Firebase\JWT\JWT;
 
 class TestController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/helo",
+     *      operationId="getProjectsList",
+     *      tags={"Projects"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function credentials(Request $request, CredentialManager $credentialManager)
     {
         $app = App::first();
@@ -29,9 +50,25 @@ class TestController extends Controller
     }
 
     /**
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
+     * @OA\Get(
+     *      path="/ola",
+     *      operationId="getProjectsList",
+     *      tags={"Projects"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
      */
     public function passport(Request $request)
     {
