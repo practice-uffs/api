@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Auth\CredentialManager;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(CredentialManager::class, function($app) {
+            return new CredentialManager();
+        });
     }
 
     /**
@@ -23,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Fix wrong style/mix urls when being served from reverse proxy
+        URL::forceRootUrl(config('app.url'));
     }
 }

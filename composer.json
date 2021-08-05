@@ -7,26 +7,25 @@
         "laravel"
     ],
     "license": "MIT",
-    "repositories": [
-        {
-            "url": "https://github.com/ccuffs/auth-iduffs",
-            "type": "vcs"
-        }
-    ],
     "require": {
         "php": "^7.3|^8.0",
-        "ccuffs/auth-iduffs": "^1.0",
+        "betterapp/laravel-db-encrypter": "^1.0",
+        "ccuffs/auth-iduffs": "^1.1",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
+        "firebase/php-jwt": "^5.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
+        "laravel/jetstream": "^1.6",
+        "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
-        "tymon/jwt-auth": "^1.0"
+        "livewire/livewire": "^2.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"

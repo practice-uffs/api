@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
+use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-
-
-    const ADMIN = 'admin';
-    const NORMAL = 'normal';
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
+    use EncryptableDbAttribute;
 
     /**
      * The attributes that are mass assignable.
@@ -22,13 +25,17 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
+        'passport',
         'name',
         'email',
-        'password',
-        'username',
-        'uid',
-        'cpf',
-        'type'
+        'password'
+    ];
+
+    /**
+     * The attributes that should be encrypted/decrypted to/from db.
+     */
+    protected $encryptable = [
+        'passport',
     ];
 
     /**
@@ -39,40 +46,25 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
-    // /**
-    //  * The attributes that should be cast to native types.
-    //  *
-    //  * @var array
-    //  */
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
-
-
-    public function isAdmin() {
-        return $this -> type == SELF::ADMIN;
-    }
-
-        // JWT Subct methods
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
+     * The attributes that should be cast to native types.
      *
-     * @return mixed
+     * @var array
      */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
+     * The accessors to append to the model's array form.
      *
-     * @return array
+     * @var array
      */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+    protected $appends = [
+        'profile_photo_url',
+    ];
 }

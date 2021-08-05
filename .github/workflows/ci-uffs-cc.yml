@@ -1,13 +1,9 @@
 name: ci.uffs.cc
-on:
-  push:
-    branches:    
-      - master
-      - dev
+on: push
 env:
   BUILD_HOST: ci.uffs.cc
-  BUILD_WEB_DIRECTORY: /home/ccuffsci/ci.uffs.cc/template
-  BUILD_WEB_URL: https://ci.uffs.cc/template
+  BUILD_WEB_DIRECTORY: /home/ccuffsci/ci.uffs.cc/practice-api
+  BUILD_WEB_URL: https://ci.uffs.cc/practice-api
 jobs:
   build-deploy-audit:
     name: Build, deploy and audit
@@ -24,7 +20,6 @@ jobs:
         host: ${{ env.BUILD_HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
         script: |
           mkdir -p ${{ env.BUILD_WEB_DIRECTORY }}/${{ steps.extract_branch.outputs.branch }}/${{ github.sha }}
           mkdir -p ${{ env.BUILD_WEB_DIRECTORY }}/${{ steps.extract_branch.outputs.branch }}/${{ github.sha }}/_report
@@ -36,25 +31,7 @@ jobs:
         host: ${{ env.BUILD_HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-    - name: Audit site performance
-      uses: jakejarvis/lighthouse-action@master
-      with:
-        url: ${{ env.BUILD_WEB_URL }}/${{ steps.extract_branch.outputs.branch }}/${{ github.sha }}
-    - name: Upload audit results as an artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: report
-        path: './report'
-    - name: Copy audit report to deploy server via SSH
-      uses: garygrossgarten/github-action-scp@release
-      with:
-        local: ${{ github.workspace }}/report
-        remote: ${{ env.BUILD_WEB_DIRECTORY }}/${{ steps.extract_branch.outputs.branch }}/${{ github.sha }}/_report/
-        host: ${{ env.BUILD_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}  
     - name: Summary
       run: |
         echo "Summary:"
         echo " Live URL: ${{ env.BUILD_WEB_URL }}/${{ steps.extract_branch.outputs.branch }}/${{ github.sha }}"
-        echo " Audit report URL: ${{ env.BUILD_WEB_URL }}/${{ steps.extract_branch.outputs.branch }}/${{ github.sha }}/_report"

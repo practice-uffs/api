@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserSitesController;
+use App\Http\Controllers\AuraController;
+use App\Http\Controllers\TestController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Fix wrong style/mix urls when being served from reverse proxy
+URL::forceRootUrl(config('app.url'));
+
 Route::get('/', function () {
-    return view('login');
+    if (Auth::check()) {
+        return redirect(config('fortify.home'));
+    } else {
+        return view('auth.login');
+    }
 });
-Route::post('/', 'App\Http\Controllers\API\AuthController@webLogin');
