@@ -4,9 +4,9 @@
     <img src="https://img.shields.io/github/workflow/status/ccuffs/template/ci.uffs.cc?label=Build&logo=github&logoColor=white&style=for-the-badge" title="Status do build">
 </p>
 
-# API do Practice
+# API Practice
 
-Esse projeto é a API central do programa [Practice](https://practice.uffs.cc/), que integra todos os serviços digitais criados pelo programa.
+Este repositório contém a API central do programa [Practice](https://practice.uffs.cc), que integra todos os serviços digitais criados pelo programa. Para ver a documentação completa da documentação, visite [api-practice.uffs.edu.br/docs](https://api-practice.uffs.edu.br/docs).
 
 ## 🚀 Começando
 
@@ -105,17 +105,39 @@ Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em
 
 #### 3.2 Utilização da API
 
-Se você utilizar a API dessa aplicacão, todos endpoints estarão acessivel em `/v0`, `/v1`, etc, por exemplo [localhost:8000/v0](http://localhost:8000/v0). Os endpoints que precisam de uma chave de autenticação devem ser utilizar o seguinte cabeçalho HTTP:
+Todos endpoints disponibilizados pela API estarão acessivel em `/v0`, `/v1`, etc, por exemplo [localhost:8000/v0](http://localhost:8000/v0). A maioria dos endpoints exige autenticação, então você precisa obter um token de acesso primeiro através do endpoint `/v0/auth`:
+
+```
+curl -H 'Accept: application/json' -d "user=meuiduffsaqui&password=minhasenhaaqui" http://localhost:8000/v0/auth
+```
+
+A resposta deve ser algo parecido com o seguinte:
+
+```json
+{
+    "token": "f7c3e8dc63a1385d1db8f07cc6758fa84d860364d3c4df9b8ef38f943e658e03",
+    "passport": null,
+    "user": {
+        "name": "Fulano Silva",
+        "email": "fulano.silva@uffs.edu.br",
+        "username": "fulano.silva",
+        "cpf": "99988877666",
+        "uid": "fulano.silva",
+        "pessoa_id": "fe82a549-2226-46c1-91b2-a9e9ba4c2d5b"
+    }
+}
+```
+
+O `token` retornado é sua chave de autenticação. Com ele, você pode acessar os endpoints que precisam autenticação. Para isso, utilize o seguinte cabeçalho HTTP nas requisições que precisam de autenticação:
 
 ```
 Authorization: Bearer XXX
 ```
 
-onde `XXX` é o valor da sua chave de acesso (api token do Jetstream), por exemplo `c08cbbfd6eefc83ac6d23c4c791277e4`.
-Abaixo está um exemplo de requisição para o endpoint `user` utilizando a chave de acesso acima:
+onde `XXX` é o valor do seu token/chave de acesso. Abaixo está um exemplo de requisição para o endpoint `user` utilizando a chave de acesso acima:
 
 ```bash
-curl -H 'Accept: application/json' -H "Authorization: Bearer c08cbbfd6eefc83ac6d23c4c791277e4" http://localhost:8080/v0/user
+curl -H 'Accept: application/json' -H "Authorization: Bearer f7c3e8dc63a1385d1db8f07cc6758fa84d860364d3c4df9b8ef38f943e658e03" http://localhost:8080/v0/user
 ```
 
 ## 🤝 Contribua
