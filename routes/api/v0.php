@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V0\AuthController;
 use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\TestController;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/auth', [AuthController::class, 'index'])->name('auth');    
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);

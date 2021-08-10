@@ -2,17 +2,27 @@
 
 namespace App\Http\Controllers\API\V0;
 
+use App\Auth\CredentialManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Models\App;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    protected function createTestPassport($uid, $email) {
-        $app = App::first();
+    protected CredentialManager $credentialManager;
 
-        $passport = Aura::auth()->createPassportFromApp($app, [
+    public function __construct(CredentialManager $credentialManager)
+    {
+        $this->credentialManager = $credentialManager;
+    }
+    
+    protected function createPassport($appId, $uid, $email) {
+        $app = App::findOrFail($appId);
+
+        $passport = $this->credentialManager->createPassportFromApp($app, [
             'iduffs' => $uid,
             'email' => $email
         ]);
@@ -61,7 +71,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = Str::random(60);
+        $token = hash('sha256', Str::random(60));
         $password = Hash::make($info->pessoa_id);
 
         $user = User::where(['uid' => $info->uid])->first();
@@ -70,7 +80,7 @@ class AuthController extends Controller
             'email' => $info->email,
             'name' => $info->name,
             'password' => $password,
-            'api_token' => hash('sha256', $token),
+            'api_token' => $token,
         ];
 
         if($user) {
@@ -79,9 +89,16 @@ class AuthController extends Controller
             $user = User::create($data);
         }
 
+        $appId = $request->input('app_id');
+        $passport = null;
+
+        if ($appId != null) {
+            $passport = $this->createPassport($appId, $info->uid, $info->email);
+        } 
+
         return response()->json([
             'token' => $token,
-            'passport' => $this->createTestPassport($info->uid, $info->email),
+            'passport' => $passport,
             'user' => [
                 'name' => ucwords(strtolower($info->name)),
                 'email' => $info->email,
