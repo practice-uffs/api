@@ -76,4 +76,23 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Communication channels available to the user.
+     */
+    public function channels()
+    {
+        return $this->hasOne(Channels::class);
+    }
+
+
+    /**
+     * Specifies the user's FCM token
+     *
+     * @return string|array
+     */
+    public function routeNotificationForFcm()
+    {
+        return $this->channels->fcm_token;
+    }    
 }
