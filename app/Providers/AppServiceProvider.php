@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\CredentialManager;
+use App\Services\AuraNLP;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Fix wrong style/mix urls when being served from reverse proxy
         URL::forceRootUrl(config('app.url'));
+
+        $this->app->singleton(AuraNLP::class, function($app) {
+            return new AuraNLP(config('auranlp'));
+        });
     }
 }

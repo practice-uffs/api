@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V0\AuraController;
 use App\Http\Controllers\API\V0\ChannelsController;
 use App\Http\Controllers\API\V0\NotificationController;
 use App\Http\Controllers\API\V0\AuthController;
@@ -31,6 +32,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('user/channels', [ChannelsController::class, 'destroy']);
 
     Route::get('user/notify/push', [NotificationController::class, 'push']);    
+
+    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);    
 
     Route::get('/user', function (Request $request) {
         return $request->user();
