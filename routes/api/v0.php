@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\V0\ChannelsController;
+use App\Http\Controllers\API\V0\NotificationController;
 use App\Http\Controllers\API\V0\AuthController;
 use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\TestController;
@@ -20,16 +22,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/auth', [AuthController::class, 'index'])->name('auth');    
 
-Route::group(['prefix' => '/test'], function () {
-    Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
-    Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
-});
-
 // Authendicated routes
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
+    Route::post('user/channels', [ChannelsController::class, 'store']);
+    Route::patch('user/channels', [ChannelsController::class, 'update']);
+    Route::delete('user/channels', [ChannelsController::class, 'destroy']);
+
+    Route::get('user/notify/push', [NotificationController::class, 'push']);    
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+});
+
+// Test routes
+Route::group(['prefix' => '/test'], function () {
+    Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
+    Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
 });
