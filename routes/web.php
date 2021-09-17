@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserSitesController;
-use App\Http\Controllers\AuraController;
-use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;

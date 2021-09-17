@@ -79,8 +79,7 @@ class AuthController extends Controller
             'uid' => $info->uid,
             'email' => $info->email,
             'name' => $info->name,
-            'password' => $password,
-            'api_token' => $token,
+            'password' => $password
         ];
 
         if($user) {
