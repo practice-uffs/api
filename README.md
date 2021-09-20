@@ -90,6 +90,32 @@ npm run dev
 
 >*DICA:* enquanto estiver desenvolvendo, rode `npm run watch` para manter os scripts javascript sendo gerados sob demanda quando alterados.
 
+Se você estiver rodando o projeto localmente para desenvolvimento, você também precisa rodas os seeds:
+
+```
+php artisan db:seed
+```
+
+#### 2.5 Aura NLP (opcional)
+
+Se você estiver desenvolvendo funcionalidades que utilizem a api de NLP da Aura, o micro-serviço da Aura precisa ser configurado. Essa funcionalidade é disponibilizada pelo projeto externo [aura-nlp](https://github.com/ccuffs/aura-nlp).
+
+O sistema da `aura-nlp` projeto pode ser instalado e configurado em qualquer pasta do seu computador. Instruções de instalação, configuração e execução estão no [README](https://github.com/ccuffs/aura-nlp/blob/master/README.md) do [aura-nlp](https://github.com/ccuffs/aura-nlp).
+
+Se você seguir todas as instruções, a `aura-nlp` estará rodando em uma url como `http://localhost:3000/api/`. Feito isso, você precisa informar essa url nos arquivos de configuração da API practice.
+
+Para isso, edite o arquivo `.env` e adicione a seguinte linha (edite essa linha se ela já existir):
+
+```
+AURA_NLP_API_URL="http://localhost:3000/api"
+```
+
+Para garantir que o Laravel não tem caches antigas, rode em seguida:
+
+```
+php artisan config:clear
+```
+
 ### 3. Utilizacão
 
 #### 3.1 Rodando o projeto
@@ -102,6 +128,7 @@ php artisan serve
 
 Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em [localhost:8000](http://localhost:8000).
 
+> *Dica:* acesse [localhost:8000/documentation](http://localhost:8000/documentation) para ver a documentação de cada endpoint.
 
 #### 3.2 Utilização da API
 
