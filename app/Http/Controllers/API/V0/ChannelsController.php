@@ -29,9 +29,9 @@ class ChannelsController extends Controller
         $data = $request->validate([
             'fcm_token' => 'required',
         ]);
+        
         $id = auth()->id();
-
-        $channels = Channels::where('user_id', $id)->update($data);
+        $channels = Channels::where('user_id', $id)->findOrFail()->update($data);
 
         return response(
             $channels,
@@ -40,8 +40,8 @@ class ChannelsController extends Controller
     }
 
     public function destroy(){
-        $user_id = auth()->id();
-        Channels::where('user_id', $user_id)->delete();
+        $userId = auth()->id();
+        Channels::where('user_id', $userId)->delete();
 
         return response(
             null,
