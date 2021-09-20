@@ -52,11 +52,14 @@ class CredentialManager
     }
 
     /**
+     * Cria um JWT para identificação entre sistemas.
      * 
      * @param $user array associativo com informações de usuário, por exemplo `['name' => 'Fernando Bevilacqua', 'uid' => 'fernando.bevilacqua']`
+     * @param $ttlSeconds tempo, em segundos, que esse token deve durar. Se null for informado, o token será valido para sempre.
+     * 
      * @return string JWT que pode ser utilizado como passaporte.
      */
-    public function createPassportFromApp(App $app, array $user) {
+    public function createPassportFromApp(App $app, array $user, $ttlSeconds = null) {
         $key = $app->secret;
         $payload = array(
             'iss' => $app->name,
@@ -67,10 +70,39 @@ class CredentialManager
             'user' => $user
         );
 
+        if ($ttlSeconds != null) {
+            $payload['exp'] = Carbon::now()->addSeconds($ttlSeconds)->timestamp;
+        }
+
         $jwt = JWT::encode($payload, $key);
 
         return $jwt;
     }
+
+    /**
+     * Cria um JWT para identificação/autenticação da aplicação (local) na API practice.
+     * 
+     * @param $user array associativo com informações de usuário, por exemplo `['name' => 'Fernando Bevilacqua', 'uid' => 'fernando.bevilacqua']`
+     * @param $ttlSeconds tempo, em segundos, que esse token deve durar. Se nada for informado, o token tem validade de 60 segundos.
+     * 
+     * @return string JWT que pode ser utilizado como passaporte.
+     */
+    public function createPassportFromLocalApp(array $user = [], $ttlSeconds = 60) {
+        $key = config('app.key');
+        $now = Carbon::now();
+
+        $jwt = JWT::encode([
+            'iss' => config('app.name'),
+            'aud' => parse_url(config('app.url'))['host'],
+            'iat' => $now->timestamp,
+            'nbf' => $now->timestamp,
+            'exp' => $now->addSeconds($ttlSeconds)->timestamp,
+            'app_id' => config('app.id'),
+            'user' => $user
+        ], $key);
+
+        return $jwt;
+    }    
 
     protected function getJwtKeyFromAppId($app_id) {
         $app = App::findOrFail($app_id);
