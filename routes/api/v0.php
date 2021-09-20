@@ -4,6 +4,7 @@ use App\Http\Controllers\API\V0\AuraController;
 use App\Http\Controllers\API\V0\ChannelsController;
 use App\Http\Controllers\API\V0\NotificationController;
 use App\Http\Controllers\API\V0\AuthController;
+use App\Http\Controllers\API\V0\CheckinController;
 use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\TestController;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 | Api routes shown below available at the /v0/ url.
 */
 
-Route::post('/auth', [AuthController::class, 'index'])->name('auth');    
+Route::post('/auth', [AuthController::class, 'index'])->name('auth');
 
 // Authendicated routes
 Route::group(['middleware' => 'jwt.verify'], function () {
@@ -34,6 +35,9 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('user/notify/push', [NotificationController::class, 'push']);    
 
     Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);    
+
+    Route::get('/checkin/marker', [CheckinController::class, 'marker']);    
+    Route::post('/checkin', [CheckinController::class, 'store']);    
 
     Route::get('/user', function (Request $request) {
         return $request->user();

@@ -87,7 +87,7 @@ class CredentialManager
      * 
      * @return string JWT que pode ser utilizado como passaporte.
      */
-    public function createPassportFromLocalApp(array $user = [], $ttlSeconds = 60) {
+    public function createPassportFromLocalApp(array $data = [], $ttlSeconds = 60) {
         $key = config('app.key');
         $now = Carbon::now();
 
@@ -98,7 +98,7 @@ class CredentialManager
             'nbf' => $now->timestamp,
             'exp' => $now->addSeconds($ttlSeconds)->timestamp,
             'app_id' => config('app.id'),
-            'user' => $user
+            'data' => $data
         ], $key);
 
         return $jwt;
@@ -128,6 +128,18 @@ class CredentialManager
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
         return $decoded;
+    }
+
+    /**
+     * Testa se o token JWT informado é válido.
+     */
+    public function isValidJwtToken(string $jwt, $key = null) {
+        try {
+            $this->checkPassport($jwt, $key);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public function checkPassportThenLocalyAuthenticate(string $jwt, $key = null) {
