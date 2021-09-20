@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\API\V0;
 
-use App\Auth\CredentialManager;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Models\App;
-use App\Models\User;
+use App\Auth\CredentialManager;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -19,12 +17,13 @@ class AuthController extends Controller
         $this->credentialManager = $credentialManager;
     }
     
-    protected function createPassport($appId, $uid, $email) {
+    protected function createPassport($appId, $uid, $email, $name) {
         $app = App::findOrFail($appId);
 
         $passport = $this->credentialManager->createPassportFromApp($app, [
-            'iduffs' => $uid,
-            'email' => $email
+            'uid' => $uid,
+            'email' => $email,
+            'name' => $name
         ]);
 
         return $passport;
@@ -60,7 +59,7 @@ class AuthController extends Controller
 
         $input = $request->all();
         $auth = new \CCUFFS\Auth\AuthIdUFFS();
-        $info = $auth->login($input);
+        $info = (array) $auth->login($input);
 
         if($info === null) {
             return response()->json([
@@ -71,40 +70,23 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = hash('sha256', Str::random(60));
-        $password = Hash::make($info->pessoa_id);
-
-        $user = User::where(['uid' => $info->uid])->first();
-        $data = [
-            'uid' => $info->uid,
-            'email' => $info->email,
-            'name' => $info->name,
-            'password' => $password
-        ];
-
-        if($user) {
-            $user->update($data);
-        } else {
-            $user = User::create($data);
-        }
+        $user = $this->credentialManager->createUserFromPassportInfo($info);
 
         $appId = $request->input('app_id');
         $passport = null;
 
         if ($appId != null) {
-            $passport = $this->createPassport($appId, $info->uid, $info->email);
+            $passport = $this->createPassport($appId, $info['uid'], $info['email'], $info['name']);
         } 
 
         return response()->json([
-            'token' => $token,
             'passport' => $passport,
             'user' => [
-                'name' => ucwords(strtolower($info->name)),
-                'email' => $info->email,
-                'username' => $info->username,
-                'cpf' => $info->cpf,
-                'uid' => $info->uid,
-                'pessoa_id' => $info->pessoa_id
+                'name' => Str::title($info['name']),
+                'email' => $info['email'],
+                'username' => $info['username'],
+                'uid' => $info['uid'],
+                'pessoa_id' => $info['pessoa_id']
             ]
         ]);
     }

@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth', [AuthController::class, 'index'])->name('auth');    
 
 // Authendicated routes
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => 'jwt.verify'], function () {
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
     Route::post('user/channels', [ChannelsController::class, 'store']);

@@ -34,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'passport',
+        'uid',
         'name',
         'email',
         'password'
@@ -44,7 +44,6 @@ class User extends Authenticatable
      * The attributes that should be encrypted/decrypted to/from db.
      */
     protected $encryptable = [
-        'passport',
     ];
 
     /**

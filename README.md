@@ -108,15 +108,16 @@ Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em
 Todos endpoints disponibilizados pela API estarão acessivel em `/v0`, `/v1`, etc, por exemplo [localhost:8000/v0](http://localhost:8000/v0). A maioria dos endpoints exige autenticação, então você precisa obter um token de acesso primeiro através do endpoint `/v0/auth`:
 
 ```
-curl -H 'Accept: application/json' -d "user=meuiduffsaqui&password=minhasenhaaqui" http://localhost:8000/v0/auth
+curl -H 'Accept: application/json' -d "user=meuiduffsaqui&password=minhasenhaaqui&app_id=1" http://localhost:8000/v0/auth
 ```
+
+> *DICA:* o `app_id` é o a aplicação de onde você está fazendo a requisição. Ela deve estar cadastrada na lista de aplicações de api para funcionar.
 
 A resposta deve ser algo parecido com o seguinte:
 
 ```json
 {
-    "token": "f7c3e8dc63a1385d1db8f07cc6758fa84d860364d3c4df9b8ef38f943e658e03",
-    "passport": null,
+    "passport": "eyJ0eXAiOiJKV1QiLCJhbGc...9qBQVVw",
     "user": {
         "name": "Fulano Silva",
         "email": "fulano.silva@uffs.edu.br",
@@ -128,16 +129,16 @@ A resposta deve ser algo parecido com o seguinte:
 }
 ```
 
-O `token` retornado é sua chave de autenticação. Com ele, você pode acessar os endpoints que precisam autenticação. Para isso, utilize o seguinte cabeçalho HTTP nas requisições que precisam de autenticação:
+O `passport` retornado é sua chave de autenticação. Com ele, você pode acessar os endpoints que precisam autenticação. Para isso, utilize o seguinte cabeçalho HTTP nas requisições que precisam de autenticação:
 
 ```
 Authorization: Bearer XXX
 ```
 
-onde `XXX` é o valor do seu token/chave de acesso. Abaixo está um exemplo de requisição para o endpoint `user` utilizando a chave de acesso acima:
+onde `XXX` é o valor do seu passporte/token de acesso. Abaixo está um exemplo de requisição para o endpoint `user` utilizando a chave de acesso acima:
 
 ```bash
-curl -H 'Accept: application/json' -H "Authorization: Bearer f7c3e8dc63a1385d1db8f07cc6758fa84d860364d3c4df9b8ef38f943e658e03" http://localhost:8080/v0/user
+curl -H 'Accept: application/json' -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc...9qBQVVw" http://localhost:8080/v0/user
 ```
 
 ## 🤝 Contribua

@@ -3,11 +3,15 @@
 namespace App\Auth;
 
 use App\Models\App;
+use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 /**
- * 
+ * Disponibiliza conferência de credenciais que utilizara u app_id e JWT para
+ * identificação entre sistemas.
  */
 class CredentialManager
 {
@@ -49,17 +53,16 @@ class CredentialManager
 
     /**
      * 
-     * @param $user array associativo com informações de usuário, por exemplo `['name' => 'Fernando Bevilacqua', 'iduffs' => 'fernando.bevilacqua']`
+     * @param $user array associativo com informações de usuário, por exemplo `['name' => 'Fernando Bevilacqua', 'uid' => 'fernando.bevilacqua']`
      * @return string JWT que pode ser utilizado como passaporte.
      */
-    public function createPassportFromApp(App $app, array $user)
-    {
+    public function createPassportFromApp(App $app, array $user) {
         $key = $app->secret;
         $payload = array(
             'iss' => $app->name,
             'aud' => $app->domain,
             'iat' => Carbon::now()->timestamp,
-            'nbf' => 1357000000,
+            'nbf' => Carbon::now()->timestamp,
             'app_id' => $app->id,
             'user' => $user
         );
@@ -78,7 +81,7 @@ class CredentialManager
      * 
      * @License: using code from https://github.com/firebase/php-jwt/blob/master/src/JWT.php
      */
-    public function checkPassport(string $jwt) {
+    public function checkPassport(string $jwt, $key = null) {
         $infos = $this->parseJwt($jwt);
         $payload = $infos['payload'];
 
@@ -86,10 +89,29 @@ class CredentialManager
             throw new \Exception('Missing app_id in passport payload');
         }
 
-        $key = $this->getJwtKeyFromAppId($payload['app_id']);
+        if ($key == null) {
+            $key = $this->getJwtKeyFromAppId($payload['app_id']);
+        }
+
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
         return $decoded;
+    }
+
+    public function checkPassportThenLocalyAuthenticate(string $jwt, $key = null) {
+        // Se o token não for válido, o método abaixo levanta uma exceção.
+        $payload = $this->checkPassport($jwt, $key);
+
+        $appId = $payload->app_id;
+        $informedUser = (array) $payload->user;
+        $user = User::where('uid', $informedUser['uid'])->first();
+
+        if (!$user) {
+            $user = $this->createUserFromPassportInfo($informedUser);
+        }
+
+        Auth::login($user);
+        return $user;
     }
 
     public function createCredentials(string $passport) {
@@ -98,5 +120,26 @@ class CredentialManager
         }
 
         return new Credentials((array)$this->checkPassport($passport));
+    }
+
+    public function createUserFromPassportInfo(array $info) {
+        $uid = $info['uid'];
+        $password = Hash::make($uid . $info['email']);
+
+        $user = User::where(['uid' => $uid])->first();
+        $data = [
+            'uid' => $uid,
+            'email' => $info['email'],
+            'name' => $info['name'],
+            'password' => $password
+        ];
+
+        if($user) {
+            $user->update($data);
+        } else {
+            $user = User::create($data);
+        }
+
+        return $user;
     }
 }
