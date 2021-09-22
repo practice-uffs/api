@@ -20,6 +20,7 @@ class App extends Model
      */
     protected $fillable = [
         'secret',
+        'api_url',
         'name',
         'description',
         'domain'
@@ -56,4 +57,12 @@ class App extends Model
      */
     protected $appends = [
     ];
+
+    public function getApiUrlAttribute($value) {
+        if (substr($value, -1) !== '/') {
+            $value .= '/';
+        }
+        
+        return $value;
+    }
 }

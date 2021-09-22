@@ -18,7 +18,7 @@ class CreateCheckinsTable extends Migration
             $table->foreignId('user_id')->index();
             $table->text('url');
             $table->text('jwt_signature');
-            $table->boolean('is_valid')->default(true);
+            $table->boolean('is_valid')->default(true)->index();
             $table->timestamps();
         });
     }

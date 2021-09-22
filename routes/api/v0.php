@@ -6,6 +6,7 @@ use App\Http\Controllers\API\V0\NotificationController;
 use App\Http\Controllers\API\V0\AuthController;
 use App\Http\Controllers\API\V0\CheckinController;
 use App\Http\Controllers\API\V0\InteractionController;
+use App\Http\Controllers\API\V0\MuralController;
 use App\Http\Controllers\API\V0\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,9 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     Route::get('/checkin/marker', [CheckinController::class, 'marker']);    
     Route::post('/checkin', [CheckinController::class, 'store']);    
+
+    // Proxy para apis de outros serviços
+    Route::get('/mural/categories', [MuralController::class, 'proxy']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();

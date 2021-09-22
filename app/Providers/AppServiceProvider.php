@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Auth\CredentialManager;
 use App\Services\AuraNLP;
+use App\Services\PracticeApiClientService;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,5 +35,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AuraNLP::class, function($app) {
             return new AuraNLP(config('auranlp'));
         });
+
+        $this->app->singleton(PracticeApiClientService::class, function($app) {
+            return new PracticeApiClientService(config('practiceapi'), new CredentialManager());
+        });        
     }
 }
