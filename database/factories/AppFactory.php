@@ -25,6 +25,7 @@ class AppFactory extends Factory
         return [
             'secret' => 'password',
             'api_url' => $this->faker->url(),
+            'slug' => $this->faker->slug(1),
             'name' => $this->faker->sentence(2),
             'description' => $this->faker->sentence(20),
             'domain' => $this->faker->domainName,

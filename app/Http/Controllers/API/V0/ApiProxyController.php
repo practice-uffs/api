@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\API\V0;
 
 use App\Http\Controllers\Controller;
+use App\Models\App;
 use App\Services\PracticeApiClientService;
 use Illuminate\Http\Request;
 
+use F9Web\ApiResponseHelpers;
+use Illuminate\Http\JsonResponse;
+
 class ApiProxyController extends Controller
 {
-    protected int $appId;
+    use ApiResponseHelpers;
+
     protected PracticeApiClientService $api;
 
     public function setup() {
-        // TODO: classes filhas devam implementar esse método, e.x. $this->setAppId(1);
+        // TODO: classes filhas devam implementar esse método
     }
 
     public function __construct(PracticeApiClientService $api)
@@ -21,25 +26,16 @@ class ApiProxyController extends Controller
         $this->setup();
     }
 
-    public function setAppId(int $appId) {
-        $this->appId = $appId;
-    }
-
-    public function getAppId() {
-        return $this->appId;
-    }
-
     public function api() {
         return $this->api;
     }
 
-    public function proxy(Request $request) {
-        $appId = $this->getAppId();
+    public function proxy(App $app, Request $request): JsonResponse {
         $verb = $request->method();
-        
         $baseUrl = $request->segment(1) . '/' . $request->segment(2);
-        $indentedUrl = str_replace($baseUrl, '', $request->path());
+        $intendedUrl = str_replace($baseUrl, '', $request->path());
 
-        return $this->api()->fetch($appId, $verb, $indentedUrl, $request->all());
+        $result = $this->api()->fetch($app, $verb, $intendedUrl, $request->all());
+        return $this->respondWithSuccess($result);
     }
 }

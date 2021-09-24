@@ -55,10 +55,8 @@ class PracticeApiClientService
         $this->client = $this->client();
     }
 
-    public function fetch($appId, $verb, $route, array $params = [], array $headers = []) 
+    public function fetch(App $app, string $verb, string $route, array $params = [], array $headers = []) 
     {
-        $app = App::findOrFail($appId);
-
         $headers = array_merge($this->appRequestHeaders($app), $headers);
         $route = $this->appRoute($app, $route);
 
@@ -102,23 +100,23 @@ class PracticeApiClientService
         return $response;
     }
 
-    public function get($appId, $route, array $params = [], array $headers = [])
+    public function get(App $app, string $route, array $params = [], array $headers = [])
     {
-        return $this->fetch($appId, 'GET', $route, $params, $headers);
+        return $this->fetch($app, 'GET', $route, $params, $headers);
     }
 
-    public function post($appId, $route, array $params = [], array $headers = [])
+    public function post(App $app, string $route, array $params = [], array $headers = [])
     {
-        return $this->fetch($appId, 'POST', $route, $params, $headers);
+        return $this->fetch($app, 'POST', $route, $params, $headers);
     }
 
-    public function patch($appId, $route, array $params = [], array $headers = [])
+    public function patch(App $app, string $route, array $params = [], array $headers = [])
     {
-        return $this->fetch($appId, 'PATCH', $route, $params, $headers);
+        return $this->fetch($app, 'PATCH', $route, $params, $headers);
     }
 
-    public function delete($appId, $route, array $params = [], array $headers = [])
+    public function delete(App $app, string $route, array $params = [], array $headers = [])
     {
-        return $this->fetch($appId, 'DELETE', $route, $params, $headers);
+        return $this->fetch($app, 'DELETE', $route, $params, $headers);
     }    
 }

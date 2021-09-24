@@ -21,6 +21,7 @@ class App extends Model
     protected $fillable = [
         'secret',
         'api_url',
+        'slug',
         'name',
         'description',
         'domain'
@@ -58,11 +59,24 @@ class App extends Model
     protected $appends = [
     ];
 
+    /**
+     * 
+     */
     public function getApiUrlAttribute($value) {
         if (substr($value, -1) !== '/') {
             $value .= '/';
         }
         
         return $value;
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
