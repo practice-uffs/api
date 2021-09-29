@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers\API\V0;
+
+use App\Auth\CredentialManager;
+use App\Models\App;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use \Firebase\JWT\JWT;
+
+class PingController extends Controller
+{
+    /**
+     * @OA\Get(
+     *      path="/helo",
+     *      operationId="getProjectsList",
+     *      tags={"Projects"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
+    public function index(Request $request)
+    {
+        return response()->json([
+            'message' => 'Pong',
+            'user' => $request->user(),
+        ]);
+    }
+}

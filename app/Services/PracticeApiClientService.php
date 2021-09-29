@@ -5,6 +5,7 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use App\Auth\CredentialManager;
 use App\Models\App;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Disponibiliza formas de consumo de API de sistema web do próprio programa a partir
@@ -36,7 +37,8 @@ class PracticeApiClientService
         $bearerToken = $this->credentialManager->createPassportFromApp($app, $user, $tokenTtl);
 
         return [
-            'Authorization' => 'Bearer ' . $bearerToken
+            'Authorization' => 'Bearer ' . $bearerToken,
+            'Accept' => 'application/json',
         ];
     }
 
@@ -58,39 +60,48 @@ class PracticeApiClientService
     public function fetch(App $app, string $verb, string $route, array $params = [], array $headers = []) 
     {
         $headers = array_merge($this->appRequestHeaders($app), $headers);
-        $route = $this->appRoute($app, $route);
+        $url = $this->appRoute($app, $route);
+
+        if (config('app.debug')) {
+            Log::debug('PracticeApiClientService::fetch', [
+                'verb' => $verb,
+                'url' => $url,
+                'params' => $params,
+                'headers' => $headers,
+            ]);
+        }        
 
         switch(strtoupper($verb)) {
             case 'GET':
-                $response = $this->client->get($route, [
+                $response = $this->client->get($url, [
                     'query' => $params,
                     'headers' => $headers
                 ]);
                 break;
 
             case 'POST':
-                $response = $this->client->post($route, [
+                $response = $this->client->post($url, [
                     'form_params' => $params,
                     'headers' => $headers
                 ]);
                 break;
 
             case 'PUT':
-                $response = $this->client->put($route, [
+                $response = $this->client->put($url, [
                     'form_params' => $params,
                     'headers' => $headers
                 ]);
                 break;
 
             case 'PATCH':
-                $response = $this->client->patch($route, [
+                $response = $this->client->patch($url, [
                     'form_params' => $params,
                     'headers' => $headers
                 ]);
                 break;                
 
             case 'DELETE':
-                $response = $this->client->delete($this->config['api_url'] . $route, [
+                $response = $this->client->delete($url, [
                     'form_params' => $params,
                     'headers' => $headers
                 ]);
@@ -99,24 +110,4 @@ class PracticeApiClientService
 
         return $response;
     }
-
-    public function get(App $app, string $route, array $params = [], array $headers = [])
-    {
-        return $this->fetch($app, 'GET', $route, $params, $headers);
-    }
-
-    public function post(App $app, string $route, array $params = [], array $headers = [])
-    {
-        return $this->fetch($app, 'POST', $route, $params, $headers);
-    }
-
-    public function patch(App $app, string $route, array $params = [], array $headers = [])
-    {
-        return $this->fetch($app, 'PATCH', $route, $params, $headers);
-    }
-
-    public function delete(App $app, string $route, array $params = [], array $headers = [])
-    {
-        return $this->fetch($app, 'DELETE', $route, $params, $headers);
-    }    
 }

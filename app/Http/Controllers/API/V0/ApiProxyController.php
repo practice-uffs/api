@@ -5,10 +5,11 @@ namespace App\Http\Controllers\API\V0;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use App\Services\PracticeApiClientService;
-use Illuminate\Http\Request;
-
 use F9Web\ApiResponseHelpers;
+
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class ApiProxyController extends Controller
 {
@@ -35,7 +36,27 @@ class ApiProxyController extends Controller
         $baseUrl = $request->segment(1) . '/' . $request->segment(2);
         $intendedUrl = str_replace($baseUrl, '', $request->path());
 
-        $result = $this->api()->fetch($app, $verb, $intendedUrl, $request->all());
-        return $this->respondWithSuccess($result);
+        if (config('app.debug')) {
+            Log::debug('ApiProxyController::proxy', [
+                'app_name' => $app->name,
+                'app_api_url' => $app->api_url,
+                'verb' => $verb,
+                'intendedUrl' => $intendedUrl
+            ]);
+        }
+
+        $response = $this->api()->fetch($app, $verb, $intendedUrl, $request->all());
+
+        if (!$response->getBody()) {
+            return $this->respondError('No response body');
+        }
+
+        $content = json_decode($response->getBody(), true);
+
+        if (isset($content['error'])) {
+            return $this->respondError($content['error']);
+        }
+
+        return $this->respondWithSuccess($content);
     }
 }

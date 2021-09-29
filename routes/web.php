@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\URL;
 
 // Fix wrong style/mix urls when being served from reverse proxy
 URL::forceRootUrl(config('app.url'));
+
+if (app()->environment('local')) {
+    Route::get('/test', [TestController::class, 'index']);
+}
 
 Route::get('/', function () {
     if (Auth::check()) {
