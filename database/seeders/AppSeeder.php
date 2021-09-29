@@ -16,12 +16,30 @@ class AppSeeder extends Seeder
     public function run()
     {
         App::create([
-            'name' => 'Mural Practice',
+            'name' => 'Practice Mural',
             'secret' => 'base64:DRblYPj36Ga4hSGexZC7pk9F1odpb72A9RWBq0INcQ8=',
             'api_url' => 'http://localhost:8000/api/',
             'slug' => 'mural',
-            'description' => 'Mural Practice',
+            'description' => 'Solicitação de serviços ao programa.',
             'domain' => 'practice.uffs.edu.br',
         ]);
+
+        App::create([
+            'name' => 'Practice Maker',
+            'secret' => 'base64:DRblYPj36Ga4hSGexZC7pk9F1odpb72A9RWBq0INcQ8=',
+            'api_url' => 'http://localhost:8000/api/',
+            'slug' => 'maker',
+            'description' => 'Criação de conteúdo digital.',
+            'domain' => 'practice.uffs.edu.br',
+        ]); 
+
+        App::create([
+            'name' => 'Practice Forms',
+            'secret' => 'base64:DRblYPj36Ga4hSGexZC7pk9F1odpb72A9RWBq0INcQ8=',
+            'api_url' => 'http://localhost:8000/api/',
+            'slug' => 'forms',
+            'description' => 'Questionários e quiz online.',
+            'domain' => 'practice.uffs.edu.br',
+        ]);        
     }
 }

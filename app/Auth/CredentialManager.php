@@ -142,7 +142,11 @@ class CredentialManager
         }
     }
 
-    public function checkPassportThenLocalyAuthenticate(string $jwt, $key = null) {
+    public function checkPassportThenLocalyAuthenticate(mixed $jwt, $key = null) {
+        if (empty($jwt)) {
+            throw new \Exception('Missing bearer token in request');
+        }
+
         // Se o token não for válido, o método abaixo levanta uma exceção.
         $payload = $this->checkPassport($jwt, $key);
 

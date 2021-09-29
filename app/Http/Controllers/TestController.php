@@ -21,7 +21,7 @@ class TestController extends Controller
         $app = App::where('slug', 'mural')->first();
 
         if (!$app) {
-            return response('Rode no terminal: php artisan db:seed AppSeeder', 404)->header('Content-Type', 'text/plain');
+            return response('Rode no terminal: php artisan db:seed', 404)->header('Content-Type', 'text/plain');
         }
 
         $passport = $this->credentialManager->createPassportFromApp($app, [
@@ -36,6 +36,9 @@ class TestController extends Controller
 
         // Change content type to plain text
 
-        return response("Rode no terminal: \n\n" . $cmd)->header('Content-Type', 'text/plain');
+        return response(
+            "Bearer token para uso: \n" . $passport . "\n\n" .
+            "Se precisar testar no terminal, rode: \n\n" . $cmd
+        )->header('Content-Type', 'text/plain');
     }
 }
