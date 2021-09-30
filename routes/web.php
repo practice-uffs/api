@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\URL;
 URL::forceRootUrl(config('app.url'));
 
 if (app()->environment('local')) {
-    Route::get('/test', [TestController::class, 'index']);
+    Route::get('/test', [TestController::class, 'index'])->name('test');
 }
 
 Route::get('/', function () {
