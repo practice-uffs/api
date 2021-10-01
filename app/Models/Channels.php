@@ -9,7 +9,8 @@ class Channels extends Model
 {
     protected $fillable = [
         'user_id',
-        'fcm_token'
+        'fcm_token',
+        'telegram_id'
     ];
 
     /**

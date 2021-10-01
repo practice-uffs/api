@@ -9,12 +9,14 @@ use App\Models\Channels;
 
 class ChannelsController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request['user_id'] = auth()->id();
 
         $data = $request->validate([
             'user_id' => 'required|unique:channels,user_id',
             'fcm_token' => 'required',
+            'telegram_id' => 'required'
         ]);
 
         $channels = Channels::create($data);
@@ -25,11 +27,12 @@ class ChannelsController extends Controller
         );
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $data = $request->validate([
             'fcm_token' => 'required',
         ]);
-        
+
         $id = auth()->id();
         $channels = Channels::where('user_id', $id)->findOrFail()->update($data);
 
@@ -39,7 +42,8 @@ class ChannelsController extends Controller
         );
     }
 
-    public function destroy(){
+    public function destroy()
+    {
         $userId = auth()->id();
         Channels::where('user_id', $userId)->delete();
 
