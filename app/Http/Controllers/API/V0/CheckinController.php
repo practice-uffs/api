@@ -44,7 +44,18 @@ class CheckinController extends Controller
 
         return $result;
     }
+
+    protected function urlHasParams($url) {
+        $urlParts = parse_url($url);
+        $queryParams = [];
+        parse_str(@$urlParts['query'], $queryParams);
+
+        return count($queryParams) > 0;
+    }    
     
+    /**
+     * Processa e guarda o resultado de uma solicitação de checkin.
+     */
     public function store(Request $request) {
         $input = $request->validate([
             'url' => 'required|url',
@@ -101,13 +112,5 @@ class CheckinController extends Controller
                 'svg_base64' => 'data:image/svg+xml;base64,' . base64_encode($qrCode),
             ]
         ], Response::HTTP_CREATED);
-    }
-
-    protected function urlHasParams($url) {
-        $urlParts = parse_url($url);
-        $queryParams = [];
-        parse_str(@$urlParts['query'], $queryParams);
-
-        return count($queryParams) > 0;
     }
 }
