@@ -6,6 +6,7 @@ use App\Http\Controllers\API\V0\ChannelsController;
 use App\Http\Controllers\API\V0\NotificationController;
 use App\Http\Controllers\API\V0\AuthController;
 use App\Http\Controllers\API\V0\CheckinController;
+use App\Http\Controllers\API\V0\EnvironmentController;
 use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\MuralController;
 use App\Http\Controllers\API\V0\PingController;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/auth', [AuthController::class, 'index'])->name('auth');
+Route::get('/checkin/marker', [CheckinController::class, 'marker']);
 
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
@@ -40,6 +42,9 @@ Route::group(['middleware' => 'jwt.practice'], function () {
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
+
+    // Environment
+    Route::get('env', [EnvironmentController::class, 'index']);        
 
     // Check-in
     Route::get('/checkin/marker', [CheckinController::class, 'marker']);
