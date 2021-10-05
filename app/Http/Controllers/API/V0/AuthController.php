@@ -16,8 +16,9 @@ class AuthController extends Controller
     {
         $this->credentialManager = $credentialManager;
     }
-    
-    protected function createPassport($appId, $uid, $email, $name) {
+
+    protected function createPassport($appId, $uid, $email, $name)
+    {
         $app = App::findOrFail($appId);
 
         $passport = $this->credentialManager->createPassportFromApp($app, [
@@ -28,7 +29,7 @@ class AuthController extends Controller
 
         return $passport;
     }
-    
+
     /**
      * @OA\Get(
      *      path="/projects",
@@ -61,7 +62,7 @@ class AuthController extends Controller
         $auth = new \CCUFFS\Auth\AuthIdUFFS();
         $info = (array) $auth->login($input);
 
-        if($info === null) {
+        if ($info === null) {
             return response()->json([
                 'message' => 'Usuário ou senha incorretos',
                 'errors' => [
@@ -77,7 +78,7 @@ class AuthController extends Controller
 
         if ($appId != null) {
             $passport = $this->createPassport($appId, $info['uid'], $info['email'], $info['name']);
-        } 
+        }
 
         return response()->json([
             'passport' => $passport,

@@ -32,7 +32,7 @@ Route::get('/checkin/marker', [CheckinController::class, 'marker']);
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
     // Aura
-    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);    
+    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
     // Channels
@@ -41,13 +41,14 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::delete('user/channels', [ChannelsController::class, 'destroy']);
 
     // Notification
-    Route::get('user/notify/push', [NotificationController::class, 'push']);    
+    Route::get('user/notify/push', [NotificationController::class, 'push']);
 
     // Environment
     Route::get('env', [EnvironmentController::class, 'index']);        
 
     // Check-in
-    Route::post('/checkin', [CheckinController::class, 'store']);    
+    Route::get('/checkin/marker', [CheckinController::class, 'marker']);
+    Route::post('/checkin', [CheckinController::class, 'store']);
 
     // Proxy para apis de outros serviços
     // Mural
@@ -58,11 +59,11 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/{app}/locations', [ApiProxyController::class, 'proxy']);
 
     // Test
-    Route::get('ping', [PingController::class, 'index']);    
+    Route::get('ping', [PingController::class, 'index']);
 });
 
 // Test routes
 Route::group(['prefix' => '/test'], function () {
-    Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
-    Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
+    Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');
+    Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');
 });
