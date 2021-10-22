@@ -126,6 +126,14 @@ Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em
 
 > *Dica:* acesse [localhost:8000/documentation](http://localhost:8000/documentation) para ver a documentação de cada endpoint.
 
+Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em [localhost:8000](http://localhost:8000).
+
+Para que os serviços de websocket funcionem, é necessário preencher os campos `PUSHER_APP_ID`, `PUSHER_APP_KEY` e `PUSHER_APP_SECRET` no `.env`. Também, é necessário manter o seguinte comando rodando um terminal:
+
+```
+php artisan websockets:serve
+```
+
 #### 3.2 Utilização da API
 
 Todos endpoints disponibilizados pela API estarão acessivel em `/v0`, `/v1`, etc, por exemplo [localhost:8000/v0](http://localhost:8000/v0). A maioria dos endpoints exige autenticação, então você precisa obter um token de acesso primeiro através do endpoint `/v0/auth`:
