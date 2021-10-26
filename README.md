@@ -92,7 +92,20 @@ Se você estiver rodando o projeto localmente para desenvolvimento, você també
 php artisan db:seed
 ```
 
-#### 2.5 Aura NLP (opcional)
+#### 2.5 Documentação da API (opcional)
+
+A documentação da API é gerada automaticamente através do pacote [L5-Swagger](https://github.com/DarkaOnLine/L5-Swagger). Para gerar a documentação, rode:
+
+```
+composer run docs
+```
+
+Isso fará uma alteração no arquivo `storage/api-docs/api-docs.json`. Esse arquivo (e qualquer alteração nele) *precisa* ser commitada para garantir que tenhamos uma documentação atualizada.
+
+Para acessar a documentação da API, basta rodar o projeto normalmente e acessar a url [localhost:8000/documentation](http://localhost:8000/documentation).
+
+
+#### 2.6 Aura NLP (opcional)
 
 Se você estiver desenvolvendo funcionalidades que utilizem a api de NLP da Aura, o micro-serviço da Aura precisa ser configurado. Essa funcionalidade é disponibilizada pelo projeto externo [aura-nlp](https://github.com/ccuffs/aura-nlp).
 

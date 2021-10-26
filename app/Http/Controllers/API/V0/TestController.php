@@ -12,7 +12,7 @@ class TestController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/helo",
+     *      path="/test",
      *      operationId="getProjectsList",
      *      tags={"Projects"},
      *      summary="Get list of projects",
