@@ -56,6 +56,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/{app}/categories', [ApiProxyController::class, 'proxy']);
     Route::get('/{app}/services', [ApiProxyController::class, 'proxy']);
     Route::get('/{app}/locations', [ApiProxyController::class, 'proxy']);
+    Route::get('/{app}/me', [ApiProxyController::class, 'proxy']);
 
     // Test
     Route::get('ping', [PingController::class, 'index']);    
