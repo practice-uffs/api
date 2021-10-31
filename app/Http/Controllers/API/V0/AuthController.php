@@ -35,7 +35,7 @@ class AuthController extends Controller
     }
 
     protected function createScrapersIfNeeded(User $user, array $input) {
-        $scraper = $user->scrapers()->where('target', 'aluno.uffs.edu.br')->first();
+        $scraper = $user->scrapers()->where('target', 'uffs.edu.br')->first();
 
         if ($scraper) {
             return;
@@ -43,7 +43,7 @@ class AuthController extends Controller
 
         $user->scrapers()->create([
             'user_id' => $user->id,
-            'target' => 'aluno.uffs.edu.br',
+            'target' => 'uffs.edu.br',
             'access_user' => $input['user'],
             'access_password' => $input['password']
         ]);
