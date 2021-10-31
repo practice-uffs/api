@@ -84,6 +84,14 @@ class User extends Authenticatable
         return $this->hasOne(Channels::class);
     }
 
+    /**
+     * External scrappers (data collectors) available to the user.
+     */
+    public function scrappers()
+    {
+        return $this->hasMany(Scrapper::class);
+    }
+
 
     /**
      * Specifies the user's FCM token
