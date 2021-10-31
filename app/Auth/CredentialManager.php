@@ -171,6 +171,10 @@ class CredentialManager
     }
 
     public function createUserFromPassportInfo(array $info) {
+        if (empty($info['uid']) || empty($info['email'])) {
+            throw new \Exception('Missing uid or email in passport info');
+        }
+
         $uid = $info['uid'];
         $password = Hash::make($uid . $info['email']);
 
