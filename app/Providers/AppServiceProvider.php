@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\CredentialManager;
+use App\Cli\SgaScraper;
 use App\Services\AuraNLP;
 use App\Services\PracticeApiClientService;
 use Illuminate\Support\Facades\URL;
@@ -20,6 +21,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CredentialManager::class, function($app) {
             return new CredentialManager();
         });
+
+        $this->app->singleton(AuraNLP::class, function($app) {
+            return new AuraNLP(config('auranlp'));
+        });
+
+        $this->app->singleton(PracticeApiClientService::class, function($app) {
+            return new PracticeApiClientService(config('practiceapi'), new CredentialManager());
+        });
+        
+        $this->app->singleton(SgaScraper::class, function($app) {
+            return new SgaScraper(config('sgascraper'));
+        });          
     }
 
     /**
@@ -31,13 +44,5 @@ class AppServiceProvider extends ServiceProvider
     {
         // Fix wrong style/mix urls when being served from reverse proxy
         URL::forceRootUrl(config('app.url'));
-
-        $this->app->singleton(AuraNLP::class, function($app) {
-            return new AuraNLP(config('auranlp'));
-        });
-
-        $this->app->singleton(PracticeApiClientService::class, function($app) {
-            return new PracticeApiClientService(config('practiceapi'), new CredentialManager());
-        });        
     }
 }

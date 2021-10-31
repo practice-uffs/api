@@ -85,11 +85,11 @@ class User extends Authenticatable
     }
 
     /**
-     * External scrappers (data collectors) available to the user.
+     * External scrapers (data collectors) available to the user.
      */
-    public function scrappers()
+    public function scrapers()
     {
-        return $this->hasMany(Scrapper::class);
+        return $this->hasMany(Scraper::class);
     }
 
 

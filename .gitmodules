@@ -1,0 +1,3 @@
+[submodule "cli/uffs-sga-scraping"]
+	path = cli/uffs-sga-scraping
+	url = https://github.com/ccuffs/uffs-sga-scraping
