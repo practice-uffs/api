@@ -1,28 +1,28 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel OpenApi Demo Documentation",
-        "description": "L5 Swagger OpenApi description",
+        "title": "API Practice",
+        "description": "Documentação da API central do Programa de Ampliação e Consolidação de Tecnologias no Contexto Educacional (PRACTICE) da Universidade Federal da Fronteira Sul.",
         "contact": {
-            "email": "admin@admin.com"
+            "email": "practice@uffs.edu.br"
         },
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
         },
         "version": "1.0.0"
     },
     "servers": [
         {
             "url": "http://my-default-host.com",
-            "description": "Demo API Server"
+            "description": "API gateway Practice"
         }
     ],
     "paths": {
-        "/projects": {
+        "/abc": {
             "get": {
                 "tags": [
-                    "Projects"
+                    "Aura"
                 ],
                 "summary": "Get list of projects",
                 "description": "Returns list of projects",
@@ -40,10 +40,10 @@
                 }
             }
         },
-        "/oi": {
+        "/auth": {
             "get": {
                 "tags": [
-                    "Projects"
+                    "Autenticação"
                 ],
                 "summary": "Get list of projects",
                 "description": "Returns list of projects",
@@ -61,10 +61,48 @@
                 }
             }
         },
-        "/helo": {
-            "get": {
+        "/user/channels": {
+            "post": {
                 "tags": [
-                    "Projects"
+                    "Channels"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Channels"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Channels"
                 ],
                 "summary": "Get list of projects",
                 "description": "Returns list of projects",
@@ -82,10 +120,10 @@
                 }
             }
         },
-        "/test": {
-            "get": {
+        "/checkin": {
+            "post": {
                 "tags": [
-                    "Projects"
+                    "Check-in"
                 ],
                 "summary": "Get list of projects",
                 "description": "Returns list of projects",
@@ -103,10 +141,157 @@
                 }
             }
         },
-        "/ola": {
+        "/checkin/marker": {
+            "post": {
+                "tags": [
+                    "Check-in"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/env": {
             "get": {
                 "tags": [
-                    "Projects"
+                    "Environment"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/interact": {
+            "get": {
+                "tags": [
+                    "Interação"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/abcd": {
+            "get": {
+                "tags": [
+                    "Mural"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/user/notify/push": {
+            "get": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/ping": {
+            "get": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/credentials": {
+            "get": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Get list of projects",
+                "description": "Returns list of projects",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/passport": {
+            "get": {
+                "tags": [
+                    "Teste"
                 ],
                 "summary": "Get list of projects",
                 "description": "Returns list of projects",
@@ -138,8 +323,20 @@
     },
     "tags": [
         {
-            "name": "Projects",
-            "description": "API Endpoints of Projects"
+            "name": "Notification",
+            "description": "Notification API Endpoints of Projects"
+        },
+        {
+            "name": "Aura",
+            "description": "Aura API Endpoints of Projects"
+        },
+        {
+            "name": "Check-in",
+            "description": "Check-in API Endpoints of Projects"
+        },
+        {
+            "name": "Environment",
+            "description": "Environment API Endpoints of Projects"
         }
     ],
     "security": [

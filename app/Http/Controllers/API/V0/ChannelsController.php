@@ -9,6 +9,27 @@ use App\Models\Channels;
 
 class ChannelsController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      path="/user/channels",
+     *      operationId="getProjectsList",
+     *      tags={"Channels"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function store(Request $request){
         $request['user_id'] = auth()->id();
 
@@ -25,6 +46,27 @@ class ChannelsController extends Controller
         );
     }
 
+    /**
+     * @OA\Patch(
+     *      path="/user/channels",
+     *      operationId="getProjectsList",
+     *      tags={"Channels"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function update(Request $request){
         $data = $request->validate([
             'fcm_token' => 'required',
@@ -39,6 +81,27 @@ class ChannelsController extends Controller
         );
     }
 
+    /**
+     * @OA\Delete(
+     *      path="/user/channels",
+     *      operationId="getProjectsList",
+     *      tags={"Channels"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function destroy(){
         $userId = auth()->id();
         Channels::where('user_id', $userId)->delete();

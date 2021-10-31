@@ -31,9 +31,9 @@ class AuthController extends Controller
     
     /**
      * @OA\Get(
-     *      path="/projects",
+     *      path="/auth",
      *      operationId="getProjectsList",
-     *      tags={"Projects"},
+     *      tags={"Autenticação"},
      *      summary="Get list of projects",
      *      description="Returns list of projects",
      *      @OA\Response(

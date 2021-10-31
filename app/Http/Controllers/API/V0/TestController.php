@@ -12,9 +12,9 @@ class TestController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/test",
+     *      path="/credentials",
      *      operationId="getProjectsList",
-     *      tags={"Projects"},
+     *      tags={"Teste"},
      *      summary="Get list of projects",
      *      description="Returns list of projects",
      *      @OA\Response(
@@ -51,9 +51,9 @@ class TestController extends Controller
 
     /**
      * @OA\Get(
-     *      path="/ola",
+     *      path="/passport",
      *      operationId="getProjectsList",
-     *      tags={"Projects"},
+     *      tags={"Teste"},
      *      summary="Get list of projects",
      *      description="Returns list of projects",
      *      @OA\Response(

@@ -55,6 +55,26 @@ class CheckinController extends Controller
     
     /**
      * Processa e guarda o resultado de uma solicitação de checkin.
+     * 
+     * @OA\Post(
+     *      path="/checkin",
+     *      operationId="getProjectsList",
+     *      tags={"Check-in"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
      */
     public function store(Request $request) {
         $input = $request->validate([
@@ -82,6 +102,26 @@ class CheckinController extends Controller
 
     /**
      * Cria uma novo marcador de checkin, que possui uma URL, um qrcode, etc.
+     * 
+     * @OA\Post(
+     *      path="/checkin/marker",
+     *      operationId="getProjectsList",
+     *      tags={"Check-in"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
      */
     public function marker(Request $request) {
         $input = $request->validate([
