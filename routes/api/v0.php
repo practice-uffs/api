@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V0\AlunoController;
 use App\Http\Controllers\API\V0\ApiProxyController;
 use App\Http\Controllers\API\V0\AuraController;
 use App\Http\Controllers\API\V0\ChannelsController;
@@ -8,10 +9,9 @@ use App\Http\Controllers\API\V0\AuthController;
 use App\Http\Controllers\API\V0\CheckinController;
 use App\Http\Controllers\API\V0\EnvironmentController;
 use App\Http\Controllers\API\V0\InteractionController;
-use App\Http\Controllers\API\V0\MuralController;
 use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,7 +47,10 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('env', [EnvironmentController::class, 'index']);        
 
     // Check-in
-    Route::post('/checkin', [CheckinController::class, 'store']);    
+    Route::post('/checkin', [CheckinController::class, 'store']);
+
+    // Informações acadêmicas
+    Route::get('/aluno/historico', [AlunoController::class, 'historico']);    
 
     // Proxy para apis de outros serviços
     // Mural

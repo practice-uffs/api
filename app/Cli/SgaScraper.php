@@ -88,6 +88,24 @@ class SgaScraper
         $this->requests['pedidos'][] = $nome;
     }
 
+    /**
+     * Utiliza a obtenção de dados vinculada a aluno (portal do aluno)
+     */
+    public function aluno()
+    {
+        $this->pushPedido('aluno');
+        return $this;
+    }
+
+    /**
+     * Utiliza a obtenção de dados vinculada ao professor (portal do professor/coordenação)
+     */
+    public function professor()
+    {
+        $this->pushPedido('professor');
+        return $this;
+    }    
+
     public function alunos()
     {
         $this->pushPedido('--alunos');
