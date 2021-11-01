@@ -125,6 +125,20 @@ Para garantir que o Laravel não tem caches antigas, rode em seguida:
 php artisan config:clear
 ```
 
+#### 2.7 Sga scraping (opcional)
+
+Se você pretende utilizar as funcionalidades de coleta de dados do portal do aluno/professor da UFFS, você precisa do `uffs-sga-scraping` funcionando. Para isso, rode:
+
+```
+cd cli/uffs-sga-scraping && npm install
+```
+
+Depois crie um arquivo de config para ele:
+
+```
+cp config.json.example config.json
+```
+
 ### 3. Utilizacão
 
 #### 3.1 Rodando o projeto

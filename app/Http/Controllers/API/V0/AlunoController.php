@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V0;
 
 use App\Http\Controllers\Controller;
 use App\Cli\SgaScraper;
+use Illuminate\Support\Facades\Cache;
 
 class AlunoController extends Controller
 {
@@ -12,7 +13,12 @@ class AlunoController extends Controller
     public function __construct(SgaScraper $sga)
     {
         $this->sga = $sga;
-    }	
+    }
+
+    protected function hash(array $array)
+    {
+        return hash('sha256', json_encode($array));
+    }
     
     protected function getCredenciais()
     {
@@ -41,7 +47,14 @@ class AlunoController extends Controller
     public function historico()
     {
         $credenciais = $this->getCredenciais();
-        $info = $this->sga->usando($credenciais)->historico()->get();
+
+        $sga = $this->sga;
+        $key = $this->hash($credenciais);
+        $ttlDays = 7;
+
+        $info = Cache::remember($key, 60 * 60 * 24 * $ttlDays, function() use ($sga, $credenciais) {
+            return $sga->usando($credenciais, 'aluno')->historico()->get();
+        });
 
         return $this->json($info);
     }

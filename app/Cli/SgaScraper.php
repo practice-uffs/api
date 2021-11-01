@@ -57,14 +57,24 @@ class SgaScraper
         return collect($result);
     }
 
-    public function usando(array $credenciais)
+    /**
+     * Especifica como o scraper rodará para obter os dados.
+     * 
+     * @param array $credenciais vetor associativo com as credenciais de acesso (campos obrigatórios: usuario, senha).
+     * @param string $runner runner que será executado. Disponíveis: `aluno` (portal do aluno) e `professor` (portal do professor/coordenador).
+     */
+    public function usando(array $credenciais, string $runner)
     {
+        if (empty($runner)) {
+            throw new \Exception('Nenhum runner informado. Use sga()->usando([...], "aluno"), por exemplo.');
+        }
+        
         if (!isset($credenciais['usuario']) || empty($credenciais['usuario'])) {
-            throw  new \Exception('Nenhum usuário informado nas credenciais. Use sga()->usando(["usuario" => "...", "senha" => "..."])');
+            throw new \Exception('Nenhum usuário informado nas credenciais. Use sga()->usando(["usuario" => "...", "senha" => "..."])');
         }
 
         if (!isset($credenciais['senha']) || empty($credenciais['senha'])) {
-            throw  new \Exception('Nenhuma senha informada nas credenciais. Use sga()->usando(["usuario" => "...", "senha" => "..."])');
+            throw new \Exception('Nenhuma senha informada nas credenciais. Use sga()->usando(["usuario" => "...", "senha" => "..."])');
         }
 
         $this->requests['credenciais'] = [
@@ -75,6 +85,8 @@ class SgaScraper
         if (isset($credenciais['matricula'])) {
             $this->requests['credenciais']['matricula'] = $credenciais['matricula'];
         }
+
+        $this->pushPedido($runner);
 
         return $this;
     }
@@ -87,24 +99,6 @@ class SgaScraper
 
         $this->requests['pedidos'][] = $nome;
     }
-
-    /**
-     * Utiliza a obtenção de dados vinculada a aluno (portal do aluno)
-     */
-    public function aluno()
-    {
-        $this->pushPedido('aluno');
-        return $this;
-    }
-
-    /**
-     * Utiliza a obtenção de dados vinculada ao professor (portal do professor/coordenação)
-     */
-    public function professor()
-    {
-        $this->pushPedido('professor');
-        return $this;
-    }    
 
     public function alunos()
     {
