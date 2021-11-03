@@ -92,6 +92,13 @@ class User extends Authenticatable
         return $this->hasMany(Scraper::class);
     }
 
+    /**
+     * The chats that the user has access to.
+     */
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class)->withTimestamps();
+    }
 
     /**
      * Specifies the user's FCM token

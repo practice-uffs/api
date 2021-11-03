@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScrapersTable extends Migration
+class CreateMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateScrapersTable extends Migration
      */
     public function up()
     {
-        Schema::create('scrapers', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('chat_id')->index();
             $table->foreignId('user_id')->index();
-            $table->string('target', 255)->index();
-            $table->string('access_user');
-            $table->string('access_password');
+            $table->string('type');
+            $table->text('content');
+            $table->text('data')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateScrapersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scrapers');
+        Schema::dropIfExists('messages');
     }
 }
