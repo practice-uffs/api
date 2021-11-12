@@ -11,7 +11,7 @@ use App\Http\Controllers\API\V0\EnvironmentController;
 use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
-
+use App\Http\Controllers\API\V0\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,12 +61,17 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/{app}/locations', [ApiProxyController::class, 'proxy']);
     Route::get('/{app}/me', [ApiProxyController::class, 'proxy']);
 
+    // User
+    Route::get('/user', [UserController::class, 'index']);
+
     // Test
     Route::get('ping', [PingController::class, 'index']);    
 });
 
 // Test routes
-Route::group(['prefix' => '/test'], function () {
-    Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
-    Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
-});
+if (env('APP_ENV') === 'local') {
+    Route::group(['prefix' => '/test'], function () {
+        Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
+        Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
+    });
+}
