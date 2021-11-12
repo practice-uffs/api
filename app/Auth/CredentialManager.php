@@ -65,7 +65,7 @@ class CredentialManager
             'iss' => $app->name,
             'aud' => $app->domain,
             'iat' => Carbon::now()->timestamp,
-            'nbf' => Carbon::now()->timestamp,
+            'nbf' => Carbon::now()->timestamp - 1,
             'app_id' => $app->id,
             'user' => $user
         );
