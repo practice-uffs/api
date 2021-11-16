@@ -207,6 +207,20 @@ O passaporte de acesso obtido através do endpoint `/v0/auth` da api central fun
 
 > *IMPORTANTE*: a api central do practice toma as precauções para que o token de acesso seja válido e que o usuário exista na aplicação destino. Por exemplo, se o usuário nunca logou no mural e houver uma requisição (via api gateway) para o mural (vindo do app móvel do programa, por exemplo), a api criará o usuário equivalente no mural (em linhas gerais, ela fará uma autenticação e criação de conta no mural em nome do usuário dono da requisição original na api central).
 
+Alguns exemplos de requisições para testar se tudo está certo.
+
+Faz uma solicitação de autenticação (obtem passaporte practice) informando que está usando o app-practice (`app_id=4`):
+
+```
+curl -H 'Accept: application/json' -d "user=meuiduffsaqui&password=minhasenhaaqui&app_id=1" http://localhost:8000/v0/auth
+```
+
+Obtem informações do usuário no mural:
+
+```bash
+curl -H 'Accept: application/json' -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc...9qBQVVw" http://localhost:8000/v0/mural/me
+```
+
 ## 🤝 Contribua
 
 Sua ajuda é muito bem-vinda, independente da forma! Confira o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para conhecer todas as formas de contribuir com o projeto. Por exemplo, [sugerir uma nova funcionalidade](https://github.com/practice-uffs/api/issues/new?assignees=&labels=&template=feature_request.md&title=), [reportar um problema/bug](https://github.com/practice-uffs/api/issues/new?assignees=&labels=bug&template=bug_report.md&title=), [enviar um pull request](https://github.com/ccuffs/hacktoberfest/blob/master/docs/tutorial-pull-request.md), ou simplemente utilizar o projeto e comentar sua experiência.
