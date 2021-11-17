@@ -36,6 +36,7 @@ class ChannelsController extends Controller
         $data = $request->validate([
             'user_id' => 'required|unique:channels,user_id',
             'fcm_token' => 'required',
+            'telegram_id' => 'required'
         ]);
 
         $channels = Channels::create($data);
@@ -71,7 +72,7 @@ class ChannelsController extends Controller
         $data = $request->validate([
             'fcm_token' => 'required',
         ]);
-        
+
         $id = auth()->id();
         $channels = Channels::where('user_id', $id)->findOrFail()->update($data);
 

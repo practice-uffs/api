@@ -32,7 +32,7 @@ Route::get('/checkin/marker', [CheckinController::class, 'marker']);
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
     // Aura
-    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);    
+    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
     // Channels
@@ -41,7 +41,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::delete('user/channels', [ChannelsController::class, 'destroy']);
 
     // Notification
-    Route::get('user/notify/push', [NotificationController::class, 'push']);    
+    Route::get('user/notify/push', [NotificationController::class, 'push']);
 
     // Environment
     Route::get('env', [EnvironmentController::class, 'index']);        
@@ -65,7 +65,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/user', [UserController::class, 'index']);
 
     // Test
-    Route::get('ping', [PingController::class, 'index']);    
+    Route::get('ping', [PingController::class, 'index']);
 });
 
 // Test routes

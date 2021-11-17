@@ -17,8 +17,9 @@ class AuthController extends Controller
     {
         $this->credentialManager = $credentialManager;
     }
-    
-    protected function createPassport($appId, $uid, $email, $name) {
+
+    protected function createPassport($appId, $uid, $email, $name)
+    {
         if ($appId == null || $appId == 0) {
             return null;
         }
@@ -86,7 +87,7 @@ class AuthController extends Controller
         $input = $request->all();
         $info = $this->attemptAuthentication($input);
 
-        if($info === null) {
+        if ($info === null) {
             return response()->json([
                 'message' => 'Usuário ou senha incorretos',
                 'errors' => [
