@@ -12,6 +12,7 @@ use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
+use App\Http\Proxy\PracticeApiProxy;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,11 +55,11 @@ Route::group(['middleware' => 'jwt.practice'], function () {
 
     // Proxy para apis de outros serviços
     // Mural
-    Route::get('/{app}/orders', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/ideas', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/categories', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/services', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/locations', [ApiProxyController::class, 'proxy']);
+    PracticeApiProxy::resource('/{app}/orders');
+    PracticeApiProxy::resource('/{app}/ideas');
+    PracticeApiProxy::resource('/{app}/categories');
+    PracticeApiProxy::resource('/{app}/services');
+    PracticeApiProxy::resource('/{app}/locations');
     Route::get('/{app}/me', [ApiProxyController::class, 'proxy']);
 
     // User
