@@ -43,6 +43,19 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Override CORs Headers
+|--------------------------------------------------------------------------
+|
+| Allow access from all over the interwebz.
+|
+*/
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: *');
+header('Access-Control-Allow-Headers: *');
+
+/*
+|--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
 |
