@@ -35,8 +35,8 @@ class ChannelsController extends Controller
 
         $data = $request->validate([
             'user_id' => 'required|unique:channels,user_id',
-            'fcm_token' => 'required',
-            'telegram_id' => 'required'
+            'fcm_token' => 'sometimes|nullable',
+            'telegram_id' => 'sometimes|nullable|numeric'
         ]);
 
         $channels = Channels::create($data);
@@ -70,7 +70,8 @@ class ChannelsController extends Controller
      */
     public function update(Request $request){
         $data = $request->validate([
-            'fcm_token' => 'required',
+            'fcm_token' => 'sometimes|nullable',
+            'telegram_id' => 'sometimes|nullable|numeric'
         ]);
 
         $id = auth()->id();
