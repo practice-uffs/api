@@ -16,8 +16,8 @@ class CreateChannelsTable extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->unique();
-            $table->text('fcm_token');
-            $table->string('telegram_id');
+            $table->text('fcm_token')->nullable(true);
+            $table->string('telegram_id')->nullable(true);
             $table->timestamps();
         });
     }

@@ -60,6 +60,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     PracticeApiProxy::resource('/{app}/categories');
     PracticeApiProxy::resource('/{app}/services');
     PracticeApiProxy::resource('/{app}/locations');
+    PracticeApiProxy::resource('/{app}/comments');
     Route::get('/{app}/me', [ApiProxyController::class, 'proxy']);
 
     // User

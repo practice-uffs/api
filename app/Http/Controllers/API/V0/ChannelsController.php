@@ -75,12 +75,13 @@ class ChannelsController extends Controller
         ]);
 
         $id = auth()->id();
-        $channels = Channels::where('user_id', $id)->findOrFail()->update($data);
+        Channels::where('user_id', $id)->update($data);
+        $channels = Channels::where('user_id', $id)->firstOrFail();
 
-        return response(
-            $channels,
+        return response()->json(
+            $channels, 
             Response::HTTP_OK
-        );
+        ); 
     }
 
     /**
@@ -108,9 +109,9 @@ class ChannelsController extends Controller
         $userId = auth()->id();
         Channels::where('user_id', $userId)->delete();
 
-        return response(
-            null,
-            Response::HTTP_NO_CONTENT
-        );
+        return response()->json(
+            NULL, 
+            Response::HTTP_OK
+        ); 
     }
 }
