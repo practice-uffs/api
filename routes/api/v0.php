@@ -13,6 +13,7 @@ use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
 use App\Http\Proxy\PracticeApiProxy;
+use App\Http\Livewire\AuraWidget;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,10 +31,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth', [AuthController::class, 'index'])->name('auth');
 Route::get('/checkin/marker', [CheckinController::class, 'marker']);
 
+Route::get('/widgets/aura', AuraWidget::class);
+Route::get('/aura/nlp/{route}/{text}', [AuraController::class, 'index']);
+
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
     // Aura
-    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);
+    
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
     // Channels
