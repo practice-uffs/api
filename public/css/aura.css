@@ -2,18 +2,19 @@
 body,html {
      height: 100%;
      margin: 0;
-     background: linear-gradient(to right, #FEEED0, #EAF2F5);
+     
  }
 
  .chat {
      margin-top: auto;
-     margin-bottom: auto
+     margin-bottom: auto;
+     background-color: rgba(100, 100, 100, 0)
  }
 
  .card {
      height: 550px;
      border-radius: 15px!important;
-     background-color: rgba(0, 0, 0, .004)!important
+     background: linear-gradient(to right, #FEEED0, #EAF2F5)!important
  }
 
  .msg_card_body {

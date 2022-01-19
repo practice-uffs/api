@@ -1,7 +1,7 @@
 
 <div class="container-fluid h-100" >
     <div class="row justify-content-center h-100">
-        <div class="col-md-12 col-xl-12 chat h-100" >
+        <div class="col-md-12 col-xl-12 chat h-100"  >
             <div class="card h-100" >
                 <div class="card-header msg_head" >
                     <div class="d-flex bd-highlight">
@@ -32,7 +32,7 @@
                                 {{ $message['message'] }}
                             </div>
                             <div class="img_cont_msg">
-                                <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
+                                <img src="{{ asset('img/aura/user.png') }}" class="rounded-circle user_img_msg">
                             </div>
                         </div>
                     @endif
