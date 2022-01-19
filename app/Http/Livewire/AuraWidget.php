@@ -10,6 +10,7 @@ class AuraWidget extends Component
 {
     public $inputMessage;
     public $messages;
+    public $token;
 
     public function mount()
     {
@@ -17,6 +18,7 @@ class AuraWidget extends Component
                               'source' => 'aura'    
                             ];
         $this->inputMessage = '';
+        $this->token = request()->token;
     }
 
     public function render()
