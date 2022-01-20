@@ -6,8 +6,7 @@
                 <div class="card-header msg_head" >
                     <div class="d-flex bd-highlight header_height" >
                         <div >
-                            <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img">
-                            <span class="online_icon"></span>
+                            <img src="{{ asset('img/aura/aura_icon_online.png') }}" class="user_img">
                         </div>
                         <div class="user_info" >
                             <span>Aura</span>

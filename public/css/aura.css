@@ -73,7 +73,6 @@ body,html {
  .user_img {
      height: 100%;
      width: 100%;
-     border: 1.5px solid #f5f6fa
  }
 
  .header_height{
@@ -186,7 +185,6 @@ body,html {
     .user_img{
         height: 50px;
         width: 50px;
-        border: 1.5px solid #f5f6fa
     }
     .user_info span {
         font-size: 2rem;
@@ -209,7 +207,6 @@ body,html {
     .user_img{
         height: 30px;
         width: 30px;
-        border: 1.5px solid #f5f6fa
     }
     .user_info span {
         font-size: 1.2rem;
