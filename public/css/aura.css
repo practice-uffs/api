@@ -71,21 +71,19 @@ body,html {
  }
 
  .user_img {
-     height: 70px;
-     width: 70px;
+     height: 100%;
+     width: 100%;
      border: 1.5px solid #f5f6fa
+ }
+
+ .header_height{
+     height: 100%;
  }
 
  .user_img_msg {
      height: 40px;
      width: 40px;
      border: 1.5px solid #f5f6fa
- }
-
- .img_cont {
-     position: relative;
-     height: 70px;
-     width: 70px
  }
 
  .img_cont_msg {
@@ -107,19 +105,24 @@ body,html {
  .user_info {
      margin-top: auto;
      margin-bottom: auto;
-     margin-left: 15px
+     margin-left: 15px;
+     height: 100%
  }
 
  .user_info span {
-     font-size: 30px;
+     font-size: 1.6rem;
      font-weight: bold;
      color: #4c7a8a
  }
 
  .user_info p {
-     font-size: 20px;
+     font-size: 1.2rem;
      color: #4c7a8a;
  }
+ .practice{
+    display: none;
+ }
+
 
  .msg_cotainer {
      margin-top: auto;
@@ -177,4 +180,45 @@ body,html {
 
  ::-webkit-scrollbar-thumb:hover {
      background: #FCCC72
+ }
+
+ @media(max-width: 486px){
+    .user_img{
+        height: 50px;
+        width: 50px;
+        border: 1.5px solid #f5f6fa
+    }
+    .user_info span {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #4c7a8a
+    }
+   
+    .user_info p {
+        font-size: 1.4rem;
+        color: #4c7a8a;
+    }
+    .practice{
+        display:flex;
+    }
+    .ia_practice{
+        display: none;
+     }
+   }
+ @media(max-height: 450px){
+    .user_img{
+        height: 30px;
+        width: 30px;
+        border: 1.5px solid #f5f6fa
+    }
+    .user_info span {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #4c7a8a
+    }
+   
+    .user_info p {
+        font-size: 0.6rem;
+        color: #4c7a8a;
+    }
  }
