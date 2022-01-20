@@ -12,6 +12,7 @@ use App\Http\Controllers\API\V0\InteractionController;
 use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
+use App\Http\Controllers\API\V0\AnalyticsController;
 use App\Http\Proxy\PracticeApiProxy;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,14 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::post('user/channels', [ChannelsController::class, 'store']);
     Route::patch('user/channels', [ChannelsController::class, 'update']);
     Route::delete('user/channels', [ChannelsController::class, 'destroy']);
+
+    // Analytics
+
+    Route::get('/analytics', [AnalyticsController::class, 'index']);
+    Route::post('/analytics', [AnalyticsController::class, 'store']);
+    Route::get('/analytics/{id}', [AnalyticsController::class, 'show']);
+    Route::patch('/analytics/{id}', [AnalyticsController::class, 'update']);
+    Route::delete('/analytics/{id}', [AnalyticsController::class, 'destroy']);
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
