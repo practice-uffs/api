@@ -15,6 +15,7 @@ class AuraWidget extends Component
     public $token;
     public $login = false;
     public $loginError = false;
+    public $loginErrorMessage = '';
     public $username;
     public $password;
 
@@ -33,6 +34,7 @@ class AuraWidget extends Component
     }
 
     public function sendMessage(){
+       
         if ($this->inputMessage == ""){
             return;
         }
@@ -49,8 +51,7 @@ class AuraWidget extends Component
             $request->headers->set('Authorization', 'Bearer '.$this->token);
         } 
         
-        $response = json_decode(Route::dispatch($request)->getContent());
-        
+        $response = json_decode(app()->handle($request)->getContent());
         
         if ($response != null) {   
             if (property_exists($response, 'error')){
@@ -65,7 +66,7 @@ class AuraWidget extends Component
                                                 ]);
                     $this->login = true;
                 }
-            } else{
+            } else { 
                 if (property_exists($response, 'answer')) {
                     array_unshift($this->messages, ['message' => $response->answer,
                                                 'source' => 'aura'   
@@ -82,30 +83,43 @@ class AuraWidget extends Component
     }
 
     public function performLogin(){
-        
-        $request = Request::create('/v0/auth/', 'POST',array('user' => $this->username, 
-                                                             'password' => $this->password, 
-                                                             'app_id' => '1'));
-        
-        $request->headers->set('Authorization', 'Bearer '.$this->token);
+        if( $this->username != '' && $this->password != '' ){
+            $request = Request::create('/v0/auth/', 'POST',array('user' => $this->username, 
+                                                                'password' => $this->password, 
+                                                                'app_id' => '1'));
+            
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
 
-        $response = app()->handle($request);
-        
-        $data = json_decode($response->getContent());
-        
-        if ($data == null){
-            $this->loginError = true;
+            $response = app()->handle($request);
+
+            $data = json_decode($response->getContent());
+            
+            
+            if ($data == null){
+                $this->loginError = true;
+                $this->loginErrorMessage = 'Usuário ou senha incorreto';
+            } else {
+                $this->login = false;
+                $this->token = $data->passport;
+            
+                array_unshift($this->messages, ['message' => 'Logado com sucesso!!!',
+                                                    'source' => 'user'   
+                                                    ]);
+                array_unshift($this->messages, ['message' => 'Bem vindo(a) Aura! Converse comigo :)',
+                                                    'source' => 'aura'   
+                                                    ]);
+                $this->username = '';
+                $this->password = '';
+                
+            }
+            return;
         } else {
-            $this->login = false;
-            $this->token = $data->passport;
-            array_unshift($this->messages, ['message' => 'Logado com sucesso!!!',
-                                                'source' => 'user'   
-                                                ]);
-            array_unshift($this->messages, ['message' => 'Bem vindo(a) Aura! Converse comigo :)',
-                                                'source' => 'aura'   
-                                                ]);
+            $this->loginError = true;
+            $this->loginErrorMessage = 'Ambos os campos devem ser preenchidos';
+            return;
         }
+
+
         
-        return;
     }
 }

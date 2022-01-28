@@ -26,14 +26,13 @@
                             
                             @if($loginError == true)
                                 <div class="d-flex justify-content-around pt_10">
-                                    <small class="w-75 login_error" >Credenciais incorretas, tente novamente</small>
+                                    <small class="w-75 login_error" >{{ $loginErrorMessage }}</small>
                                 </div>
                             @endif
                             
                             <div class="d-flex justify-content-around pt_10">
-                                <a class="btn btn-primary" wire:click="performLogin()">Fazer login</a>
+                                <button class="btn btn-primary" wire:click="performLogin()" >Fazer login</button>
                             </div>
-                            
                             
                         </div>
                         <div class="img_cont_msg">
@@ -72,7 +71,7 @@
                 @endforeach
                
                 </div>
-
+        
                 <div class="card-footer">
                     <div class="input_alignment"></div>
                     <div class="input-group">
