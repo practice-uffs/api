@@ -4,8 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 
 class AuraWidget extends Component
@@ -52,11 +50,11 @@ class AuraWidget extends Component
         } 
         
         $response = json_decode(app()->handle($request)->getContent());
-        
+
         if ($response != null) {   
             if (property_exists($response, 'error')){
                 if ($response->error == "Missing bearer token in request"){
-                    array_unshift($this->messages, ['message' => 'Você não está autenticado, portanto não poder conversar comigo :(, autentique-se ',
+                    array_unshift($this->messages, ['message' => 'Você não está autenticado, portanto não poder conversar comigo :(, autentique-se:',
                                                 'source' => 'aura'   
                                                 ]);
                     $this->login = true;
@@ -72,11 +70,15 @@ class AuraWidget extends Component
                                                 'source' => 'aura'   
                                                 ]);
                 } else {
-                    array_unshift($this->messages, ['message' => 'Não tenho resposta para isso',
+                    array_unshift($this->messages, ['message' => 'Não tenho resposta para isso.',
                                                 'source' => 'aura'   
                                                 ]);
                 }
             }
+        } else {
+            array_unshift($this->messages, ['message' => 'Algo de errado está acontecendo com meus servidores, bip bop.',
+                                                'source' => 'aura'   
+                                                ]);
         }
         $this->inputMessage = "";
         return;
