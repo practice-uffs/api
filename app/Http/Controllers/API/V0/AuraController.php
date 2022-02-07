@@ -41,7 +41,7 @@ class AuraController extends Controller
 
         return response(
             $response,
-            Response::HTTP_OK
+            Response::HTTP_OK   
         );
     }
 }
