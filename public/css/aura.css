@@ -77,9 +77,16 @@ body,html {
 }
 
 .card {
-    height: 550px;
+    height: 100%;
+    background: linear-gradient(to right, #ffffff, #EAF2F5)!important;
+    border: 0px;
+}
+
+.border-radius-15 {
     border-radius: 15px!important;
-    background: linear-gradient(to right, #FEEED0, #EAF2F5)!important
+}
+.border-radius-0 {
+    border-radius: 0px!important;
 }
 
 .msg_card_body {
@@ -91,7 +98,6 @@ body,html {
 
 .card-header {
     height: 20%;
-    border-radius: 15px 15px 0 0!important;
     border-bottom: 0!important
 }
 
@@ -207,7 +213,7 @@ body,html {
     margin-bottom: auto;
     margin-right: 10px;
     border-radius: 25px;
-    background-color: #FEE6B9;
+    background-color: #ffefd2;
     padding: 10px;
     position: relative
 }
@@ -242,12 +248,12 @@ body,html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #FDDDA1;
+    background: #faf2e4;
     border-radius: 10px
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #FCCC72
+    background: #ffe7bb
 }
 
 .pt_10 {

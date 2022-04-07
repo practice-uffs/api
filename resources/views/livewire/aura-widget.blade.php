@@ -1,10 +1,21 @@
 
 <div class="container-fluid h-100" >
+
+    @if($type == 'button')
     <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img height="45px" width="45px" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
     <div class="wrapper">
+    @endif
+    
         <div class="row justify-content-center h-100">
+            
+            @if($type == 'button')
             <div class="col-md-12 col-xl-12 chat h-100"  >
-                <div class="card h-100" >
+                <div class="card border-radius-15 h-100" >
+            @endif
+            @if($type == 'fullscreen')
+            <div class="chat w-100 h-100"  >
+                <div class="card border-radius-0 h-100" > 
+            @endif
                     <div class="card-header msg_head" >
                         <div class="d-flex bd-highlight header_height" >
                             <div >
@@ -85,5 +96,8 @@
                 </div>
             </div>
         </div>
+    @if($type == 'button')
     </div>
+    @endif
+    
 </div>
