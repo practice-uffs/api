@@ -88,7 +88,8 @@ class AcademicCalendarController extends Controller
                     if (str_contains($event['period'], 'e') || str_contains($event['period'], 'a')) {
                         $splittedPeriod = preg_split('/ e | a /', $event['period']);
         
-                        $firstDay = explode('/', $splittedPeriod[0]);
+                        $days = explode(',', $splittedPeriod[0]); // Vai ser usado caso o período seja no estilo x, y e z
+                        $firstDay = explode('/', $days[0]);
                         $secondDay = explode('/', $splittedPeriod[1]);
         
                         // Caso o período esteja no formato dd/mm pegamos o mês a partir dele
@@ -100,7 +101,20 @@ class AcademicCalendarController extends Controller
                         $secondDateTimestamp = strtotime(date('Y') . '-' . $secondMonth . '-' . $secondDay[0]);
         
                         if (str_contains($event['period'], 'e')) {
-                            if ($firstDateTimestamp == $date || $secondDateTimestamp == $date) {
+                            if(count($days) > 1) { // Se o período for no estilo x, y e z 
+                                foreach ($days as $day) {
+                                    $splittedDay = explode('/', $day);
+
+                                    $dayTimestamp = strtotime((int)date('Y') . '-' . (isset($splittedDay[1]) ? $splittedDay[1] : date('n', $date)) . '-' . trim($splittedDay[0]));
+                                    if ($dayTimestamp == $date) {
+                                        array_push($dateEvents, $event);
+                                        break;
+                                    }
+                                }
+                                if ($secondDateTimestamp == $date) {
+                                    array_push($dateEvents, $event);
+                                }
+                            } else if ($firstDateTimestamp == $date || $secondDateTimestamp == $date) {
                                 array_push($dateEvents, $event);
                             }
                         } else if (str_contains($event['period'], 'a')) {
