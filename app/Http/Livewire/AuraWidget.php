@@ -11,6 +11,7 @@ class AuraWidget extends Component
     public $inputMessage;
     public $messages;
     public $token;
+    public $type;
     public $login = false;
     public $loginError = false;
     public $loginErrorMessage = '';
@@ -24,6 +25,7 @@ class AuraWidget extends Component
                             ];
         $this->inputMessage = '';
         $this->token = request()->token;
+        $this->type = request()->type;
     }
 
     public function render()
