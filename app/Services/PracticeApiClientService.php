@@ -31,9 +31,14 @@ class PracticeApiClientService
     }
 
     protected function appRequestHeaders(App $app) {
-        $user = (array) auth()->user();
+        $authUser = auth()->user();
+        $user = [
+            'id' => $authUser->id,
+            'uid' => $authUser->uid,
+            'name' => $authUser->name,
+            'email' => $authUser->email
+        ];
         $tokenTtl = $this->config['token_ttl_seconds'];
-        
         $bearerToken = $this->credentialManager->createPassportFromApp($app, $user, $tokenTtl);
 
         return [

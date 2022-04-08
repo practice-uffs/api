@@ -84,6 +84,21 @@ class User extends Authenticatable
         return $this->hasOne(Channels::class);
     }
 
+    /**
+     * External scrapers (data collectors) available to the user.
+     */
+    public function scrapers()
+    {
+        return $this->hasMany(Scraper::class);
+    }
+
+    /**
+     * The chats that the user has access to.
+     */
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class)->withTimestamps();
+    }
 
     /**
      * Specifies the user's FCM token

@@ -12,9 +12,9 @@ class PingController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/helo",
+     *      path="/ping",
      *      operationId="getProjectsList",
-     *      tags={"Projects"},
+     *      tags={"Teste"},
      *      summary="Get list of projects",
      *      description="Returns list of projects",
      *      @OA\Response(

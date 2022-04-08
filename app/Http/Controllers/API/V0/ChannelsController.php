@@ -9,14 +9,34 @@ use App\Models\Channels;
 
 class ChannelsController extends Controller
 {
-    public function store(Request $request)
-    {
+    /**
+     * @OA\Post(
+     *      path="/user/channels",
+     *      operationId="getProjectsList",
+     *      tags={"Channels"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
+    public function store(Request $request){
         $request['user_id'] = auth()->id();
 
         $data = $request->validate([
             'user_id' => 'required|unique:channels,user_id',
-            'fcm_token' => 'required',
-            'telegram_id' => 'required'
+            'fcm_token' => 'sometimes|nullable',
+            'telegram_id' => 'sometimes|nullable|numeric'
         ]);
 
         $channels = Channels::create($data);
@@ -27,29 +47,71 @@ class ChannelsController extends Controller
         );
     }
 
-    public function update(Request $request)
-    {
+    /**
+     * @OA\Patch(
+     *      path="/user/channels",
+     *      operationId="getProjectsList",
+     *      tags={"Channels"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
+    public function update(Request $request){
         $data = $request->validate([
-            'fcm_token' => 'required',
+            'fcm_token' => 'sometimes|nullable',
+            'telegram_id' => 'sometimes|nullable|numeric'
         ]);
 
         $id = auth()->id();
-        $channels = Channels::where('user_id', $id)->findOrFail()->update($data);
+        Channels::where('user_id', $id)->update($data);
+        $channels = Channels::where('user_id', $id)->firstOrFail();
 
-        return response(
-            $channels,
+        return response()->json(
+            $channels, 
             Response::HTTP_OK
-        );
+        ); 
     }
 
-    public function destroy()
-    {
+    /**
+     * @OA\Delete(
+     *      path="/user/channels",
+     *      operationId="getProjectsList",
+     *      tags={"Channels"},
+     *      summary="Get list of projects",
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
+    public function destroy(){
         $userId = auth()->id();
         Channels::where('user_id', $userId)->delete();
 
-        return response(
-            null,
-            Response::HTTP_NO_CONTENT
-        );
+        return response()->json(
+            NULL, 
+            Response::HTTP_OK
+        ); 
     }
 }

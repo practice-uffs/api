@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V0\AlunoController;
 use App\Http\Controllers\API\V0\ApiProxyController;
 use App\Http\Controllers\API\V0\AuraController;
 use App\Http\Controllers\API\V0\ChannelsController;
@@ -8,10 +9,12 @@ use App\Http\Controllers\API\V0\AuthController;
 use App\Http\Controllers\API\V0\CheckinController;
 use App\Http\Controllers\API\V0\EnvironmentController;
 use App\Http\Controllers\API\V0\InteractionController;
-use App\Http\Controllers\API\V0\MuralController;
 use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\V0\UserController;
+use App\Http\Controllers\API\V0\AnalyticsController;
+use App\Http\Proxy\PracticeApiProxy;
+use App\Http\Livewire\AuraWidget;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,16 +32,28 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth', [AuthController::class, 'index'])->name('auth');
 Route::get('/checkin/marker', [CheckinController::class, 'marker']);
 
+// Aura Widget
+Route::get('/widgets/aura', AuraWidget::class);
+
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
+
     // Aura
-    Route::get('aura/nlp/{route}/{text}', [AuraController::class, 'index']);
+    Route::get('/aura/nlp/{route}/{text}', [AuraController::class, 'index']);
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
     // Channels
     Route::post('user/channels', [ChannelsController::class, 'store']);
     Route::patch('user/channels', [ChannelsController::class, 'update']);
     Route::delete('user/channels', [ChannelsController::class, 'destroy']);
+
+    // Analytics
+
+    Route::get('/analytics', [AnalyticsController::class, 'index']);
+    Route::post('/analytics', [AnalyticsController::class, 'store']);
+    Route::get('/analytics/{id}', [AnalyticsController::class, 'show']);
+    Route::patch('/analytics/{id}', [AnalyticsController::class, 'update']);
+    Route::delete('/analytics/{id}', [AnalyticsController::class, 'destroy']);
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
@@ -47,23 +62,32 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('env', [EnvironmentController::class, 'index']);        
 
     // Check-in
-    Route::get('/checkin/marker', [CheckinController::class, 'marker']);
     Route::post('/checkin', [CheckinController::class, 'store']);
+
+    // Informações acadêmicas
+    Route::get('/aluno/historico', [AlunoController::class, 'historico']);    
 
     // Proxy para apis de outros serviços
     // Mural
-    Route::get('/{app}/orders', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/ideas', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/categories', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/services', [ApiProxyController::class, 'proxy']);
-    Route::get('/{app}/locations', [ApiProxyController::class, 'proxy']);
+    PracticeApiProxy::resource('/{app}/orders');
+    PracticeApiProxy::resource('/{app}/ideas');
+    PracticeApiProxy::resource('/{app}/categories');
+    PracticeApiProxy::resource('/{app}/services');
+    PracticeApiProxy::resource('/{app}/locations');
+    PracticeApiProxy::resource('/{app}/comments');
+    Route::get('/{app}/me', [ApiProxyController::class, 'proxy']);
+
+    // User
+    Route::get('/user', [UserController::class, 'index']);
 
     // Test
     Route::get('ping', [PingController::class, 'index']);
 });
 
 // Test routes
-Route::group(['prefix' => '/test'], function () {
-    Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');
-    Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');
-});
+if (env('APP_ENV') === 'local') {
+    Route::group(['prefix' => '/test'], function () {
+        Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
+        Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
+    });
+}

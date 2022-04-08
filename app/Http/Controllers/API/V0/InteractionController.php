@@ -10,9 +10,9 @@ class InteractionController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/oi",
+     *      path="/interact",
      *      operationId="getProjectsList",
-     *      tags={"Projects"},
+     *      tags={"Interação"},
      *      summary="Get list of projects",
      *      description="Returns list of projects",
      *      @OA\Response(

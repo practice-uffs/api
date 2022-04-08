@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     title="App",
+ *     description="Uma aplicação que pode interagir com a API ou ser acessada a partir dela.",
+ *     @OA\Xml(
+ *         name="App"
+ *     )
+ * )
+ */
 class App extends Model
 {
     use HasFactory;

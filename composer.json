@@ -8,8 +8,9 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "betterapp/laravel-db-encrypter": "^1.0",
+        "beyondcode/laravel-websockets": "^1.12",
         "ccuffs/auth-iduffs": "^1.1",
         "darkaonline/l5-swagger": "^8.0",
         "doctrine/dbal": "^3.0",
@@ -18,12 +19,14 @@
         "firebase/php-jwt": "^5.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/psr7": "^1.5",
         "laravel-notification-channels/fcm": "~2.0",
         "laravel/framework": "^8.12",
         "laravel/jetstream": "^1.6",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.0",
+        "livewire/livewire": "^2.10",
+        "pusher/pusher-php-server": "^3.0|^4.0|^5.0|^7.0",
         "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
@@ -59,6 +62,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "docs": [
+            "@php artisan l5-swagger:generate"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

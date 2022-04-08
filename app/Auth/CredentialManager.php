@@ -33,15 +33,15 @@ class CredentialManager
         $sig = json_decode(JWT::urlsafeB64Decode($cryptob64));        
 
         if ($header === null) {
-            throw new \Exception('Invalid header encoding in JWT');
+            throw new \Exception('Invalid header encoding in JWT: ' . $headb64);
         }
 
         if ($payload === null) {
-            throw new \Exception('Invalid claims encoding in JWT');
+            throw new \Exception('Invalid claims encoding in JWT: ' . $bodyb64);
         }
 
         if ($sig === false) {
-            throw new \Exception('Invalid signature encoding in JWT');
+            throw new \Exception('Invalid signature encoding in JWT: ' . $cryptob64);
         }        
 
         return [
@@ -65,7 +65,7 @@ class CredentialManager
             'iss' => $app->name,
             'aud' => $app->domain,
             'iat' => Carbon::now()->timestamp,
-            'nbf' => Carbon::now()->timestamp,
+            'nbf' => Carbon::now()->timestamp - 1,
             'app_id' => $app->id,
             'user' => $user
         );
@@ -171,6 +171,10 @@ class CredentialManager
     }
 
     public function createUserFromPassportInfo(array $info) {
+        if (empty($info['uid']) || empty($info['email'])) {
+            throw new \Exception('Missing uid or email in passport info');
+        }
+
         $uid = $info['uid'];
         $password = Hash::make($uid . $info['email']);
 

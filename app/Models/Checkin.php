@@ -5,6 +5,15 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     title="Checkin",
+ *     description="Indicação de check-in.",
+ *     @OA\Xml(
+ *         name="Checkin"
+ *     )
+ * )
+ */
 class Checkin extends Model
 {
     protected $fillable = [

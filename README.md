@@ -17,15 +17,18 @@ Este repositório contém a API central do programa [Practice](https://practice.
 Para executar o projeto, você precisa ter o seguinte instalado:
 
 - [Git](https://git-scm.com)
-- [PHP](https://www.php.net/downloads)
+- [PHP 8.x](https://www.php.net/downloads)
 - [Composer](https://getcomposer.org/download/)
 - [NodeJS](https://nodejs.org/en/)
 - [NPM](https://www.npmjs.com/package/npm)
 
+>*IMPORTANTE:* se sua distribuição  linux não tem PHP 8.x disponível, rode `sudo add-apt-repository ppa:ondrej/php` antes de começar.
+
 Você precisa de várias extensões PHP instaladas também:
 
 ```
-sudo apt install php-cli php-mbstring php-zip php-xml php-curl
+sudo apt-get update
+sudo apt install php8.0-cli php8.0-mbstring php8.0-zip php8.0-xml php8.0-curl php8.0-sqlite3 php8.0-curl
 ```
 
 ### 2. Configuração
@@ -92,7 +95,20 @@ Se você estiver rodando o projeto localmente para desenvolvimento, você també
 php artisan db:seed
 ```
 
-#### 2.5 Aura NLP (opcional)
+#### 2.5 Documentação da API (opcional)
+
+A documentação da API é gerada automaticamente através do pacote [L5-Swagger](https://github.com/DarkaOnLine/L5-Swagger). Para gerar a documentação, rode:
+
+```
+composer run docs
+```
+
+Isso fará uma alteração no arquivo `storage/api-docs/api-docs.json`. Esse arquivo (e qualquer alteração nele) *precisa* ser commitada para garantir que tenhamos uma documentação atualizada.
+
+Para acessar a documentação da API, basta rodar o projeto normalmente e acessar a url [localhost:8000/documentation](http://localhost:8000/documentation).
+
+
+#### 2.6 Aura NLP (opcional)
 
 Se você estiver desenvolvendo funcionalidades que utilizem a api de NLP da Aura, o micro-serviço da Aura precisa ser configurado. Essa funcionalidade é disponibilizada pelo projeto externo [aura-nlp](https://github.com/ccuffs/aura-nlp).
 
@@ -112,6 +128,20 @@ Para garantir que o Laravel não tem caches antigas, rode em seguida:
 php artisan config:clear
 ```
 
+#### 2.7 Sga scraping (opcional)
+
+Se você pretende utilizar as funcionalidades de coleta de dados do portal do aluno/professor da UFFS, você precisa do `uffs-sga-scraping` funcionando. Para isso, rode:
+
+```
+cd cli/uffs-sga-scraping && npm install
+```
+
+Depois crie um arquivo de config para ele:
+
+```
+cp config.json.example config.json
+```
+
 ### 3. Utilizacão
 
 #### 3.1 Rodando o projeto
@@ -125,6 +155,14 @@ php artisan serve
 Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em [localhost:8000](http://localhost:8000).
 
 > *Dica:* acesse [localhost:8000/documentation](http://localhost:8000/documentation) para ver a documentação de cada endpoint.
+
+Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em [localhost:8000](http://localhost:8000).
+
+Para que os serviços de websocket funcionem, é necessário preencher os campos `PUSHER_APP_ID`, `PUSHER_APP_KEY` e `PUSHER_APP_SECRET` no `.env`. Também, é necessário manter o seguinte comando rodando um terminal:
+
+```
+php artisan websockets:serve
+```
 
 #### 3.2 Utilização da API
 
@@ -179,6 +217,20 @@ Em linhas gerais, elas são no formato `/v0/{app}/{endpoint}`, onde `{app}` é o
 O passaporte de acesso obtido através do endpoint `/v0/auth` da api central funcionará para acesso as outras apis (esse processo é feito internamente, de forma transparente). Você também pode utilizar ele como `Authorization: Bearer XXX` nas requisições que precisam de autenticação dos outros serviços (o token da API  central funciona no mural, sem passar pela api central, por exemplo).
 
 > *IMPORTANTE*: a api central do practice toma as precauções para que o token de acesso seja válido e que o usuário exista na aplicação destino. Por exemplo, se o usuário nunca logou no mural e houver uma requisição (via api gateway) para o mural (vindo do app móvel do programa, por exemplo), a api criará o usuário equivalente no mural (em linhas gerais, ela fará uma autenticação e criação de conta no mural em nome do usuário dono da requisição original na api central).
+
+Alguns exemplos de requisições para testar se tudo está certo.
+
+Faz uma solicitação de autenticação (obtem passaporte practice) informando que está usando o app-practice (`app_id=4`):
+
+```
+curl -H 'Accept: application/json' -d "user=meuiduffsaqui&password=minhasenhaaqui&app_id=1" http://localhost:8000/v0/auth
+```
+
+Obtem informações do usuário no mural:
+
+```bash
+curl -H 'Accept: application/json' -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc...9qBQVVw" http://localhost:8000/v0/mural/me
+```
 
 ## 🤝 Contribua
 

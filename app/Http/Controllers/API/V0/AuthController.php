@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V0;
 
 use App\Models\App;
+use App\Models\User;
 use App\Auth\CredentialManager;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -19,6 +20,10 @@ class AuthController extends Controller
 
     protected function createPassport($appId, $uid, $email, $name)
     {
+        if ($appId == null || $appId == 0) {
+            return null;
+        }
+
         $app = App::findOrFail($appId);
 
         $passport = $this->credentialManager->createPassportFromApp($app, [
@@ -30,11 +35,32 @@ class AuthController extends Controller
         return $passport;
     }
 
+    protected function createScrapersIfNeeded(User $user, array $input) {
+        $scraper = $user->scrapers()->where('target', 'uffs.edu.br')->first();
+
+        if ($scraper) {
+            return;
+        }
+
+        $user->scrapers()->create([
+            'user_id' => $user->id,
+            'target' => 'uffs.edu.br',
+            'access_user' => $input['user'],
+            'access_password' => $input['password']
+        ]);
+    }
+
+    protected function attemptAuthentication(array $input) {
+        $auth = new \CCUFFS\Auth\AuthIdUFFS();
+        $info = (array) $auth->login($input);
+        return $info;
+    }
+    
     /**
      * @OA\Get(
-     *      path="/projects",
+     *      path="/auth",
      *      operationId="getProjectsList",
-     *      tags={"Projects"},
+     *      tags={"Autenticação"},
      *      summary="Get list of projects",
      *      description="Returns list of projects",
      *      @OA\Response(
@@ -52,15 +78,14 @@ class AuthController extends Controller
      *     )
      */
     public function index(Request $request)
-    {
+    {   
         $this->validate($request, [
             'user' => 'required',
             'password' => 'required',
         ]);
 
         $input = $request->all();
-        $auth = new \CCUFFS\Auth\AuthIdUFFS();
-        $info = (array) $auth->login($input);
+        $info = $this->attemptAuthentication($input);
 
         if ($info === null) {
             return response()->json([
@@ -72,13 +97,12 @@ class AuthController extends Controller
         }
 
         $user = $this->credentialManager->createUserFromPassportInfo($info);
+        $passport = $this->createPassport($request->input('app_id'),
+                                          $info['uid'],
+                                          $info['email'],
+                                          $info['name']);
 
-        $appId = $request->input('app_id');
-        $passport = null;
-
-        if ($appId != null) {
-            $passport = $this->createPassport($appId, $info['uid'], $info['email'], $info['name']);
-        }
+        $this->createScrapersIfNeeded($user, $input);
 
         return response()->json([
             'passport' => $passport,
