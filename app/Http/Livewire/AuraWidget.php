@@ -25,7 +25,17 @@ class AuraWidget extends Component
                             ];
         $this->inputMessage = '';
         $this->token = request()->token;
-        $this->type = request()->type;
+        if ($this->type = request()->type == null){ 
+            $this->type = "fullscreen";
+        } else {
+            if (request()->type != "fullscreen" && request()->type != "button"){
+                $this->type = "fullscreen";
+            } else {
+                $this->type = request()->type;
+            }
+            
+        }   
+        
     }
 
     public function render()
@@ -43,7 +53,7 @@ class AuraWidget extends Component
                                     ]);
 
         $encodedUrl = urlencode($this->inputMessage);
-        $requestUrl = '/v0/aura/nlp/qna/' . $encodedUrl;
+        $requestUrl = '/v0/aura/nlp/domain/' . $encodedUrl;
         
         $request = Request::create($requestUrl, 'GET');
         
