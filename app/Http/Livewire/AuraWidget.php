@@ -25,7 +25,17 @@ class AuraWidget extends Component
                             ];
         $this->inputMessage = '';
         $this->token = request()->token;
-        $this->type = request()->type;
+        if ($this->type = request()->type == null){ 
+            $this->type = "fullscreen";
+        } else {
+            if (request()->type != "fullscreen" && request()->type != "button"){
+                $this->type = "fullscreen";
+            } else {
+                $this->type = request()->type;
+            }
+            
+        }   
+        
     }
 
     public function render()
