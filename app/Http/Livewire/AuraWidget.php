@@ -119,7 +119,7 @@ class AuraWidget extends Component
                 array_unshift($this->messages, ['message' => 'Logado(a) com sucesso!!!',
                                                     'source' => 'user'   
                                                     ]);
-                array_unshift($this->messages, ['message' => 'Bem vindo(a) Aura! Converse comigo :)',
+                array_unshift($this->messages, ['message' => 'Seja bem vindo(a) '.$data->user->name.'! Converse comigo :)',
                                                     'source' => 'aura'   
                                                     ]);
                 $this->username = '';
