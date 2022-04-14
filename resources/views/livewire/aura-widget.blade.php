@@ -86,9 +86,8 @@
                 
                     </div>
             
-                    <div class="card-footer">
-                        <div class="input_alignment"></div>
-                        <div class="input-group">
+                    <div class="card-footer" >
+                        <div class="input-group" >
                             <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..."></input>
                             <a class="input-group-text send_btn" wire:click="sendMessage()"><i class="fas fa-location-arrow"></i></a>
                         </div>
