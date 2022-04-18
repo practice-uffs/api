@@ -52,8 +52,9 @@ class AuraWidget extends Component
                                      'source' => 'user'   
                                     ]);
 
-        $encodedUrl = urlencode($this->inputMessage);
+        $encodedUrl = rawurlencode($this->inputMessage);
         $requestUrl = '/v0/aura/nlp/domain/' . $encodedUrl;
+
         
         $request = Request::create($requestUrl, 'GET');
         
