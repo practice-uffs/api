@@ -17,6 +17,7 @@ class AuraWidget extends Component
     public $loginErrorMessage = '';
     public $username;
     public $password;
+    public $profilePic;
 
     public function mount()
     {
@@ -115,7 +116,9 @@ class AuraWidget extends Component
             } else {
                 $this->login = false;
                 $this->token = $data->passport;
-            
+
+                $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
+
                 array_unshift($this->messages, ['message' => 'Logado(a) com sucesso!!!',
                                                     'source' => 'user'   
                                                     ]);
@@ -124,7 +127,6 @@ class AuraWidget extends Component
                                                     ]);
                 $this->username = '';
                 $this->password = '';
-                
             }
             return;
         } else {
