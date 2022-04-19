@@ -108,12 +108,9 @@ body,html {
 }
 
 .input-group{ 
-   height: 70%;
+   height: 100%;
 }
 
-.input_alignment{
-   height: 15%;
-}
 .container {
     align-content: center
 }
@@ -157,8 +154,8 @@ body,html {
 }
 
 .img_cont_msg {
-    height: 40px;
-    width: 40px
+    height: 54px;
+    width: 40.5px;
 }
 
 .online_icon {
@@ -297,4 +294,30 @@ body,html {
        color: #4c7a8a;
    }
 }
+
+@media(max-height: 450px){
+    .user_img{
+        height: 30px;
+        width: 30px;
+    }
+    .user_info span {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #4c7a8a
+    }
+   
+    .user_info p {
+        font-size: 0.6rem;
+        color: #4c7a8a;
+    }
+ }
+
+ @media(max-height: 350px){
+    .card-footer {
+        height: 30%;
+        border-radius: 0 0 15px 15px!important;
+        border-top: 0!important
+    }
+ }
+ 
 

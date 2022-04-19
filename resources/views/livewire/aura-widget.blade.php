@@ -1,6 +1,5 @@
 
 <div class="container-fluid h-100" >
-
     @if($type == 'button')
     <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img height="45px" width="45px" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
     <div class="wrapper">
@@ -49,8 +48,12 @@
                                 </div>
                                 
                             </div>
-                            <div class="img_cont_msg">
-                                <img src="{{ asset('img/aura/user.png') }}" class="rounded-circle user_img_msg">
+                            <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
+                                    @if ($profilePic)
+                                        <img src="{{ $profilePic }}" class="img-fluid">
+                                    @else
+                                        <img src="{{ asset('img/aura/user.png') }}">
+                                    @endif
                             </div>
                         </div>
                         
@@ -70,13 +73,18 @@
                             </div>
 
                         @else
-
                             <div class="d-flex justify-content-end mb-4">
                                 <div class="msg_cotainer_send">
                                     {{ $message['message'] }}
                                 </div>
-                                <div class="img_cont_msg">
-                                    <img src="{{ asset('img/aura/user.png') }}" class="rounded-circle user_img_msg">
+                                <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
+                                    
+                                    @if ($profilePic)
+                                        <img src="{{ $profilePic }}" class="img-fluid">
+                                    @else
+                                        
+                                        <img src="{{ asset('img/aura/user.png') }}">
+                                    @endif
                                 </div>
                             </div>
 
@@ -86,9 +94,8 @@
                 
                     </div>
             
-                    <div class="card-footer">
-                        <div class="input_alignment"></div>
-                        <div class="input-group">
+                    <div class="card-footer" >
+                        <div class="input-group" >
                             <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..."></input>
                             <a class="input-group-text send_btn" wire:click="sendMessage()"><i class="fas fa-location-arrow"></i></a>
                         </div>

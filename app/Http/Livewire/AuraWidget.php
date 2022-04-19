@@ -17,6 +17,7 @@ class AuraWidget extends Component
     public $loginErrorMessage = '';
     public $username;
     public $password;
+    public $profilePic;
 
     public function mount()
     {
@@ -67,12 +68,12 @@ class AuraWidget extends Component
         if ($response != null) {   
             if (property_exists($response, 'error')){
                 if ($response->error == "Missing bearer token in request"){
-                    array_unshift($this->messages, ['message' => 'Você não está autenticado, portanto não poder conversar comigo :(, autentique-se:',
+                    array_unshift($this->messages, ['message' => 'Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:',
                                                 'source' => 'aura'   
                                                 ]);
                     $this->login = true;
                 } else {
-                    array_unshift($this->messages, ['message' => "Algo de errado aconteceu com a sua autenticação, tente autenticar novamente.",
+                    array_unshift($this->messages, ['message' => "Algo de errado aconteceu com a sua autenticação, tente autenticar novamente:",
                                                 'source' => 'aura'   
                                                 ]);
                     $this->login = true;
@@ -116,16 +117,17 @@ class AuraWidget extends Component
             } else {
                 $this->login = false;
                 $this->token = $data->passport;
-            
-                array_unshift($this->messages, ['message' => 'Logado com sucesso!!!',
+
+                $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
+
+                array_unshift($this->messages, ['message' => 'Logado(a) com sucesso!!!',
                                                     'source' => 'user'   
                                                     ]);
-                array_unshift($this->messages, ['message' => 'Bem vindo(a) Aura! Converse comigo :)',
+                array_unshift($this->messages, ['message' => 'Seja bem vindo(a) '.$data->user->name.'! Converse comigo :)',
                                                     'source' => 'aura'   
                                                     ]);
                 $this->username = '';
                 $this->password = '';
-                
             }
             return;
         } else {
