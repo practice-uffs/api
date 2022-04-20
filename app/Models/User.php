@@ -37,7 +37,8 @@ class User extends Authenticatable
         'uid',
         'name',
         'email',
-        'password'
+        'password',
+        'aura_consent'
     ];
 
     /**
