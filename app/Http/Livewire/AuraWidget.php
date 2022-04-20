@@ -12,7 +12,8 @@ class AuraWidget extends Component
     public $messages;
     public $token;
     public $type;
-    public $agreedForm;
+    public $agreeForm;
+    public $agreed;
     public $login;
     public $loginError;
     public $loginErrorMessage = '';
@@ -22,7 +23,8 @@ class AuraWidget extends Component
 
     public function mount()
     {   
-        $this->agreedForm = false;
+        $this->agreeForm = false;
+        $this->agreed = false;
         $this->login = false;
         $this->loginError = false;
         $this->messages[0] = ['message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
@@ -83,8 +85,7 @@ class AuraWidget extends Component
                     $this->login = true;
                 }
             } else { 
-                // Aqui tem que fazer a verificação na própia api se o usuário já consentiu com o uso de dados
-                // then{$this->agreed = true}
+                
                 if (property_exists($response, 'answer')) {
                     array_unshift($this->messages, ['message' => $response->answer,
                                                 'source' => 'aura'   
@@ -121,8 +122,13 @@ class AuraWidget extends Component
                 $this->loginErrorMessage = 'Usuário ou senha incorreto';
             } else {
                 $this->login = false;
-                $this->agreedForm = true;
+                
                 $this->token = $data->passport;
+                if ($data->user->aura_consent == '1'){
+                    $this->agreed = true;
+                } else {
+                    $this->agreeForm = true;
+                }
 
                 $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
 
@@ -143,7 +149,8 @@ class AuraWidget extends Component
         }
     }
     public function consentUseOfData(){
-        $this->agreedForm = false;
+        $this->agreed = true;
+        $this->agreeForm = false;
     }
     public function notConsentUseOfData(){
         dd("F, ñ consentiu ");
