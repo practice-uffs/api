@@ -14,7 +14,9 @@ class AuraWidget extends Component
     public $type;
     public $agreeForm;
     public $agreed;
+    public $disagreeForm;
     public $login;
+    public $loggedIn;
     public $loginError;
     public $loginErrorMessage = '';
     public $username;
@@ -24,8 +26,10 @@ class AuraWidget extends Component
     public function mount()
     {   
         $this->agreeForm = false;
+        $this->disagreeForm = false;
         $this->agreed = false;
         $this->login = false;
+        $this->loggedIn = false;
         $this->loginError = false;
         $this->messages[0] = ['message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
                               'source' => 'aura'    
@@ -122,7 +126,7 @@ class AuraWidget extends Component
                 $this->loginErrorMessage = 'Usuário ou senha incorreto';
             } else {
                 $this->login = false;
-                
+                $this->loggedIn = true;
                 $this->token = $data->passport;
                 if ($data->user->aura_consent == '1'){
                     $this->agreed = true;
@@ -149,10 +153,38 @@ class AuraWidget extends Component
         }
     }
     public function consentUseOfData(){
-        $this->agreed = true;
-        $this->agreeForm = false;
+        $requestUrl = '/v0/user/aura_consent';
+        $request = Request::create($requestUrl, 'GET');
+        if ($this->token != null){
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
+        } 
+        $response = json_decode(app()->handle($request)->getContent());
+        if ($response->aura_consent == 1){
+            $this->agreed = true;
+            $this->agreeForm = false;
+        } else {
+            dd("Não conseguimos aceitar o seu consentimento, erro nos servidores...");
+        }
     }
-    public function notConsentUseOfData(){
-        dd("F, ñ consentiu ");
+    public function unonsentUseOfData(){
+        $requestUrl = '/v0/user/aura_unconsent';
+        $request = Request::create($requestUrl, 'GET');
+        if ($this->token != null){
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
+        } 
+        $response = json_decode(app()->handle($request)->getContent());
+        if ($response->aura_consent == 0){
+            $this->disagreeForm = true;
+            $this->agreeForm = false;
+            
+        } else {
+            dd("Não conseguimos aceitar o seu não consentimento, erro nos servidores...");
+        }
     }
+
+    public function displayAgreeForm(){
+        $this->agreeForm = true;
+        $this->disagreeForm = false;
+    }
+    
 }
