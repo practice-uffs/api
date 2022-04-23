@@ -163,7 +163,9 @@ class AuraWidget extends Component
             $this->agreed = true;
             $this->agreeForm = false;
         } else {
-            dd("Não conseguimos aceitar o seu consentimento, erro nos servidores...");
+            array_unshift($this->messages, ['message' => 'Não conseguimos aceitar o seu consentimento, erro nos servidores...',
+                                                'source' => 'aura'   
+                                                ]);
         }
     }
     public function unonsentUseOfData(){
@@ -176,9 +178,10 @@ class AuraWidget extends Component
         if ($response->aura_consent == 0){
             $this->disagreeForm = true;
             $this->agreeForm = false;
-            
         } else {
-            dd("Não conseguimos aceitar o seu não consentimento, erro nos servidores...");
+            array_unshift($this->messages, ['message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
+                                                'source' => 'aura'   
+                                                ]);
         }
     }
 
