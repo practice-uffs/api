@@ -13,6 +13,7 @@ use App\Http\Controllers\API\V0\PingController;
 use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
 use App\Http\Controllers\API\V0\AnalyticsController;
+use App\Http\Controllers\API\V0\WellBeingQuestionnaireController;
 use App\Http\Proxy\PracticeApiProxy;
 use App\Http\Livewire\AuraWidget;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,13 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::patch('/analytics/{id}', [AnalyticsController::class, 'update']);
     Route::delete('/analytics/{id}', [AnalyticsController::class, 'destroy']);
 
+    // Questionário App Bem Estar
+    Route::get('/app-bem-estar/questionnaire', [WellBeingQuestionnaireController::class, 'index']);
+    Route::post('/app-bem-estar/questionnaire', [WellBeingQuestionnaireController::class, 'store']);
+    Route::get('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'show']);
+    Route::patch('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'update']);
+    Route::delete('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'destroy']);
+
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
 
@@ -66,6 +74,8 @@ Route::group(['middleware' => 'jwt.practice'], function () {
 
     // Informações acadêmicas
     Route::get('/aluno/historico', [AlunoController::class, 'historico']);    
+
+    
 
     // Proxy para apis de outros serviços
     // Mural
