@@ -13,11 +13,17 @@ use App\Models\WellBeingQuestionnaire;
 class WellBeingQuestionnaireController extends Controller
 {
     /**
+        * @param  Request  $request
         * @return Response
     */
-    public function index()
+    public function index(Request $request)
     {
         $wellBeingQuestionnaire = WellBeingQuestionnaire::where('user_id', auth()->id())->get();
+
+        if($request->input('type') != null) {
+            $wellBeingQuestionnaire = WellBeingQuestionnaire::where('user_id', auth()->id())->where('type', $request->input('type'))->get();
+        }
+
         return response()->json(
             $wellBeingQuestionnaire, 
             Response::HTTP_OK
