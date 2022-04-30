@@ -35,4 +35,27 @@ class UserController extends Controller
     {
         return response()->json($request->user());
     }
+
+    public function consent(Request $request)
+    {   
+        $user = $request->user();
+        $data = [
+            'aura_consent' => 1
+        ];
+        $user->update($data);
+
+        return response()->json(['aura_consent' => $user->aura_consent]);
+    }
+    public function unconsent(Request $request)
+    {   
+        // We're not saving this user's message history yet
+        // Here should be done the deletion of the message history of this user
+        $user = $request->user();
+        $data = [
+            'aura_consent' => 0
+        ];
+        $user->update($data);
+
+        return response()->json(['aura_consent' => $user->aura_consent]);
+    }
 }

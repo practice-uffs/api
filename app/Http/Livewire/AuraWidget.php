@@ -12,15 +12,25 @@ class AuraWidget extends Component
     public $messages;
     public $token;
     public $type;
-    public $login = false;
-    public $loginError = false;
+    public $agreeForm;
+    public $agreed;
+    public $disagreeForm;
+    public $login;
+    public $loggedIn;
+    public $loginError;
     public $loginErrorMessage = '';
     public $username;
     public $password;
     public $profilePic;
 
     public function mount()
-    {
+    {   
+        $this->agreeForm = false;
+        $this->disagreeForm = false;
+        $this->agreed = false;
+        $this->login = false;
+        $this->loggedIn = false;
+        $this->loginError = false;
         $this->messages[0] = ['message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
                               'source' => 'aura'    
                             ];
@@ -79,6 +89,7 @@ class AuraWidget extends Component
                     $this->login = true;
                 }
             } else { 
+                
                 if (property_exists($response, 'answer')) {
                     array_unshift($this->messages, ['message' => $response->answer,
                                                 'source' => 'aura'   
@@ -110,13 +121,18 @@ class AuraWidget extends Component
 
             $data = json_decode($response->getContent());
             
-            
             if ($data == null){
                 $this->loginError = true;
                 $this->loginErrorMessage = 'Usuário ou senha incorreto';
             } else {
                 $this->login = false;
+                $this->loggedIn = true;
                 $this->token = $data->passport;
+                if ($data->user->aura_consent == '1'){
+                    $this->agreed = true;
+                } else {
+                    $this->agreeForm = true;
+                }
 
                 $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
 
@@ -135,8 +151,43 @@ class AuraWidget extends Component
             $this->loginErrorMessage = 'Ambos os campos devem ser preenchidos';
             return;
         }
-
-
-        
     }
+    public function consentUseOfData(){
+        $requestUrl = '/v0/user/aura_consent';
+        $request = Request::create($requestUrl, 'GET');
+        if ($this->token != null){
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
+        } 
+        $response = json_decode(app()->handle($request)->getContent());
+        if ($response->aura_consent == 1){
+            $this->agreed = true;
+            $this->agreeForm = false;
+        } else {
+            array_unshift($this->messages, ['message' => 'Não conseguimos aceitar o seu consentimento, erro nos servidores...',
+                                                'source' => 'aura'   
+                                                ]);
+        }
+    }
+    public function unonsentUseOfData(){
+        $requestUrl = '/v0/user/aura_unconsent';
+        $request = Request::create($requestUrl, 'GET');
+        if ($this->token != null){
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
+        } 
+        $response = json_decode(app()->handle($request)->getContent());
+        if ($response->aura_consent == 0){
+            $this->disagreeForm = true;
+            $this->agreeForm = false;
+        } else {
+            array_unshift($this->messages, ['message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
+                                                'source' => 'aura'   
+                                                ]);
+        }
+    }
+
+    public function displayAgreeForm(){
+        $this->agreeForm = true;
+        $this->disagreeForm = false;
+    }
+    
 }
