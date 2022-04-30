@@ -88,7 +88,10 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/{app}/me', [ApiProxyController::class, 'proxy']);
 
     // User
+    Route::get('/user/aura_consent', [UserController::class, 'consent']);
+    Route::get('/user/aura_unconsent', [UserController::class, 'unconsent']);
     Route::get('/user', [UserController::class, 'index']);
+   
 
     // Test
     Route::get('ping', [PingController::class, 'index']);
