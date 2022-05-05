@@ -22,20 +22,16 @@ class AuraWidget extends Component
     public $username;
     public $password;
     public $profilePic;
+    public $theme;
 
     public function mount()
     {   
-        $this->agreeForm = false;
-        $this->disagreeForm = false;
-        $this->agreed = false;
-        $this->login = false;
-        $this->loggedIn = false;
-        $this->loginError = false;
         $this->messages[0] = ['message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
                               'source' => 'aura'    
                             ];
         $this->inputMessage = '';
         $this->token = request()->token;
+
         if ($this->type = request()->type == null){ 
             $this->type = "fullscreen";
         } else {
@@ -44,9 +40,17 @@ class AuraWidget extends Component
             } else {
                 $this->type = request()->type;
             }
-            
         }   
-        
+
+        if ($this->theme = request()->theme == null){ 
+            $this->theme = "light";
+        } else {
+            if (request()->theme != "light" && request()->theme != "dark"){
+                $this->theme = "light";
+            } else {
+                $this->theme = request()->theme;
+            }
+        }   
     }
 
     public function render()

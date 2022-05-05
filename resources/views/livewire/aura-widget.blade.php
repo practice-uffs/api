@@ -1,6 +1,14 @@
 
-<div class="container-fluid h-100" >
-    
+
+  
+@if($theme == 'dark')
+<div class="container-fluid container-fluid-dark h-100" >
+@endif
+
+@if($theme == 'light')
+<div class="container-fluid container-fluid-light h-100" >
+@endif
+
     @if($type == 'button')
     <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img height="45px" width="45px" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
     <div class="wrapper">
@@ -9,11 +17,27 @@
         <div class="row justify-content-center h-100">
             @if($type == 'button')
             <div class="col-md-12 col-xl-12 chat h-100"  >
-                <div class="card border-radius-15 h-100" >
+
+                @if($theme == 'dark')
+                <div class="card card-bg-theme-dark border-radius-15 h-100" >
+                @endif
+
+                @if($theme == 'light')
+                <div class="card card-bg-theme-light border-radius-15 h-100" >
+                @endif
+
             @endif
             @if($type == 'fullscreen')
             <div class="chat w-100 h-100"  >
-                <div class="card border-radius-0 h-100" > 
+
+                @if($theme == 'dark')
+                <div class="card card-bg-theme-dark border-radius-0 h-100" >
+                @endif
+
+                @if($theme == 'light')
+                <div class="card card-bg-theme-light border-radius-0 h-100" >
+                @endif
+
             @endif
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight header_height">
@@ -51,7 +75,15 @@
                     @if($login == true)
 
                         <div class="d-flex justify-content-end mb-4">
-                            <div class="msg_cotainer_send">
+                            
+                            @if($theme == 'dark')
+                                <div class="msg_container_send msg_container_send_theme_dark">
+                            @endif
+
+                            @if($theme == 'light')
+                                <div class="msg_container_send msg_container_send_theme_light">
+                            @endif
+
                                 Login (idUFFS):
                                 <input wire:model="username" wire:keydown.enter="performLogin" type="text" class="form-control type_msg" placeholder="Username"></input>
                                 Senha:
@@ -85,7 +117,14 @@
                                 <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                             </div>
                             
-                            <div class="msg_cotainer">
+                            @if($theme == 'dark')
+                            <div class="msg_container msg_container_theme_dark">
+                            @endif
+
+                            @if($theme == 'light')
+                            <div class="msg_container msg_container_theme_light">
+                            @endif
+
                                 Para que eu consiga evoluir constantemente, todas as mensagens e interações que você fizer comigo são armazenadas, na íntegra. As mensagens não estão associadas a você (a autoria é anonimizada). Você concorda com isso?
                                 <div class="d-flex justify-content-around pt_10">
                                     <button class="btn btn-primary" wire:click="consentUseOfData()" >Concordo</button>
@@ -102,8 +141,14 @@
                                 <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                             </div>
                             
-                            <div class="msg_cotainer">
-                                O histórico de suas mensagens foram exluídos e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito
+                            @if($theme == 'dark')
+                            <div class="msg_container msg_container_theme_dark">
+                            @endif
+
+                            @if($theme == 'light')
+                            <div class="msg_container msg_container_theme_light">
+                            @endif
+                                O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito
                             </div>
                         </div>
                     @endif
@@ -116,14 +161,28 @@
                                 <div class="img_cont_msg">
                                     <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                                 </div>
-                                <div class="msg_cotainer">
+
+                                @if($theme == 'dark')
+                                <div class="msg_container msg_container_theme_dark">
+                                @endif
+
+                                @if($theme == 'light')
+                                <div class="msg_container msg_container_theme_light">
+                                @endif
+
                                     {{ $message['message'] }}
                                 </div>
                             </div>
 
                         @else
                             <div class="d-flex justify-content-end mb-4">
-                                <div class="msg_cotainer_send">
+                                @if($theme == 'dark')
+                                <div class="msg_container_send msg_container_send_theme_dark">
+                                @endif
+
+                                @if($theme == 'light')
+                                <div class="msg_container_send msg_container_send_theme_light">
+                                @endif
                                     {{ $message['message'] }}
                                 </div>
                                 <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
