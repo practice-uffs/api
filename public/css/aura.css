@@ -76,10 +76,25 @@ body,html {
     background-color: rgba(100, 100, 100, 0)
 }
 
+.container-fluid-dark {
+    color:#ffffff;
+}
+
+.container-fluid-light {
+    color:#000000;
+}
+
 .card {
     height: 100%;
-    background: linear-gradient(to right, #ffffff, #EAF2F5)!important;
     border: 0px;
+}
+
+.card-bg-theme-light {
+    background: linear-gradient(to right, #ffffff, #EAF2F5)!important;
+}
+
+.card-bg-theme-dark {
+    background: linear-gradient(to right, #0f1f25, #001e29)!important;
 }
 
 .border-radius-15 {
@@ -98,6 +113,7 @@ body,html {
 
 .card-header {
     height: 20%;
+    background-color: rgba(0,0,0,.06)!important;
     border-bottom: 0!important
 }
 
@@ -150,7 +166,6 @@ body,html {
 .user_img_msg {
     height: 40px;
     width: 40px;
-    border: 1.5px solid #f5f6fa
 }
 
 .img_cont_msg {
@@ -195,25 +210,41 @@ body,html {
     text-align: center;
 }
 
-.msg_cotainer {
+.msg_container {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
     border-radius: 25px;
-    background-color: #C0D7E1;
     padding: 10px;
     position: relative
 }
 
-.msg_cotainer_send {
+.msg_container_theme_light {
+    background-color: #C0D7E1;
+}
+
+.msg_container_theme_dark {
+    background-color: #007bff8a;
+}
+
+
+.msg_container_send {
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 10px;
     border-radius: 25px;
-    background-color: #ffefd2;
     padding: 10px;
     position: relative
 }
+
+.msg_container_send_theme_light {
+    background-color: #ffefd2;
+}
+
+.msg_container_send_theme_dark {
+    background-color: #3f3f3f;
+}
+
 
 .msg_time {
     position: absolute;
@@ -304,7 +335,7 @@ button.dislike{
        display: none;
     }
   }
-@media(max-height: 450px){
+@media(max-height: 500px){
    .user_img{
        height: 30px;
        width: 30px;
@@ -321,7 +352,7 @@ button.dislike{
    }
 }
 
-@media(max-height: 450px){
+@media(max-height: 500px){
     .user_img{
         height: 30px;
         width: 30px;
