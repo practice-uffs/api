@@ -35,7 +35,7 @@ class AnalyticsController extends Controller
             'app_id' => 'required|exists:apps,id',
             'action' => 'required|string',
             'key' => 'required|string',
-            'value' => 'required'
+            'value' => 'required',
         ]);
 
         if ($validator->fails()) {

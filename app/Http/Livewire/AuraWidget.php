@@ -24,15 +24,16 @@ class AuraWidget extends Component
     public $profilePic;
     public $theme;
     public $messageId;
+    public $userId;
 
     public function mount()
     {   
         $this->messageId = 0;
         $this->messages[0] = ['message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
                               'source' => 'aura',
-                              'userQuestion' => '"has no question"',
+                              'userQuestion' => 'has no question',
                               'assessed' => 0,  
-                              'category' => '"has no aura intent"' 
+                              'category' => 'has no aura intent"' 
                             ];
         $this->messageId++;
         $this->inputMessage = '';
@@ -69,12 +70,11 @@ class AuraWidget extends Component
         if ($this->inputMessage == ""){
             return;
         }
-        $this->inputMessage = "\"".$this->inputMessage."\"";
         array_unshift($this->messages, ['message' => $this->inputMessage,
                                         'source' => 'user',
                                         'userQuestion' => $this->inputMessage,
                                         'assessed' => 0,  
-                                        'category' => '"User message"'      
+                                        'category' => 'User message'      
                                         ]);
 
 
@@ -97,7 +97,7 @@ class AuraWidget extends Component
                                                 'source' => 'aura',
                                                 'userQuestion' => $this->inputMessage,
                                                 'assessed' => 0,  
-                                                'category' => '"User not authenticated"'      
+                                                'category' => 'User not authenticated'      
                                                 ]);
                     $this->messageId++;                            
                     $this->login = true;
@@ -106,7 +106,7 @@ class AuraWidget extends Component
                                                 'source' => 'aura',
                                                 'userQuestion' => $this->inputMessage,
                                                 'assessed' => 0,  
-                                                'category' => '"Something went wrong with user authentication"'       
+                                                'category' => 'Something went wrong with user authentication'       
                                                 ]);
                     $this->messageId++;
                     $this->login = true;
@@ -118,7 +118,7 @@ class AuraWidget extends Component
                                                 'source' => 'aura',
                                                 'userQuestion' => $this->inputMessage,
                                                 'assessed' => 0,  
-                                                'category' => "\"".$response->intent."\"" 
+                                                'category' => $response->intent
                                                 ]);
                     $this->messageId++;
                 } else {
@@ -126,7 +126,7 @@ class AuraWidget extends Component
                                                 'source' => 'aura',
                                                 'userQuestion' => $this->inputMessage,
                                                 'assessed' => 0,  
-                                                'category' => '"Aura has no response for that question"'      
+                                                'category' => 'Aura has no response for that question'      
                                                 ]);
                     $this->messageId++;
                 }
@@ -136,7 +136,7 @@ class AuraWidget extends Component
                                                 'source' => 'aura',
                                                 'userQuestion' => $this->inputMessage,
                                                 'assessed' => 0,  
-                                                'category' => '"Aura could not respond"'      
+                                                'category' => 'Aura could not respond'      
                                                 ]);
             $this->messageId++;
         }
@@ -160,34 +160,38 @@ class AuraWidget extends Component
                 $this->loginError = true;
                 $this->loginErrorMessage = 'Usuário ou senha incorreto';
             } else {
+                $this->userId = $data->user->id;
+                
                 $this->login = false;
                 $this->loggedIn = true;
                 $this->token = $data->passport;
+               
                 if ($data->user->aura_consent == '1'){
                     $this->agreed = true;
                 } else {
                     $this->agreeForm = true;
                 }
-
+                
                 $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
 
                 array_unshift($this->messages, ['message' => 'Logado(a) com sucesso!!!',
                                                 'source' => 'user',
-                                                'userQuestion' => '"has no question"',
+                                                'userQuestion' => 'has no question',
                                                 'assessed' => 0,  
-                                                'category' => '"User logged in"'      
+                                                'category' => 'User logged in'      
                                                 ]);  
                                                  
                 $this->messageId++;                                    
                 array_unshift($this->messages, ['message' => 'Seja bem vindo(a) '.$data->user->name.'! Converse comigo :)',
                                                     'source' => 'aura',
-                                                    'userQuestion' => '"has no question"',
+                                                    'userQuestion' => 'has no question',
                                                     'assessed' => 0,  
-                                                    'category' => '"User authenticated"'      
+                                                    'category' => 'User authenticated'      
                                                     ]);
                 $this->messageId++;                                    
                 $this->username = '';
                 $this->password = '';
+                
             }
             return;
         } else {
@@ -209,9 +213,9 @@ class AuraWidget extends Component
         } else {
             array_unshift($this->messages, ['message' => 'Não conseguimos aceitar o seu consentimento, erro nos servidores...',
                                             'source' => 'aura',
-                                            'userQuestion' => '"has no question"',
+                                            'userQuestion' => 'has no question',
                                             'assessed' => 0,  
-                                            'category' => '"Could not accept Aura consent"'      
+                                            'category' => 'Could not accept Aura consent'      
                                             ]);
         }
     }
@@ -228,9 +232,9 @@ class AuraWidget extends Component
         } else {
             array_unshift($this->messages, ['message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
                                                 'source' => 'aura',
-                                                'userQuestion' => '"has no question"',
+                                                'userQuestion' => 'has no question',
                                                 'assessed' => 0,  
-                                                'category' => '"Accepted Aura consent"'      
+                                                'category' => 'Accepted Aura consent'      
                                                 ]);
         }
     }
@@ -240,8 +244,22 @@ class AuraWidget extends Component
         $this->disagreeForm = false;
     }
 
-    public function assessAnswer(){
-        dd('a');
+    public function assessAnswer($category, $userQuestion, $rate){
+        
+        $request = Request::create('/v0/analytics/', 'POST',array('user_id'=>$this->userId,
+                                                                  'app_id'=>'1',
+                                                                  'action'=>'aura_feedback',
+                                                                  'key'=>$category,
+                                                                  'value'=>$userQuestion,
+                                                                  'rate'=>$rate
+                                                                ));
+            
+        $request->headers->set('Authorization', 'Bearer '.$this->token);
+
+        $response = app()->handle($request);
+
+        $data = json_decode($response->getContent());
+        dd($data);
     }
     
 }

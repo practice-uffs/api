@@ -109,6 +109,7 @@ class AuthController extends Controller
         return response()->json([
             'passport' => $passport,
             'user' => [
+                'id' => $userFromDatabase->id,
                 'name' => Str::title($info['name']),
                 'email' => $info['email'],
                 'username' => $info['username'],

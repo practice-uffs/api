@@ -13,6 +13,7 @@ class Analytics extends Model
         'action',
         'key',
         'value',
+        'rate',
         'app_id',
         'user_id'
     ];
