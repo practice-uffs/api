@@ -173,7 +173,7 @@
 
 
                                     @if ($loggedIn == true)
-                                        @if ($message['assessed'] == 0)    
+                                        @if ($message['assessed'] == 2)    
                                             <div class="d-flex justify-content-end" style>
                                                 <div>
                                                     <button class="dislike" wire:click="assessAnswer('{{$message['category']}}','{{$message['userMessage']}}',0,{{$message['id']}})">
@@ -191,7 +191,15 @@
                                         @else
                                             <div class="d-flex justify-content-end" style>
                                                 <div>
-                                                <small class="mr-2 text-success">Mensagem avaliada!</small>
+                                                @if ($message['assessed'] == 0)    
+                                                    <small class="mr-2 text-danger">Mensagem avaliada!</small>
+                                                @endif
+                                                @if ($message['assessed'] == 1)    
+                                                    <small class="mr-2 text-success">Mensagem avaliada!</small>
+                                                @endif
+                                                @if ($message['assessed'] == -1)    
+                                                    <small class="mr-2 text-danger">Não foi possível avaliar a resposta.</small>
+                                                @endif
                                                 </div>
                                             </div>
                                         @endif
@@ -216,7 +224,6 @@
                                     @if ($profilePic)
                                         <img src="{{ $profilePic }}" class="img-fluid">
                                     @else
-                                        
                                         <img src="{{ asset('img/aura/user.png') }}">
                                     @endif
                                 </div>

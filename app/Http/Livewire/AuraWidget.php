@@ -33,7 +33,7 @@ class AuraWidget extends Component
                               'message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
                               'source' => 'aura',
                               'userMessage' => 'has_no_message',
-                              'assessed' => 0,  
+                              'assessed' => 2,  
                               'category' => 'has_no_aura_intent' 
                             ];
         $this->messageId++;
@@ -75,7 +75,7 @@ class AuraWidget extends Component
                                         'message' => $this->inputMessage,
                                         'source' => 'user',
                                         'userMessage' => $this->inputMessage,
-                                        'assessed' => 0,  
+                                        'assessed' => 2,  
                                         'category' => 'user_message'      
                                         ]);
         $this->messageId++;                                     
@@ -99,7 +99,7 @@ class AuraWidget extends Component
                                                     'message' => 'Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:',
                                                     'source' => 'aura',
                                                     'userMessage' => $this->inputMessage,
-                                                    'assessed' => 0,  
+                                                    'assessed' => 2,  
                                                     'category' => 'user_not_authenticated'      
                                                     ]);
                     $this->messageId++;                            
@@ -109,7 +109,7 @@ class AuraWidget extends Component
                                                     'message' => "Algo de errado aconteceu com a sua autenticação, tente autenticar novamente:",
                                                     'source' => 'aura',
                                                     'userMessage' => $this->inputMessage,
-                                                    'assessed' => 0,  
+                                                    'assessed' => 2,  
                                                     'category' => 'authentication_failed'       
                                                     ]);
                     $this->messageId++;
@@ -122,7 +122,7 @@ class AuraWidget extends Component
                                                     'message' => $response->answer,
                                                     'source' => 'aura',
                                                     'userMessage' => $this->inputMessage,
-                                                    'assessed' => 0,  
+                                                    'assessed' => 2,  
                                                     'category' => $response->intent
                                                     ]);
                     $this->messageId++;
@@ -131,7 +131,7 @@ class AuraWidget extends Component
                                                     'message' => 'Não tenho resposta para isso.',
                                                     'source' => 'aura',
                                                     'userMessage' => $this->inputMessage,
-                                                    'assessed' => 0,  
+                                                    'assessed' => 2,  
                                                     'category' => 'aura_has_no_response'      
                                                     ]);
                     $this->messageId++;
@@ -142,7 +142,7 @@ class AuraWidget extends Component
                                             'message' => 'Algo de errado está acontecendo com meus servidores, bip bop.',
                                             'source' => 'aura',
                                             'userMessage' => $this->inputMessage,
-                                            'assessed' => 0,  
+                                            'assessed' => 2,  
                                             'category' => 'aura_could_not_respond'      
                                             ]);
             $this->messageId++;
@@ -185,7 +185,7 @@ class AuraWidget extends Component
                                                 'message' => 'Logado(a) com sucesso!!!',
                                                 'source' => 'user',
                                                 'userMessage' => 'has_no_message',
-                                                'assessed' => 0,  
+                                                'assessed' => 2,  
                                                 'category' => 'user_logged_in'      
                                                 ]);  
                                                  
@@ -194,7 +194,7 @@ class AuraWidget extends Component
                                                 'message' => 'Seja bem vindo(a) '.$data->user->name.'! Converse comigo :)',
                                                 'source' => 'aura',
                                                 'userMessage' => 'has_no_message',
-                                                'assessed' => 0,  
+                                                'assessed' => 2,  
                                                 'category' => 'user_authenticated'      
                                                 ]);
                 $this->messageId++;                                    
@@ -224,7 +224,7 @@ class AuraWidget extends Component
                                             'message' => 'Não conseguimos aceitar o seu consentimento, erro nos servidores...',
                                             'source' => 'aura',
                                             'userMessage' => 'has_no_message',
-                                            'assessed' => 0,  
+                                            'assessed' => 2,  
                                             'category' => 'could_not_accept_aura_consent'      
                                             ]);
             $this->messageId++;   
@@ -245,7 +245,7 @@ class AuraWidget extends Component
                                             'message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
                                             'source' => 'aura',
                                             'userMessage' => 'has_no_message',
-                                            'assessed' => 0,  
+                                            'assessed' => 2,  
                                             'category' => 'accepted_aura_consent'      
                                             ]);
             $this->messageId++;   
@@ -273,9 +273,9 @@ class AuraWidget extends Component
         $data = json_decode($response->getContent());
         
         if (property_exists($data, 'errors')){
-            dd($data);
+            $this->messages[count($this->messages)-$messageId]["assessed"] = -1;
         } else {
-            $this->messages[count($this->messages)-$messageId]["assessed"] = 1;
+            $this->messages[count($this->messages)-$messageId]["assessed"] = $rate;
         }
     }
     
