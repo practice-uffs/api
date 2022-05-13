@@ -240,6 +240,7 @@ class AuraWidget extends Component
         if ($response->aura_consent == 0){
             $this->disagreeForm = true;
             $this->agreeForm = false;
+            $this->agreed = false;
         } else {
             array_unshift($this->messages, ['id' => $this->messageId,
                                             'message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
