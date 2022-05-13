@@ -34,7 +34,7 @@ class AuraWidget extends Component
                               'source' => 'aura',
                               'userMessage' => 'has_no_message',
                               'assessed' => 2,  
-                              'category' => 'has_no_aura_intent' 
+                              'category' => 'welcome_message' 
                             ];
         $this->messageId++;
         $this->inputMessage = '';
