@@ -273,7 +273,7 @@ class AuraWidget extends Component
         $data = json_decode($response->getContent());
         
         if (property_exists($data, 'errors')){
-            $this->messages[count($this->messages)-$messageId]["assessed"] = -1;
+            $this->messages[count($this->messages)-$messageId]["assessed"] = -1; // Assessed: 2 stands for 'not assessed', 1 for 'liked', 0 for 'disliked' and -1 for 'assessment error'.
         } else {
             $this->messages[count($this->messages)-$messageId]["assessed"] = $rate;
         }
