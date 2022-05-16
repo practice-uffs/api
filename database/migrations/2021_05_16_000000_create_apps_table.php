@@ -15,7 +15,7 @@ class CreateAppsTable extends Migration
     {
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
-            $table->string('secret');
+            $table->text('secret');
             $table->string('slug')->unique();
             $table->text('api_url');
             $table->string('name')->nullable();

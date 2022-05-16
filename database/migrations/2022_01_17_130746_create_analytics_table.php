@@ -20,6 +20,7 @@ class CreateAnalyticsTable extends Migration
             $table->string('action', 30)->index();
             $table->text('key');
             $table->text('value');
+            $table->integer('rate')->nullable();
             $table->timestamps();
         });
     }
