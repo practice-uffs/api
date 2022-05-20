@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use \Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -50,6 +51,7 @@ class UserController extends Controller
             Response::HTTP_OK
         );
     }
+
     public function unconsent(Request $request)
     {   
         // We're not saving this user's message history yet
@@ -64,5 +66,66 @@ class UserController extends Controller
             ['aura_consent' => $user->aura_consent],
             Response::HTTP_OK
         );
+    }
+
+    public function setAuraHistory(Request $request)
+    {       
+        $validator = Validator::make($request->all(), [
+            'aura_history' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                ['errors' => $validator->errors()], 
+                Response::HTTP_BAD_REQUEST
+            ); 
+        }
+
+        $user = $request->user();
+        if ($user->aura_history == null){
+            $data = [
+                 'aura_history' => array($request["aura_history"])
+            ];
+        } else {
+            $history = $user->aura_history;
+            $newMessage = $request["aura_history"];
+            array_push ($history,$newMessage);
+            $data = [
+                'aura_history' => $history
+            ];
+        }
+        $user->update($data);
+
+        return response()->json(
+            Response::HTTP_OK
+        );
+    }
+
+    public function getAuraHistory(Request $request)
+    {   
+        $user = $request->user();
+        return response()->json(
+            ['aura_history' => $user->aura_history],
+            Response::HTTP_OK
+        );
+    }
+
+    public function deleteAuraHistory(Request $request)
+    {   
+        $user = $request->user();
+        $data = [
+            'aura_history' => null
+        ];
+        $updated = $user->update($data);
+        if ($updated) {
+            return response()->json(
+                Response::HTTP_OK
+            );
+        }
+        
+        return response()->json(
+            ['errors' => ['updated' => $updated]], 
+            Response::HTTP_BAD_REQUEST
+        ); 
     }
 }

@@ -38,7 +38,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'aura_consent'
+        'aura_consent',
+        'aura_history'
     ];
 
     /**
@@ -65,6 +66,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'aura_history' => 'array',
         'email_verified_at' => 'datetime',
     ];
 
