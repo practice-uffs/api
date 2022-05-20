@@ -90,6 +90,9 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     // User
     Route::get('/user/aura_consent', [UserController::class, 'consent']);
     Route::get('/user/aura_unconsent', [UserController::class, 'unconsent']);
+    Route::post('/user/aura-history', [UserController::class, 'setAuraHistory']);
+    Route::get('/user/aura-history', [UserController::class, 'getAuraHistory']);
+    Route::delete('/user/aura-history', [UserController::class, 'deleteAuraHistory']);
     Route::get('/user', [UserController::class, 'index']);
    
 
