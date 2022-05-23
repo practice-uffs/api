@@ -56,7 +56,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         @if ($agreed == true)
-                                            @if ($disagreeForm == true)
+                                            @if ($disagreedForm == true)
                                                 <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Concordar com o uso de dados</a>
                                             @else
                                                 <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Discordar com o uso de dados</a>
@@ -135,7 +135,7 @@
                         </div>
                     @endif
 
-                    @if ($disagreeForm == true)
+                    @if ($disagreedForm == true)
                         <div class="d-flex justify-content-start mb-4">
                             <div class="img_cont_msg">
                                 <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
@@ -241,7 +241,7 @@
                         <div class="input-group" >
                             @if($login == false)
                                 @if($agreeForm == false)
-                                    @if($disagreeForm == false)
+                                    @if($disagreedForm == false)
                                         <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..."></input>
                                         <a class="input-group-text send_btn" wire:click="sendMessage()"><i class="fas fa-location-arrow"></i></a>
                                     @else

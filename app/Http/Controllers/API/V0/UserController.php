@@ -80,16 +80,22 @@ class UserController extends Controller
                 Response::HTTP_BAD_REQUEST
             ); 
         }
-
+       
+        if(is_array($request["aura_history"])){
+            $auraHistory = $request["aura_history"];
+        } else {
+            $auraHistory = json_decode($request["aura_history"]);
+        }
+        
+     
         $user = $request->user();
         if ($user->aura_history == null){
             $data = [
-                 'aura_history' => array($request["aura_history"])
+                 'aura_history' => array($auraHistory)
             ];
         } else {
             $history = $user->aura_history;
-            $newMessage = $request["aura_history"];
-            array_push ($history,$newMessage);
+            array_push ($history,$auraHistory);
             $data = [
                 'aura_history' => $history
             ];
@@ -104,6 +110,8 @@ class UserController extends Controller
     public function getAuraHistory(Request $request)
     {   
         $user = $request->user();
+
+        
         return response()->json(
             ['aura_history' => $user->aura_history],
             Response::HTTP_OK
@@ -124,7 +132,7 @@ class UserController extends Controller
         }
         
         return response()->json(
-            ['errors' => ['updated' => $updated]], 
+            ['errors' => ['bd_error' => $updated]], 
             Response::HTTP_BAD_REQUEST
         ); 
     }

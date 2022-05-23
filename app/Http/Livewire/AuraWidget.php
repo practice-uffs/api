@@ -14,7 +14,7 @@ class AuraWidget extends Component
     public $type;
     public $agreeForm;
     public $agreed;
-    public $disagreeForm;
+    public $disagreedForm;
     public $login;
     public $loggedIn;
     public $loginError;
@@ -84,17 +84,17 @@ class AuraWidget extends Component
         $requestUrl = '/v0/aura/nlp/domain/' . $encodedUrl;
 
         
-        $request = Request::create($requestUrl, 'GET');
+        $messageRequest = Request::create($requestUrl, 'GET');
         
         if ($this->token != null){
-            $request->headers->set('Authorization', 'Bearer '.$this->token);
+            $messageRequest->headers->set('Authorization', 'Bearer '.$this->token);
         } 
         
-        $response = json_decode(app()->handle($request)->getContent());
+        $messageResponse = json_decode(app()->handle($messageRequest)->getContent());
 
-        if ($response != null) {   
-            if (property_exists($response, 'error')){
-                if ($response->error == "Missing bearer token in request"){
+        if ($messageResponse != null) {   
+            if (property_exists($messageResponse, 'error')){
+                if ($messageResponse->error == "Missing bearer token in request"){
                     array_unshift($this->messages, ['id' => $this->messageId,
                                                     'message' => 'Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:',
                                                     'source' => 'aura',
@@ -116,15 +116,24 @@ class AuraWidget extends Component
                     $this->login = true;
                 }
             } else { 
-                
-                if (property_exists($response, 'answer')) {
+
+                $json_encoded = json_encode($this->messages[0]);
+                $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
+                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                $historyResponse = app()->handle($historyRequest);
+
+                if (property_exists($messageResponse, 'answer')) {
                     array_unshift($this->messages, ['id' => $this->messageId,
-                                                    'message' => $response->answer,
+                                                    'message' => $messageResponse->answer,
                                                     'source' => 'aura',
                                                     'userMessage' => $this->inputMessage,
                                                     'assessed' => 2,  
-                                                    'category' => $response->intent
+                                                    'category' => $messageResponse->intent
                                                     ]);
+                    $json_encoded = json_encode($this->messages[0]);
+                    $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
+                    $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                    $historyResponse = app()->handle($historyRequest);
                     $this->messageId++;
                 } else {
                     array_unshift($this->messages, ['id' => $this->messageId,
@@ -134,6 +143,10 @@ class AuraWidget extends Component
                                                     'assessed' => 2,  
                                                     'category' => 'aura_has_no_response'      
                                                     ]);
+                    $json_encoded = json_encode($this->messages[0]);
+                    $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
+                    $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                    $historyResponse = app()->handle($historyRequest);
                     $this->messageId++;
                 }
             }
@@ -238,7 +251,7 @@ class AuraWidget extends Component
         } 
         $response = json_decode(app()->handle($request)->getContent());
         if ($response->aura_consent == 0){
-            $this->disagreeForm = true;
+            $this->disagreedForm = true;
             $this->agreeForm = false;
             $this->agreed = false;
         } else {
@@ -255,7 +268,7 @@ class AuraWidget extends Component
 
     public function displayAgreeForm(){
         $this->agreeForm = true;
-        $this->disagreeForm = false;
+        $this->disagreedForm = false;
     }
 
     public function assessAnswer($category, $userMessage, $rate, $messageId){
