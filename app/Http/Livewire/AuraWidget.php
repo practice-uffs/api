@@ -197,7 +197,6 @@ class AuraWidget extends Component
 
                 if ($historyResponse->aura_history != null){
                     foreach ($historyResponse->aura_history as $objectMessage) {
-                        $arrayMessage = json_decode(json_encode($objectMessage), true);
                         $arrayMessage = (array) $objectMessage;
                         array_unshift($this->messages, $arrayMessage);
                     }
