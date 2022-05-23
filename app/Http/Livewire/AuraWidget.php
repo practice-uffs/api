@@ -186,6 +186,30 @@ class AuraWidget extends Component
                 $this->loggedIn = true;
                 $this->token = $data->passport;
                
+                $historyRequest = Request::create('/v0/user/aura-history', 'GET');
+                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                $historyResponse = json_decode(app()->handle($historyRequest)->getContent());
+
+                $keepUnloggedMessages = null;
+                $keepUnloggedMessages = array_reverse($this->messages);
+                $this->messages = null;
+                $this->messages = array();
+
+                if ($historyResponse->aura_history != null){
+                    foreach ($historyResponse->aura_history as $objectMessage) {
+                        $arrayMessage = json_decode(json_encode($objectMessage), true);
+                        $arrayMessage = (array) $objectMessage;
+                        array_unshift($this->messages, $arrayMessage);
+                    }
+                }
+               
+                if($keepUnloggedMessages != null){
+                    foreach ($keepUnloggedMessages as $message) {
+                        array_unshift($this->messages, $message);
+                    }
+                }
+                
+
                 if ($data->user->aura_consent == '1'){
                     $this->agreed = true;
                 } else {
@@ -201,6 +225,10 @@ class AuraWidget extends Component
                                                 'assessed' => 2,  
                                                 'category' => 'user_logged_in'      
                                                 ]);  
+                $json_encoded = json_encode($this->messages[0]);
+                $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
+                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                $historyResponse = app()->handle($historyRequest);
                                                  
                 $this->messageId++;                                    
                 array_unshift($this->messages, ['id' => $this->messageId,
@@ -210,6 +238,11 @@ class AuraWidget extends Component
                                                 'assessed' => 2,  
                                                 'category' => 'user_authenticated'      
                                                 ]);
+                $json_encoded = json_encode($this->messages[0]);
+                $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
+                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                $historyResponse = app()->handle($historyRequest);
+                
                 $this->messageId++;                                    
                 $this->username = '';
                 $this->password = '';
