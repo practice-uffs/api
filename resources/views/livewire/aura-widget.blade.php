@@ -234,7 +234,19 @@
                         @endif
 
                     @endforeach
-                
+
+                    @if ($loggedIn == true)
+                        @if ($historyLoaded == false)
+                        <div >
+                            <a wire:click="loadHistory">
+                                <p class="w-100 pt-3 pb-3 text-center text-muted">
+                                    <u>Mostrar mensagens anteriores</u>
+                                </p>
+                            </a>
+                        </div>
+                        @endif
+                    @endif
+
                     </div>
             
                     <div class="card-footer" >

@@ -68,6 +68,16 @@ class UserController extends Controller
         );
     }
 
+    public function consentStatus(Request $request)
+    {   
+        $user = $request->user();
+
+        return response()->json(
+            ['aura_consent' => $user->aura_consent],
+            Response::HTTP_OK
+        );
+    }
+
     public function setAuraHistory(Request $request)
     {       
         $validator = Validator::make($request->all(), [
