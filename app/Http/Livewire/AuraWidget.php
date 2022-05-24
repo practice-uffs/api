@@ -352,6 +352,7 @@ class AuraWidget extends Component
                 array_unshift($this->messages, $message);
             }
         }
+        $this->messageId = $totalMessagesSize;
         $this->historyLoaded = true;
     }
     
