@@ -292,6 +292,10 @@ button.dislike{
 	font-size: 15px;
 }
 
+.load-history{
+    
+}
+
 ::-webkit-scrollbar {
     width: 10px
 }
