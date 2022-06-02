@@ -41,6 +41,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
 
     // Aura
     Route::get('/aura/nlp/{route}/{text}', [AuraController::class, 'index']);
+    Route::get('/aura/nlp/{text}', [AuraController::class, 'mix']);
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
 
     // Channels
