@@ -26,6 +26,7 @@ class AuraWidget extends Component
     public $messageId;
     public $userId;
     public $historyLoaded;
+    public $hasProfileImage = false;
 
     public function mount()
     {   
@@ -68,6 +69,8 @@ class AuraWidget extends Component
         return view('livewire.aura-widget');
     }
 
+
+
     public function sendMessage(){
        
         if ($this->inputMessage == ""){
@@ -80,7 +83,7 @@ class AuraWidget extends Component
                                         'assessed' => 2,  
                                         'category' => 'user_message'      
                                         ]);
-        $this->messageId++;                                     
+        $this->messageId++;                                             
 
         $encodedUrl = rawurlencode($this->inputMessage);
         $requestUrl = '/v0/aura/nlp/' . $encodedUrl;
@@ -120,11 +123,19 @@ class AuraWidget extends Component
             } else { 
                 $this->loggedIn = true;
 
+                if ($this->hasProfileImage == false){
+                    $getUserRequest = Request::create('/v0/user', 'GET');
+                    $getUserRequest->headers->set('Authorization', 'Bearer '.$this->token);
+                    $getUserResponse = json_decode(app()->handle($getUserRequest)->getContent());
+                    $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$getUserResponse->uid;
+                    $this->hasProfileImage = true;
+                }
+
+
                 $auraConsentRequest = Request::create('/v0/user/aura-consent-status', 'GET');
                 $auraConsentRequest->headers->set('Authorization', 'Bearer '.$this->token);
                 $auraConsentResponse = json_decode(app()->handle($auraConsentRequest)->getContent());
-
-                    
+                  
                 if ($auraConsentResponse->aura_consent == 0){
                     $this->displayAgreeForm();
                 } else {
@@ -152,7 +163,6 @@ class AuraWidget extends Component
                     $this->messageId++;
 
                 } else {
-
                     array_unshift($this->messages, ['id' => $this->messageId,
                                                     'message' => 'Não tenho resposta para isso.',
                                                     'source' => 'aura',
@@ -213,6 +223,7 @@ class AuraWidget extends Component
                 }
                 
                 $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
+                $this->hasProfileImage = true;
 
                 array_unshift($this->messages, ['id' => $this->messageId,
                                                 'message' => 'Logado(a) com sucesso!!!',
