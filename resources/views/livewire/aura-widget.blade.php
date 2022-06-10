@@ -77,21 +77,9 @@
 
 
                     <div class="card-body msg_card_body ">
-                        <div wire:loading.delay wire:target="sendMessage">
-                            <div class="d-flex justify-content-start mb-4">
-                                <div class="img_cont_msg">
-                                    <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
-                                </div>
-                                @if($theme == 'dark')
-                                <div class="msg_container msg_container_theme_dark">
-                                @endif
-
-                                @if($theme == 'light')
-                                <div class="msg_container msg_container_theme_light">
-                                @endif
-                                ...
-                                </div>
-                            </div>
+                        
+                        <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
+                                Aura está digitando...
                         </div>
 
                     @if($login == true)
@@ -296,7 +284,7 @@
                                 @if($agreeForm == false)
                                     @if($disagreedForm == false)
                                         <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..."></input>
-                                        <span><a class="input-group-text send_btn" wire:click="sendMessage"><i class="fas fa-location-arrow"></i></a></span>
+                                        <a class="input-group-text send_btn" wire:click="sendMessage"><i class="fas fa-location-arrow"></i></a>
                                     @else
                                         <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..." disabled></input>
                                         <a class="input-group-text send_btn" wire:click="sendMessage" disabled><i class="fas fa-location-arrow"></i></a>

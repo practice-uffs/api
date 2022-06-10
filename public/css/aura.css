@@ -131,6 +131,12 @@ body,html {
     align-content: center
 }
 
+.aura_typing{
+    height: 0px;
+    position: relative;
+    top: -10px;
+}
+
 .type_msg {
     background-color: rgba(255, 255, 255, 0.733)!important;
     border: 0!important;
