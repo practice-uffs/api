@@ -11,7 +11,7 @@ use App\Models\AuraChat;
 
 class AuraChatController extends Controller
 {
-    public function getAuraChat($userId) {
+    public static function getAuraChat($userId) {
         $auraChat = AuraChat::where('user_id', $userId)->first();
         if ($auraChat != null) {
             return $auraChat;
@@ -25,9 +25,10 @@ class AuraChatController extends Controller
         return $auraChat;
     }
 
-    public function consent($userId)
+    public static function consent($userId)
     {
-        $auraChat = $this->getAuraChat($userId);
+        $auraChat = AuraChatController::getAuraChat($userId);
+        
 
         $data = [
             'aura_consent' => 1
@@ -37,11 +38,11 @@ class AuraChatController extends Controller
         return ['aura_consent' => $auraChat->aura_consent];
     }
 
-    public function unconsent($userId)
+    public static function unconsent($userId)
     {
         // We're not saving this user's message history yet
         // Here should be done the deletion of the message history of this user
-        $auraChat = $this->getAuraChat($userId);
+        $auraChat = AuraChatController::getAuraChat($userId);
 
         $data = [
             'aura_consent' => 0
@@ -51,20 +52,20 @@ class AuraChatController extends Controller
         return ['aura_consent' => $auraChat->aura_consent];
     }
 
-    public function consentStatus($userId)
+    public static function consentStatus($userId)
     {
-        $auraChat = $this->getAuraChat($userId);
+        $auraChat = AuraChatController::getAuraChat($userId);
         return ['aura_consent' => $auraChat->aura_consent];
     }
 
-    public function setAuraHistory($userId, $auraHistory)
+    public static function setAuraHistory($userId, $auraHistory)
     {
 
         if(!is_array($auraHistory)){
             $auraHistory = json_decode($auraHistory);
         }
 
-        $auraChat = $this->getAuraChat($userId);    
+        $auraChat = AuraChatController::getAuraChat($userId);    
         
         if ($auraChat->aura_history == null){
             $data = [
@@ -87,15 +88,15 @@ class AuraChatController extends Controller
         return True;
     }
 
-    public function getAuraHistory($userId)
+    public static function getAuraHistory($userId)
     {
-        $auraChat = $this->getAuraChat($userId);
+        $auraChat = AuraChatController::getAuraChat($userId);
         return ['aura_history' => $auraChat->aura_history];
     }
 
-    public function deleteAuraHistory($userId)
+    public static function deleteAuraHistory($userId)
     {
-        $auraChat = $this->getAuraChat($userId);
+        $auraChat = AuraChatController::getAuraChat($userId);
         $data = [
             'aura_history' => null
         ];

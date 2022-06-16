@@ -19,8 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->index();
             $table->string('password');
-            $table->integer('aura_consent');
-            $table->json('aura_history')->nullable();
             $table->rememberToken();
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();
