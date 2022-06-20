@@ -73,7 +73,7 @@ class AuraChatController extends Controller
             ];
         } else {
             $history = $auraChat->aura_history;
-            if (count($history) >= 5) {
+            if (count($history) >= 500) {
                 array_shift($history);
             }
 

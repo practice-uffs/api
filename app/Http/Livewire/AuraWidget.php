@@ -70,7 +70,7 @@ class AuraWidget extends Component
     }
 
     public function sendMessage(){
-       
+
         if ($this->inputMessage == ""){
             return;
         }
@@ -91,7 +91,7 @@ class AuraWidget extends Component
         
         if ($this->token != null){
             $messageRequest->headers->set('Authorization', 'Bearer '.$this->token);
-        } 
+        }
         
         $messageResponse = json_decode(app()->handle($messageRequest)->getContent());
 
@@ -236,6 +236,7 @@ class AuraWidget extends Component
             return;
         }
     }
+
     public function consentUseOfData(){
 
         $response = AuraChatController::consent($this->userId);
@@ -254,6 +255,7 @@ class AuraWidget extends Component
             $this->messageId++;   
         }
     }
+
     public function unonsentUseOfData(){
 
         $response = AuraChatController::unconsent($this->userId);
@@ -329,7 +331,7 @@ class AuraWidget extends Component
                 array_unshift($this->messages, $message);
             }
         }
-        $this->messageId = isset($lastSavedMessage) ? $lastSavedMessage['id'] + 1 : $totalMessagesSize;
+        $this->messageId = $totalMessagesSize;
         $this->historyLoaded = true;
     }
      
