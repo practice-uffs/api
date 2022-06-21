@@ -43,6 +43,24 @@ class AuraWidget extends Component
         $this->historyLoaded = false;
         $this->token = request()->token;
 
+        if ($this->token != null) {
+            $request = Request::create('/v0/user/', 'GET');
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
+
+            $response = json_decode(app()->handle($request)->getContent());
+    
+            if ($response != null) {
+                if (property_exists($response, 'error')) {
+                    $this->token = null;
+                } else {
+                    $this->userId = $response->id;
+                    $this->loggedIn = true;
+                }
+            } else {
+                $this->token = null;
+            }
+        }
+
         if ($this->type = request()->type == null){ 
             $this->type = "fullscreen";
         } else {
