@@ -1,0 +1,21 @@
+.gradient {
+
+    display:inline-block;
+    background-image: linear-gradient(to right, #FA8334, #fcae17, #41aad3);
+
+    background-clip: text;
+
+    -webkit-background-clip: text; 
+
+    -webkit-text-fill-color: transparent;
+  
+    color: black;
+    
+  }
+
+.table-body{
+  max-width: 100%;
+  overflow: scroll
+    /* height: 500px;
+    overflow-y: scroll; */
+}

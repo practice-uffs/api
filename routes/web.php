@@ -29,4 +29,4 @@ Route::get('/', function () {
     } else {
         return view('auth.login');
     }
-});
+})->name('home');
