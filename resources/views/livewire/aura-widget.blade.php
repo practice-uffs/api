@@ -1,43 +1,19 @@
+<div class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
 
-
-  
-@if($theme == 'dark')
-<div class="container-fluid container-fluid-dark h-100" >
-@endif
-
-@if($theme == 'light')
-<div class="container-fluid container-fluid-light h-100" >
-@endif
-
-    @if($type == 'button')
-    <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img height="45px" width="45px" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
-    <div class="wrapper">
+    @if($widgetSettings['type'] == 'button')
+        <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img height="45px" width="45px" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
+        <div class="wrapper">
     @endif
     
         <div class="row justify-content-center h-100">
-            @if($type == 'button')
-            <div class="col-md-12 col-xl-12 chat h-100"  >
-
-                @if($theme == 'dark')
-                <div class="card card-bg-theme-dark border-radius-15 h-100" >
-                @endif
-
-                @if($theme == 'light')
-                <div class="card card-bg-theme-light border-radius-15 h-100" >
-                @endif
-
+            @if($widgetSettings['type'] == 'button')
+                <div class="col-md-12 col-xl-12 chat h-100"  >
+                    <div class="card card-bg-theme-{{$widgetSettings['theme']}} border-radius-15 h-100" >
             @endif
-            @if($type == 'fullscreen')
-            <div class="chat w-100 h-100"  >
-
-                @if($theme == 'dark')
-                <div class="card card-bg-theme-dark border-radius-0 h-100" >
-                @endif
-
-                @if($theme == 'light')
-                <div class="card card-bg-theme-light border-radius-0 h-100" >
-                @endif
-
+            @if($widgetSettings['type'] == 'fullscreen')
+                <div class="chat w-100 h-100"  >
+                    <div class="card card-bg-theme-{{$widgetSettings['theme']}} border-radius-0 h-100" >
+                
             @endif
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight header_height">
@@ -49,47 +25,37 @@
                                 <p class="ia_practice">Inteligencia Artificial do PRACTICE</p>
                                 <p class="practice">PRACTICE</p>
                             </div>
-                            @if ($loggedIn == true)
-                            <div class="ml-auto p-2">
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @if ($agreed == true)
-                                            @if ($disagreedForm == true)
-                                                <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Concordar com o uso de dados</a>
-                                            @else
+                            @if ($this->user['token'] != null && $widgetSettings['display_agree_form'] == false)
+                                <div class="ml-auto p-2">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            @if ($user['consent_status'] == 1)
                                                 <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Discordar com o uso de dados</a>
-                                            @endif  
-                                        @else
-                                            <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Concordar com o uso de dados</a>
-                                        @endif    
+                                            @elseif ($user['consent_status'] == 0)
+                                                <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Concordar com o uso de dados</a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             @endif
                         </div> 
                     
                     </div>
                     <div class="card-body msg_card_body ">
-                    @if($login == true)
+                    @if($widgetSettings['display_login_form'] == true)
 
                         <div class="d-flex justify-content-end mb-4">
                             
-                            @if($theme == 'dark')
-                                <div class="msg_container_send msg_container_send_theme_dark">
-                            @endif
-
-                            @if($theme == 'light')
-                                <div class="msg_container_send msg_container_send_theme_light">
-                            @endif
+                            <div class="msg_container_send msg_container_send_theme_{{$widgetSettings['theme']}}">
 
                                 Login (idUFFS):
                                 <input wire:model="username" wire:keydown.enter="performLogin" type="text" class="form-control type_msg" placeholder="Username"></input>
                                 Senha:
                                 <input wire:model="password" type="password" wire:keydown.enter="performLogin" class="form-control type_msg" placeholder="Senha"></input>
                                 
-                                @if($loginError == true)
+                                @if($loginErrorMessage != '')
                                     <div class="d-flex justify-content-around pt_10">
                                         <small class="w-75 login_error" >{{ $loginErrorMessage }}</small>
                                     </div>
@@ -101,8 +67,8 @@
                                 
                             </div>
                             <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
-                                    @if ($profilePic)
-                                        <img src="{{ $profilePic }}" class="img-fluid">
+                                    @if ($user['profile_pic'] != '')
+                                        <img src="{{ $user['profile_pic'] }}" class="img-fluid">
                                     @else
                                         <img src="{{ asset('img/aura/user.png') }}">
                                     @endif
@@ -111,19 +77,13 @@
                         
                     @endif
 
-                    @if ($agreeForm == true)
+                    @if ($widgetSettings['display_agree_form'] == true)
                         <div class="d-flex justify-content-start mb-4">
                             <div class="img_cont_msg">
                                 <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                             </div>
-                            
-                            @if($theme == 'dark')
-                            <div class="msg_container msg_container_theme_dark">
-                            @endif
 
-                            @if($theme == 'light')
-                            <div class="msg_container msg_container_theme_light">
-                            @endif
+                            <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
 
                                 Para que eu consiga evoluir constantemente, todas as mensagens e interações que você fizer comigo são armazenadas, na íntegra. As mensagens não estão associadas a você (a autoria é anonimizada). Você concorda com isso?
                                 <div class="d-flex justify-content-around pt_10">
@@ -135,19 +95,13 @@
                         </div>
                     @endif
 
-                    @if ($disagreedForm == true)
+                    @if ($user['consent_status'] == 0)
                         <div class="d-flex justify-content-start mb-4">
                             <div class="img_cont_msg">
                                 <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                             </div>
                             
-                            @if($theme == 'dark')
-                            <div class="msg_container msg_container_theme_dark">
-                            @endif
-
-                            @if($theme == 'light')
-                            <div class="msg_container msg_container_theme_light">
-                            @endif
+                            <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
                                 O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito
                             </div>
                         </div>
@@ -162,18 +116,13 @@
                                     <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                                 </div>
                                 
-                                @if($theme == 'dark')
-                                <div class="msg_container msg_container_theme_dark">
-                                @endif
-
-                                @if($theme == 'light')
-                                <div class="msg_container msg_container_theme_light">
-                                @endif
+                                <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
+                               
                                     {{ $message['message'] }}
 
 
-                                    @if ($loggedIn == true)
-                                        @if ($agreed == true)
+                                    @if ($this->user['token'] != null)
+                                        @if ($user['consent_status'] == 1)
                                             @if ($message['assessed'] == 2)    
                                                 <div class="d-flex justify-content-end" style>
                                                     <div>
@@ -212,19 +161,13 @@
                             
                         @else
                             <div class="d-flex justify-content-end mb-4">
-                                @if($theme == 'dark')
-                                <div class="msg_container_send msg_container_send_theme_dark">
-                                @endif
-
-                                @if($theme == 'light')
-                                <div class="msg_container_send msg_container_send_theme_light">
-                                @endif
+                                <div class="msg_container_send msg_container_send_theme_{{$widgetSettings['theme']}}">
                                     {{ $message['message'] }}
                                 </div>
                                 <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
                                     
-                                    @if ($profilePic)
-                                        <img src="{{ $profilePic }}" class="img-fluid">
+                                    @if ($user['profile_pic'] != '')
+                                        <img src="{{ $user['profile_pic'] }}" class="img-fluid">
                                     @else
                                         <img src="{{ asset('img/aura/user.png') }}">
                                     @endif
@@ -235,8 +178,8 @@
 
                     @endforeach
 
-                    @if ($loggedIn == true)
-                        @if ($historyLoaded == false)
+                    @if ($this->user['token'] != null)
+                        @if ($widgetSettings['history_loaded'] == false)
                         <div >
                             <a wire:click="loadHistory">
                                 <p class="w-100 pt-3 pb-3 text-center text-muted">
@@ -251,20 +194,9 @@
             
                     <div class="card-footer" >
                         <div class="input-group" >
-                            @if($login == false)
-                                @if($agreeForm == false)
-                                    @if($disagreedForm == false)
-                                        <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..."></input>
-                                        <a class="input-group-text send_btn" wire:click="sendMessage()"><i class="fas fa-location-arrow"></i></a>
-                                    @else
-                                        <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..." disabled></input>
-                                        <a class="input-group-text send_btn" wire:click="sendMessage()" disabled><i class="fas fa-location-arrow"></i></a>
-                                    @endif  
-                                @else
-                                    
-                                    <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..." disabled></input>
-                                    <a class="input-group-text send_btn" wire:click="sendMessage()" disabled><i class="fas fa-location-arrow"></i></a>
-                                @endif    
+                            @if($widgetSettings['display_login_form'] == false && $widgetSettings['display_agree_form'] == false && $user['consent_status'] != 0)
+                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..."></input>
+                                <a class="input-group-text send_btn" wire:click="sendMessage()"><i class="fas fa-location-arrow"></i></a>
                             @else
                                 <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..." disabled></input>
                                 <a class="input-group-text send_btn" wire:click="sendMessage()" disabled><i class="fas fa-location-arrow"></i></a>
@@ -275,8 +207,8 @@
                 </div>
             </div>
         </div>
-    @if($type == 'button')
-    </div>
+    @if($widgetSettings['type'] == 'button')
+        </div>
     @endif
     
 </div>

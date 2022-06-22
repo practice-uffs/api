@@ -225,6 +225,7 @@ body,html {
 
 .msg_container_theme_dark {
     background-color: #007bff8a;
+    color: #efefef;
 }
 
 
@@ -243,6 +244,7 @@ body,html {
 
 .msg_container_send_theme_dark {
     background-color: #3f3f3f;
+    color: #efefef;
 }
 
 
@@ -270,7 +272,6 @@ button.like{
 	width: 30px;
 	height: 30px;
 	margin: 0 auto;
-	line-heigth: 50px;
 	border-radius: 50%;
 	color: rgba(0,150,136 ,1);
 	background-color:rgba(38,166,154 ,0.3);
@@ -283,17 +284,12 @@ button.dislike{
 	width: 30px;
 	height: 30px;
 	margin: 0 auto;
-	line-heigth: 50px;
 	border-radius: 50%;
 	color: rgba(255,82,82 ,1);
 	background-color: rgba(255,138,128 ,0.3);
 	border-color: rgba(255,82,82 ,1);
 	border-width: 1px;
 	font-size: 15px;
-}
-
-.load-history{
-    
 }
 
 ::-webkit-scrollbar {
