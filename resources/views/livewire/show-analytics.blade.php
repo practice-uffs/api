@@ -29,28 +29,45 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between pb-4">
                             <h5 class="card-title">Todas as avaliações<span></span></h5>
-
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#" wire:click="">aura_feedback
-                                    <a class="dropdown-item" href="#" wire:click="">good_health_feedback</a>
-                                    <a class="dropdown-item" href="#" wire:click="">athletic_activities_feedback</a>
+                            <div>
+                                <p class="d-inline pr-2">Action: </p>
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $searchParams['action']}}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" wire:click="query('aura_feedback','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')"> aura_feedback
+                                        <a class="dropdown-item" href="#" wire:click="query('other_action_1','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')">other_action_1</a>
+                                        <a class="dropdown-item" href="#" wire:click="query('other_action_2','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')">other_action_2</a>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div>
+                                <p class="d-inline pr-2">Group By: </p>
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $searchParams['group_by']}}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" wire:click="query('{{ $searchParams['action']}}','{{$searchParams['order_by']}}','none')">none</a>
+                                        <a class="dropdown-item" href="#" wire:click="query('{{ $searchParams['action']}}','{{$searchParams['order_by']}}','user_id')">user_id</a>
+                                        <a class="dropdown-item" href="#" wire:click="query('{{ $searchParams['action']}}','{{$searchParams['order_by']}}','key')"> key</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <table class="table-body table table-striped table-bordered table-sm"">
                             <thead>
                                 <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Usuário</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col">Key</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">Rate</th>
+                                    <th scope="col"><a href="#" wire:click="query('{{ $searchParams['action']}}','id','{{$searchParams['group_by']}}')" >    Id</a></th>
+                                    <th scope="col"><a href="#" wire:click="query('{{ $searchParams['action']}}','user_id','{{$searchParams['group_by']}}')" >  Usuário</a></th>
+                                    <th scope="col"><a href="#" wire:click="query('{{ $searchParams['action']}}','action','{{$searchParams['group_by']}}')" >Action</a></th>
+                                    <th scope="col"><a href="#" wire:click="query('{{ $searchParams['action']}}','key','{{$searchParams['group_by']}}')" >   Key</a></th>
+                                    <th scope="col"><a href="#" wire:click="query('{{ $searchParams['action']}}','value','{{$searchParams['group_by']}}')" > Value</a></th>
+                                    <th scope="col"><a href="#" wire:click="query('{{ $searchParams['action']}}','rate','{{$searchParams['group_by']}}')" >  Rate</a></th>
                                 </tr>
                             </thead>
                             <tbody >
@@ -61,7 +78,19 @@
                                     <td>{{$analytic->action}}</td>
                                     <td>{{$analytic->key}}</td>
                                     <td>{{$analytic->value}}</td>
-                                    <td><span class="badge bg-success">{{$analytic->rate}}</span></td>
+
+                                    <td class="text-center">
+                                        @if ( $searchParams['group_by'] == "none" )
+                                            @if ( $analytic->rate == 1 )
+                                                <span class="badge bg-success">Like</span>
+                                            @else 
+                                                <span class="badge bg-danger">Dislike</span>
+                                            @endif
+                                        @else 
+                                            <span class="badge bg-info">{{$analytic->rate}}</span>
+                                        @endif
+                                    </td>
+
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -82,6 +111,8 @@
             <p class="pt-4 px-2 ">&nbsp;&nbsp;Trazer os feedbacks gerados por ablicativos do PRACTICE, bem como: O feedback das respostas da Aura</p>
 
             <p class="pt-4 px-2 ">&nbsp;&nbsp;Futuramente, esta tela também pode ser utilizada para alterar as respostas da Aura que foram avaliadas negativamente :D</p>
+
+            <p class="pt-4 px-2 ">&nbsp;&nbsp;<i class="text-warning">Atenção</i>: se você utilizar o 'group by' a coluna 'rate' será um inteiro que confiz com quantas vezes a resposta foi avaliada</p>
                 
           </div>
 
