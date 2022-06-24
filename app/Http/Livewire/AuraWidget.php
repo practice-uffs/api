@@ -188,7 +188,7 @@ class AuraWidget extends Component
             $data = json_decode($response->getContent());
             
             if ($data == null){
-                $this->displayLoginFormErrorMessage = 'Usuário ou senha incorreto';
+                $this->loginErrorMessage = 'Usuário ou senha incorreto';
             } else {
                 $this->user['id'] = $data->user->id;
                 
@@ -233,7 +233,7 @@ class AuraWidget extends Component
             }
             return;
         } else {
-            $this->displayLoginFormErrorMessage = 'Ambos os campos devem ser preenchidos';
+            $this->loginErrorMessage = 'Ambos os campos devem ser preenchidos';
             return;
         }
     }
