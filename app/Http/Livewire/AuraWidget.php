@@ -27,7 +27,6 @@ class AuraWidget extends Component
     public $messageId;
     public $userId;
     public $historyLoaded;
-    public $hasProfileImage = false;
 
     public function mount()
     {   
@@ -224,7 +223,6 @@ class AuraWidget extends Component
                 }
                 
                 $this->profilePic = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
-                $this->hasProfileImage = true;
 
                 array_unshift($this->messages, ['id' => $this->messageId,
                                                 'message' => 'Logado(a) com sucesso!!!',
