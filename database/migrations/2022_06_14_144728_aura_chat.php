@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class AuraChat extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('aura_chats', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->index();
-            $table->string('name');
-            $table->string('email')->index();
-            $table->string('password');
-            $table->rememberToken();
-            $table->text('profile_photo_path')->nullable();
+            $table->foreignId('user_id')->index();
+            $table->boolean('aura_consent')->default(0);
+            $table->json('aura_history');
             $table->timestamps();
         });
     }
@@ -32,6 +29,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('aura_chats');
+
     }
 }
