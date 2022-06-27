@@ -36,7 +36,8 @@
                                         {{ $searchParams['action']}}
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#" wire:click="query('aura_feedback','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')"> aura_feedback
+                                        <a class="dropdown-item" href="#" wire:click="query('all_feedback','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')"> all_feedback </a>
+                                        <a class="dropdown-item" href="#" wire:click="query('aura_feedback','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')"> aura_feedback </a>
                                         <a class="dropdown-item" href="#" wire:click="query('other_action_1','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')">other_action_1</a>
                                         <a class="dropdown-item" href="#" wire:click="query('other_action_2','{{$searchParams['order_by']}}','{{$searchParams['group_by']}}')">other_action_2</a>
                                     </div>
@@ -71,28 +72,61 @@
                                 </tr>
                             </thead>
                             <tbody >
-                                @foreach ($analytics as $analytic)
-                                <tr>
-                                    <td>{{$analytic->id}}</td>
-                                    <td>{{$analytic->user_id}}</td>
-                                    <td>{{$analytic->action}}</td>
-                                    <td>{{$analytic->key}}</td>
-                                    <td>{{$analytic->value}}</td>
+                                @if ($searchParams['group_by'] == 'none')
+                                    @foreach ($analytics as $analytic)
+                                    <tr>
+                                        <td>{{$analytic->id}}</td>
+                                        <td>{{$analytic->user_id}}</td>
+                                        <td>{{$analytic->action}}</td>
+                                        <td>{{$analytic->key}}</td>
+                                        <td>{{$analytic->value}}</td>
 
-                                    <td class="text-center">
-                                        @if ( $searchParams['group_by'] == "none" )
-                                            @if ( $analytic->rate == 1 )
-                                                <span class="badge bg-success">Like</span>
+                                        <td class="text-center">
+                                            @if ( $searchParams['group_by'] == "none" )
+                                                @if ( $analytic->rate == 1 )
+                                                    <span class="badge bg-success">Like</span>
+                                                @else 
+                                                    <span class="badge bg-danger">Dislike</span>
+                                                @endif
                                             @else 
-                                                <span class="badge bg-danger">Dislike</span>
+                                                <span class="badge bg-info">{{$analytic->rate}}</span>
                                             @endif
-                                        @else 
-                                            <span class="badge bg-info">{{$analytic->rate}}</span>
-                                        @endif
-                                    </td>
+                                        </td>
 
-                                </tr>
-                                @endforeach
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    @if ($searchParams['group_by'] == 'user')
+                                    <tr>
+                                        <td>a</td>
+                                        <td>b</td>
+                                        <td>c</td>
+                                        <td>d</td>
+                                        <td>e</td>
+                                        <td>f</td>
+
+                                    </tr>
+                                    @elseif ($searchParams['group_by'] == 'key')
+                                    <tr>
+                                        <td>a</td>
+                                        <td>b</td>
+                                        <td>c</td>
+                                        <td>d</td>
+                                        <td>e</td>
+                                        <td>f</td>
+
+                                    </tr>
+                                    @else
+                                    <tr>
+                                        <td>a</td>
+                                        <td>b</td>
+                                        <td>c</td>
+                                        <td>d</td>
+                                        <td>e</td>
+                                        <td>f</td>
+                                    </tr>
+                                    @endif
+                                @endif
                             </tbody>
                         </table>
 

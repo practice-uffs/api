@@ -14,7 +14,7 @@ class ShowAnalytics extends Component
     {
         $analytics = Analytics::all();
         $this->analytics = $analytics;
-        $this->searchParams = array("action" => "aura_feedback","order_by"=>"id","group_by"=>"none" );
+        $this->searchParams = array("action" => "all_feedback","order_by"=>"id","group_by"=>"none" );
     }
 
     public function render()
@@ -27,6 +27,11 @@ class ShowAnalytics extends Component
         $this->searchParams['action']   = $action;
         $this->searchParams['order_by'] = $order_by;
         $this->searchParams['group_by'] = $group_by;
+
+        if ($action == "all_feedback"){
+            $query = Analytics::all()->groupBy($group_by);
+            return;
+        }
 
         if ($group_by == 'none'){
             $query = Analytics::orderBy($order_by)->where('action','=',$action)->get();
