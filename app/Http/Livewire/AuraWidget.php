@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Http\Request;
+use App\Http\Controllers\API\V0\AuraChatController;
 
 
 class AuraWidget extends Component
@@ -61,6 +62,24 @@ class AuraWidget extends Component
                 $this->theme = request()->theme;
             }
         }   
+
+        if ($this->token != null) {
+            $request = Request::create('/v0/user/', 'GET');
+            $request->headers->set('Authorization', 'Bearer '.$this->token);
+
+            $response = json_decode(app()->handle($request)->getContent());
+    
+            if ($response != null) {
+                if (property_exists($response, 'error')) {
+                    $this->token = null;
+                } else {
+                    $this->userId = $response->id;
+                    $this->loggedIn = true;
+                }
+            } else {
+                $this->token = null;
+            }
+        }
     }
 
     public function render()
@@ -69,7 +88,7 @@ class AuraWidget extends Component
     }
 
     public function sendMessage(){
-       
+
         if ($this->inputMessage == ""){
             return;
         }
@@ -90,7 +109,7 @@ class AuraWidget extends Component
         
         if ($this->token != null){
             $messageRequest->headers->set('Authorization', 'Bearer '.$this->token);
-        } 
+        }
         
         $messageResponse = json_decode(app()->handle($messageRequest)->getContent());
 
@@ -120,21 +139,15 @@ class AuraWidget extends Component
             } else { 
                 $this->loggedIn = true;
 
-                $auraConsentRequest = Request::create('/v0/user/aura-consent-status', 'GET');
-                $auraConsentRequest->headers->set('Authorization', 'Bearer '.$this->token);
-                $auraConsentResponse = json_decode(app()->handle($auraConsentRequest)->getContent());
+                $auraConsentResponse = AuraChatController::consentStatus($this->userId);
 
-                    
-                if ($auraConsentResponse->aura_consent == 0){
+                if ($auraConsentResponse['aura_consent'] == 0){
                     $this->displayAgreeForm();
                 } else {
                     $this->agreed = true;
                 }
 
-                $json_encoded = json_encode($this->messages[0]);
-                $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
-                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
-                $historyResponse = app()->handle($historyRequest);
+                $historyResponse = AuraChatController::setAuraHistory($this->userId, $this->messages[0]);
 
                 if (property_exists($messageResponse, 'answer')) {
                     array_unshift($this->messages, ['id' => $this->messageId,
@@ -145,10 +158,7 @@ class AuraWidget extends Component
                                                     'category' => $messageResponse->intent
                                                     ]);
 
-                    $json_encoded = json_encode($this->messages[0]);
-                    $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
-                    $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
-                    $historyResponse = app()->handle($historyRequest);
+                    $historyResponse = AuraChatController::setAuraHistory($this->userId, $this->messages[0]);
                     $this->messageId++;
 
                 } else {
@@ -161,10 +171,7 @@ class AuraWidget extends Component
                                                     'category' => 'aura_has_no_response'      
                                                     ]);
 
-                    $json_encoded = json_encode($this->messages[0]);
-                    $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
-                    $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
-                    $historyResponse = app()->handle($historyRequest);
+                    $historyResponse = AuraChatController::setAuraHistory($this->userId, $this->messages[0]);
                     $this->messageId++;
                 }
             }
@@ -205,8 +212,10 @@ class AuraWidget extends Component
                 $this->token = $data->passport;
                
                 $this->loadHistory();
+
+                $auraConsentResponse = AuraChatController::consentStatus($this->userId);
                 
-                if ($data->user->aura_consent == '1'){
+                if ($auraConsentResponse['aura_consent'] == '1'){
                     $this->agreed = true;
                 } else {
                     $this->agreeForm = true;
@@ -221,10 +230,7 @@ class AuraWidget extends Component
                                                 'assessed' => 2,  
                                                 'category' => 'user_logged_in'      
                                                 ]);  
-                $json_encoded = json_encode($this->messages[0]);
-                $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
-                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
-                $historyResponse = app()->handle($historyRequest);
+                $historyResponse = AuraChatController::setAuraHistory($this->userId, $this->messages[0]);                            
                                                  
                 $this->messageId++;                                    
                 array_unshift($this->messages, ['id' => $this->messageId,
@@ -234,10 +240,7 @@ class AuraWidget extends Component
                                                 'assessed' => 2,  
                                                 'category' => 'user_authenticated'      
                                                 ]);
-                $json_encoded = json_encode($this->messages[0]);
-                $historyRequest = Request::create('/v0/user/aura-history', 'POST',array('aura_history' => $json_encoded));
-                $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
-                $historyResponse = app()->handle($historyRequest);
+                $historyResponse = AuraChatController::setAuraHistory($this->userId, $this->messages[0]);
                 
                 $this->messageId++;                                    
                 $this->username = '';
@@ -251,14 +254,12 @@ class AuraWidget extends Component
             return;
         }
     }
+
     public function consentUseOfData(){
-        $requestUrl = '/v0/user/aura-consent';
-        $request = Request::create($requestUrl, 'GET');
-        if ($this->token != null){
-            $request->headers->set('Authorization', 'Bearer '.$this->token);
-        } 
-        $response = json_decode(app()->handle($request)->getContent());
-        if ($response->aura_consent == 1){
+
+        $response = AuraChatController::consent($this->userId);
+
+        if ($response['aura_consent'] == 1){
             $this->agreed = true;
             $this->agreeForm = false;
         } else {
@@ -272,14 +273,11 @@ class AuraWidget extends Component
             $this->messageId++;   
         }
     }
+
     public function unonsentUseOfData(){
-        $requestUrl = '/v0/user/aura-unconsent';
-        $request = Request::create($requestUrl, 'GET');
-        if ($this->token != null){
-            $request->headers->set('Authorization', 'Bearer '.$this->token);
-        } 
-        $response = json_decode(app()->handle($request)->getContent());
-        if ($response->aura_consent == 0){
+
+        $response = AuraChatController::unconsent($this->userId);
+        if ($response['aura_consent'] == 0){
             $this->disagreedForm = true;
             $this->agreeForm = false;
             $this->agreed = false;
@@ -326,9 +324,7 @@ class AuraWidget extends Component
     }
 
     public function loadHistory(){
-        $historyRequest = Request::create('/v0/user/aura-history', 'GET');
-        $historyRequest->headers->set('Authorization', 'Bearer '.$this->token);
-        $historyResponse = json_decode(app()->handle($historyRequest)->getContent());
+        $historyResponse = AuraChatController::getAuraHistory($this->userId);
 
         $keepUnloggedMessages = null;
         $keepUnloggedMessages = array_reverse($this->messages);
@@ -336,8 +332,9 @@ class AuraWidget extends Component
         $this->messages = array();
 
         $totalMessagesSize = 1;
-        if ($historyResponse->aura_history != null){
-            foreach ($historyResponse->aura_history as $objectMessage) {
+        if ($historyResponse['aura_history'] != null){
+            $lastSavedMessage = end($historyResponse['aura_history']);
+            foreach ($historyResponse['aura_history'] as $objectMessage) {
                 $arrayMessage = (array) $objectMessage;
                 $arrayMessage["id"] = $totalMessagesSize;
                 $totalMessagesSize = $totalMessagesSize + 1;
@@ -355,5 +352,5 @@ class AuraWidget extends Component
         $this->messageId = $totalMessagesSize;
         $this->historyLoaded = true;
     }
-    
+     
 }
