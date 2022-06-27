@@ -82,14 +82,8 @@ class AuraWidget extends Component
         if ($this->inputMessage == ""){
             return;
         }
-        array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                        'message' => $this->inputMessage,
-                                        'source' => 'user',
-                                        'userMessage' => $this->inputMessage,
-                                        'assessed' => 2,  
-                                        'category' => 'user_message'      
-                                        ]);
-                                             
+        $this->addMessageToChat($this->inputMessage, 'user_message', false, $this->inputMessage, 'user');
+                                           
 
         $encodedUrl = rawurlencode($this->inputMessage);
         $requestUrl = '/v0/aura/nlp/' . $encodedUrl;
@@ -105,24 +99,10 @@ class AuraWidget extends Component
         if ($messageResponse != null) {   
             if (property_exists($messageResponse, 'error')){
                 if ($messageResponse->error == "Missing bearer token in request"){
-                    array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                                    'message' => 'Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:',
-                                                    'source' => 'aura',
-                                                    'userMessage' => $this->inputMessage,
-                                                    'assessed' => 2,  
-                                                    'category' => 'user_not_authenticated'      
-                                                    ]);
-                                                
+                    $this->addMessageToChat('Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:', 'user_not_authenticated', false, $this->inputMessage);                                          
                     $this->widgetSettings['display_login_form'] = true;
                 } else {
-                    array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                                    'message' => "Algo de errado aconteceu com a sua autenticação, tente autenticar novamente:",
-                                                    'source' => 'aura',
-                                                    'userMessage' => $this->inputMessage,
-                                                    'assessed' => 2,  
-                                                    'category' => 'authentication_failed'       
-                                                    ]);
-                    
+                    $this->addMessageToChat('Algo de errado aconteceu com a sua autenticação, tente autenticar novamente', 'authentication_failed', false, $this->inputMessage);
                     $this->widgetSettings['display_login_form'] = true;
                 }
             } else { 
@@ -139,27 +119,9 @@ class AuraWidget extends Component
                 AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
 
                 if (property_exists($messageResponse, 'answer')) {
-                    array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                                    'message' => $messageResponse->answer,
-                                                    'source' => 'aura',
-                                                    'userMessage' => $this->inputMessage,
-                                                    'assessed' => 2,  
-                                                    'category' => $messageResponse->intent
-                                                    ]);
-
-                    AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
-                    
-
+                    $this->addMessageToChat($messageResponse->answer, $messageResponse->intent, true, $this->inputMessage);
                 } else {
-                    array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                                    'message' => 'Não tenho resposta para isso.',
-                                                    'source' => 'aura',
-                                                    'userMessage' => $this->inputMessage,
-                                                    'assessed' => 2,  
-                                                    'category' => 'aura_has_no_response'      
-                                                    ]);
-
-                    AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
+                    $this->addMessageToChat('Não tenho resposta para isso.', 'aura_has_no_response', true, $this->inputMessage);
                 }
             }
         } else {
@@ -173,14 +135,7 @@ class AuraWidget extends Component
                 $this->user['consent_status'] = 1;
             }
 
-            array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                            'message' => 'Algo de errado está acontecendo com meus servidores, bip bop.',
-                                            'source' => 'aura',
-                                            'userMessage' => $this->inputMessage,
-                                            'assessed' => 2,  
-                                            'category' => 'aura_could_not_respond'      
-                                            ]);
-            
+            $this->addMessageToChat('Algo de errado está acontecendo com meus servidores, bip bop.', 'aura_could_not_respond', false, $this->inputMessage);            
         }
         $this->inputMessage = "";
         return;
@@ -217,26 +172,10 @@ class AuraWidget extends Component
                 
                 $this->user['profile_pic'] = "https://cc.uffs.edu.br/avatar/iduffs/".$data->user->uid;
 
-                array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                                'message' => 'Logado(a) com sucesso!!!',
-                                                'source' => 'user',
-                                                'userMessage' => 'has_no_message',
-                                                'assessed' => 2,  
-                                                'category' => 'user_logged_in'      
-                                                ]);  
-                AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);                            
-                                                 
-                                                    
-                array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                                'message' => 'Seja bem vindo(a) '.$data->user->name.'! Converse comigo :)',
-                                                'source' => 'aura',
-                                                'userMessage' => 'has_no_message',
-                                                'assessed' => 2,  
-                                                'category' => 'user_authenticated'      
-                                                ]);
-                AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
-                
-                                                    
+                $this->addMessageToChat('Logado(a) com sucesso!!!', 'user_logged_in', true, 'has_no_message', 'user');
+               
+                $this->addMessageToChat('Seja bem vindo(a) '.$data->user->name.'! Converse comigo :)', 'user_authenticated', true);
+                                     
                 $this->username = '';
                 $this->password = '';
                 
@@ -257,14 +196,20 @@ class AuraWidget extends Component
             $this->user['consent_status'] = 1;
             $this->widgetSettings['history_loaded'] == true;
         } else {
-            array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                            'message' => 'Não conseguimos aceitar o seu consentimento, erro nos servidores...',
-                                            'source' => 'aura',
-                                            'userMessage' => 'has_no_message',
-                                            'assessed' => 2,  
-                                            'category' => 'could_not_accept_aura_consent'      
-                                            ]);
-               
+            $this->addMessageToChat('Não conseguimos aceitar o seu consentimento, erro nos servidores...', 'could_not_accept_aura_consent', false);               
+        }
+    }
+
+    public function addMessageToChat(string $message, string $category, bool $save, string $userMessage = 'has_no_message', string $source = 'aura') {
+        array_unshift($this->messages, ['id' => count($this->messages) + 1,
+                                        'message' => $message,
+                                        'source' => $source,
+                                        'userMessage' => $userMessage,
+                                        'assessed' => 2,
+                                        'category' => $category      
+                                        ]);
+        if ($save == true) {
+            AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
         }
     }
 
@@ -274,21 +219,13 @@ class AuraWidget extends Component
         if ($consentStatus['aura_consent'] == 0){
             $this->widgetSettings['display_agree_form'] = false;
             $this->user['consent_status'] = 0;
-            array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                            'message' => 'O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito',
-                                            'source' => 'aura',
-                                            'userMessage' => 'has_no_message',
-                                            'assessed' => 2,  
-                                            'category' => 'accepted_aura_consent'      
-                                            ]);
+            $this->addMessageToChat(
+                'O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito',
+                'accepted_aura_consent', 
+                false
+            );
         } else {
-            array_unshift($this->messages, ['id' => count($this->messages) + 1,
-                                            'message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
-                                            'source' => 'aura',
-                                            'userMessage' => 'has_no_message',
-                                            'assessed' => 2,  
-                                            'category' => 'accepted_aura_consent'      
-                                            ]);
+            $this->addMessageToChat('Não conseguimos aceitar o seu não consentimento, erro nos servidores...', 'accepted_aura_consent', false);
         }
     }
 
