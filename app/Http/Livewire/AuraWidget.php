@@ -44,6 +44,13 @@ class AuraWidget extends Component
             'consent_status' => -1 // -1: not answered; 1: agreed, 0: disagreed
         ];
 
+        if (request()->type == "button"){
+            $this->widgetSettings['type'] = "button";
+        }
+        if (request()->theme == "dark") {
+            $this->widgetSettings['theme'] = "dark";
+        }  
+
         if ($this->user['token'] != null) {
             $request = Request::create('/v0/user/', 'GET');
             $request->headers->set('Authorization', 'Bearer '.$this->user['token']);
@@ -55,18 +62,14 @@ class AuraWidget extends Component
                     $this->user['token'] = null;
                 } else {
                     $this->user['id'] = $response->id;
+                    $this->user['profile_pic'] = "https://cc.uffs.edu.br/avatar/iduffs/".$response->uid;
+                    $consentStatus = AuraChatController::consentStatus($response->id)['aura_consent'];
+                    $this->user['consent_status'] = $consentStatus == 1 ? $consentStatus : -1;
                 }
             } else {
                 $this->user['token'] = null;
             }
         }
-
-        if (request()->type == "button"){
-            $this->widgetSettings['type'] = "button";
-        }
-        if (request()->theme == "dark") {
-            $this->widgetSettings['theme'] = "dark";
-        }  
     }
 
     public function render()
@@ -90,7 +93,6 @@ class AuraWidget extends Component
 
         $encodedUrl = rawurlencode($this->inputMessage);
         $requestUrl = '/v0/aura/nlp/' . $encodedUrl;
-
         
         $messageRequest = Request::create($requestUrl, 'GET');
         
@@ -124,16 +126,17 @@ class AuraWidget extends Component
                     $this->widgetSettings['display_login_form'] = true;
                 }
             } else { 
-
-                $auraConsentResponse = AuraChatController::consentStatus($this->user['id']);
-
-                if ($auraConsentResponse['aura_consent'] == 0){
-                    $this->widgetSettings['display_agree_form']();
+                $consentStatus = AuraChatController::consentStatus($this->user['id']);
+                
+                if ($consentStatus['aura_consent'] == 0){
+                    $this->widgetSettings['display_agree_form'] = true;
+                    $this->inputMessage = "";
+                    return;
                 } else {
                     $this->user['consent_status'] = 1;
                 }
 
-                $historyResponse = AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
+                AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
 
                 if (property_exists($messageResponse, 'answer')) {
                     array_unshift($this->messages, ['id' => count($this->messages) + 1,
@@ -144,11 +147,10 @@ class AuraWidget extends Component
                                                     'category' => $messageResponse->intent
                                                     ]);
 
-                    $historyResponse = AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
+                    AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
                     
 
                 } else {
-
                     array_unshift($this->messages, ['id' => count($this->messages) + 1,
                                                     'message' => 'Não tenho resposta para isso.',
                                                     'source' => 'aura',
@@ -157,11 +159,20 @@ class AuraWidget extends Component
                                                     'category' => 'aura_has_no_response'      
                                                     ]);
 
-                    $historyResponse = AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
-                    
+                    AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
                 }
             }
         } else {
+            $consentStatus = AuraChatController::consentStatus($this->user['id']);
+
+            if ($consentStatus['aura_consent'] == 0){
+                $this->widgetSettings['display_agree_form'] = true;
+                $this->inputMessage = "";
+                return;
+            } else {
+                $this->user['consent_status'] = 1;
+            }
+
             array_unshift($this->messages, ['id' => count($this->messages) + 1,
                                             'message' => 'Algo de errado está acontecendo com meus servidores, bip bop.',
                                             'source' => 'aura',
@@ -182,7 +193,6 @@ class AuraWidget extends Component
                                                                 'app_id' => '1'));
             
             $request->headers->set('Authorization', 'Bearer '.$this->user['token']);
-
             $response = app()->handle($request);
 
             $data = json_decode($response->getContent());
@@ -197,9 +207,9 @@ class AuraWidget extends Component
                
                 $this->loadHistory();
 
-                $auraConsentResponse = AuraChatController::consentStatus($this->user['id']);
+                $consentStatus = AuraChatController::consentStatus($this->user['id']);
                 
-                if ($auraConsentResponse['aura_consent'] == '1'){
+                if ($consentStatus['aura_consent'] == '1'){
                     $this->user['consent_status'] = 1;
                 } else {
                     $this->widgetSettings['display_agree_form'] = true;
@@ -214,7 +224,7 @@ class AuraWidget extends Component
                                                 'assessed' => 2,  
                                                 'category' => 'user_logged_in'      
                                                 ]);  
-                $historyResponse = AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);                            
+                AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);                            
                                                  
                                                     
                 array_unshift($this->messages, ['id' => count($this->messages) + 1,
@@ -224,7 +234,7 @@ class AuraWidget extends Component
                                                 'assessed' => 2,  
                                                 'category' => 'user_authenticated'      
                                                 ]);
-                $historyResponse = AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
+                AuraChatController::setAuraHistory($this->user['id'], $this->messages[0]);
                 
                                                     
                 $this->username = '';
@@ -240,11 +250,12 @@ class AuraWidget extends Component
 
     public function consentUseOfData(){
 
-        $response = AuraChatController::consent($this->user['id']);
+        $consentStatus = AuraChatController::consent($this->user['id']);
 
-        if ($response['aura_consent'] == 1){
+        if ($consentStatus['aura_consent'] == 1){
             $this->widgetSettings['display_agree_form'] = false;
             $this->user['consent_status'] = 1;
+            $this->widgetSettings['history_loaded'] == true;
         } else {
             array_unshift($this->messages, ['id' => count($this->messages) + 1,
                                             'message' => 'Não conseguimos aceitar o seu consentimento, erro nos servidores...',
@@ -257,12 +268,19 @@ class AuraWidget extends Component
         }
     }
 
-    public function unonsentUseOfData(){
+    public function unconsentUseOfData(){
 
-        $response = AuraChatController::unconsent($this->user['id']);
-        if ($response['aura_consent'] == 0){
+        $consentStatus = AuraChatController::unconsent($this->user['id']);
+        if ($consentStatus['aura_consent'] == 0){
             $this->widgetSettings['display_agree_form'] = false;
             $this->user['consent_status'] = 0;
+            array_unshift($this->messages, ['id' => count($this->messages) + 1,
+                                            'message' => 'O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito',
+                                            'source' => 'aura',
+                                            'userMessage' => 'has_no_message',
+                                            'assessed' => 2,  
+                                            'category' => 'accepted_aura_consent'      
+                                            ]);
         } else {
             array_unshift($this->messages, ['id' => count($this->messages) + 1,
                                             'message' => 'Não conseguimos aceitar o seu não consentimento, erro nos servidores...',
@@ -271,7 +289,6 @@ class AuraWidget extends Component
                                             'assessed' => 2,  
                                             'category' => 'accepted_aura_consent'      
                                             ]);
-               
         }
     }
 
@@ -287,11 +304,8 @@ class AuraWidget extends Component
                                                                   'value'=>$userMessage,
                                                                   'rate'=>$rate
                                                                 ));
-        
-       
 
         $request->headers->set('Authorization', 'Bearer '.$this->user['token']);
-
         $response = app()->handle($request);
 
         $data = json_decode($response->getContent());
@@ -300,13 +314,12 @@ class AuraWidget extends Component
             $this->messages[count($this->messages)-$messageId]["assessed"] = -1; 
             // Assessed: 2 stands for 'not assessed', 1 for 'liked', 0 for 'disliked' and -1 for 'assessment error'.
         } else {
-
             $this->messages[count($this->messages)-$messageId]["assessed"] = $rate;
         }
     }
 
     public function loadHistory(){
-        $historyResponse = AuraChatController::getAuraHistory($this->user['id']);
+        $auraHistory = AuraChatController::getAuraHistory($this->user['id']);
 
         $keepUnloggedMessages = null;
         $keepUnloggedMessages = array_reverse($this->messages);
@@ -314,16 +327,16 @@ class AuraWidget extends Component
         $this->messages = array();
 
         $totalMessagesSize = 1;
-        if ($historyResponse['aura_history'] != null){
-            $lastSavedMessage = end($historyResponse['aura_history']);
-            foreach ($historyResponse['aura_history'] as $objectMessage) {
+        if ($auraHistory['aura_history'] != null){
+            $lastSavedMessage = end($auraHistory['aura_history']);
+            foreach ($auraHistory['aura_history'] as $objectMessage) {
                 $arrayMessage = (array) $objectMessage;
                 $arrayMessage["id"] = $totalMessagesSize;
                 $totalMessagesSize = $totalMessagesSize + 1;
                 array_unshift($this->messages, $arrayMessage);
             }
         }
-        
+
         if($keepUnloggedMessages != null){
             foreach ($keepUnloggedMessages as $message) {
                 $message["id"] = $totalMessagesSize;

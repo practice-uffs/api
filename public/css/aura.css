@@ -310,6 +310,10 @@ button.dislike{
     background: #ffe7bb
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .pt_10 {
     padding-top: 10px;
 }

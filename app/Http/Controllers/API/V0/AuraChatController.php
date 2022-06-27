@@ -45,7 +45,8 @@ class AuraChatController extends Controller
         $auraChat = AuraChatController::getAuraChat($userId);
 
         $data = [
-            'aura_consent' => 0
+            'aura_consent' => 0,
+            'aura_history' => ''
         ];
         $auraChat->update($data);
 
@@ -84,8 +85,6 @@ class AuraChatController extends Controller
         }
 
         $auraChat->update($data);
-
-        return True;
     }
 
     public static function getAuraHistory($userId)
@@ -98,14 +97,14 @@ class AuraChatController extends Controller
     {
         $auraChat = AuraChatController::getAuraChat($userId);
         $data = [
-            'aura_history' => null
+            'aura_history' => ''
         ];
         $updated = $auraChat->update($data);
         if ($updated) {
-            return True;
+            return true;
         }
 
-        return False;
+        return false;
     }
 }
 

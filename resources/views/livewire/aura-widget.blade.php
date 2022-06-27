@@ -31,7 +31,7 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($user['consent_status'] == 1)
                                                 <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Discordar com o uso de dados</a>
-                                            @elseif ($user['consent_status'] == 0)
+                                            @else
                                                 <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Concordar com o uso de dados</a>
                                             @endif
                                         </div>
@@ -69,12 +69,11 @@
                                 @if ($user['profile_pic'] != '')
                                     <img src="{{ $user['profile_pic'] }}" class="img-fluid">
                                 @else
-                                    <img src="{{ asset('img/aura/user.png') }}">
+                                    <img src="{{ asset('img/aura/user.png') }}" class="img-fluid">
                                 @endif
                             </div>
                         </div>
                     @endif
-
                     @if ($widgetSettings['display_agree_form'] == true)
                         <div class="d-flex justify-content-start mb-4">
                             <div class="img_cont_msg">
@@ -85,20 +84,8 @@
                                 Para que eu consiga evoluir constantemente, todas as mensagens e interações que você fizer comigo são armazenadas, na íntegra. As mensagens não estão associadas a você (a autoria é anonimizada). Você concorda com isso?
                                 <div class="d-flex justify-content-around pt_10">
                                     <button class="btn btn-primary" wire:click="consentUseOfData()" >Concordo</button>
-                                    <button class="btn btn-primary" wire:click="unonsentUseOfData()" >Discordo</button>
+                                    <button class="btn btn-primary" wire:click="unconsentUseOfData()" >Discordo</button>
                                 </div>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if ($user['consent_status'] == 0)
-                        <div class="d-flex justify-content-start mb-4">
-                            <div class="img_cont_msg">
-                                <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
-                            </div>
-                            
-                            <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
-                                O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito
                             </div>
                         </div>
                     @endif
@@ -157,7 +144,7 @@
                                     @if ($user['profile_pic'] != '')
                                         <img src="{{ $user['profile_pic'] }}" class="img-fluid">
                                     @else
-                                        <img src="{{ asset('img/aura/user.png') }}">
+                                        <img src="{{ asset('img/aura/user.png') }}" class="img-fluid">
                                     @endif
                                 </div>
                             </div>
@@ -165,16 +152,14 @@
 
                     @endforeach
 
-                    @if ($this->user['token'] != null)
-                        @if ($widgetSettings['history_loaded'] == false)
-                            <div >
-                                <a wire:click="loadHistory">
-                                    <p class="w-100 pt-3 pb-3 text-center text-muted cursor-pointer">
-                                        <u>Mostrar mensagens anteriores</u>
-                                    </p>
-                                </a>
-                            </div>
-                        @endif
+                    @if ($user['token'] != null && $user['consent_status'] == 1 && $widgetSettings['history_loaded'] == false)
+                        <div>
+                            <a wire:click="loadHistory">
+                                <p class="w-100 pt-3 pb-3 text-center text-muted cursor-pointer">
+                                    <u>Mostrar mensagens anteriores</u>
+                                </p>
+                            </a>
+                        </div>
                     @endif
 
                     </div>
