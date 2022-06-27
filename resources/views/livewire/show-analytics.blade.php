@@ -1,5 +1,4 @@
-<main id="main" class="main">
-    
+<main id="main" class="main"> 
     <div class="pagetitle">
         <h1 class="pl-4 pt-4 pb-4">
             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
@@ -20,12 +19,12 @@
 
     <section class="section dashboard">
       <div class="row">
-
+      
         <div class="col-lg-8">
           <div class="row">
 
             <div class="col-12">
-                <div class="card recent-sales overflow-auto">
+                <div class="card recent-sales ">
                     <div class="card-body">
                         <div class="d-flex justify-content-between pb-4">
                             <h5 class="card-title">Todas as avaliações<span></span></h5>
@@ -59,7 +58,6 @@
                             </div>
 
                         </div>
-
                         <table class="table-body table table-striped table-bordered table-sm"">
                             <thead>
                                 <tr>
@@ -73,63 +71,77 @@
                             </thead>
                             <tbody >
                                 @if ($searchParams['group_by'] == 'none')
-                                    @foreach ($analytics as $analytic)
+                                    @foreach ($analytics as $tuple)
                                     <tr>
-                                        <td>{{$analytic->id}}</td>
-                                        <td>{{$analytic->user_id}}</td>
-                                        <td>{{$analytic->action}}</td>
-                                        <td>{{$analytic->key}}</td>
-                                        <td>{{$analytic->value}}</td>
+                                        <td>{{ $tuple['id']}}</td>
+                                        <td>{{ $tuple['user_id'] }}</td>
+                                        <td>{{ $tuple['action'] }}</td>
+                                        <td>{{ $tuple['key'] }}</td>
+                                        <td>{{ $tuple['value'] }}</td>
 
                                         <td class="text-center">
-                                            @if ( $searchParams['group_by'] == "none" )
-                                                @if ( $analytic->rate == 1 )
-                                                    <span class="badge bg-success">Like</span>
-                                                @else 
-                                                    <span class="badge bg-danger">Dislike</span>
-                                                @endif
-                                            @else 
-                                                <span class="badge bg-info">{{$analytic->rate}}</span>
+                                            @if ( $tuple['rate'] == 1 )
+                                                <span class="badge bg-success">Like</span>
+                                            @elseif ( $tuple['rate'] == 0 )
+                                                <span class="badge bg-danger">Dislike</span>
+                                            @else
+                                                ---
                                             @endif
+                                          
                                         </td>
 
                                     </tr>
                                     @endforeach
+                                @elseif ($searchParams['group_by'] == 'user_id' || $searchParams['group_by'] == 'key' )
+                                    @foreach ($analytics as $tuple)
+                                        <tr>
+                                            <td class="align-middle">{{ $tuple['id'] }}</td>
+                                            <td class="align-middle">{{ $tuple['user_id'] }}</td>
+                                            <td class="align-middle">{{ $tuple['action'] }}</td>
+                                            <td class="align-middle">{{ $tuple['key'] }}</td>
+
+
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        ---
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        @foreach ( $tuple['value'] as $user_response ) 
+                                                            <a class="dropdown-item" href="#">Mensagem: "<span class="badge bg-info">{{ $user_response['value'] }}</span>" Avaliada como: 
+                                                                @if( $user_response['rate'] == 1)
+                                                                    <span class="badge bg-success">Like</span>
+                                                                @elseif ( $user_response['rate'] == 0 )
+                                                                    <span class="badge bg-danger">Dislike</span>
+                                                                @else
+                                                                    ---
+                                                                @endif
+
+                                                            </a>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </td>   
+                                        
+
+                                            <td class="text-center align-middle">
+                                                <span class="badge bg-info">Likes:{{ $tuple['rate']['likes'] }} Dislikes: {{ $tuple['rate']['dislikes'] }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @else
-                                    @if ($searchParams['group_by'] == 'user')
                                     <tr>
-                                        <td>a</td>
-                                        <td>b</td>
-                                        <td>c</td>
-                                        <td>d</td>
-                                        <td>e</td>
-                                        <td>f</td>
-
+                                        <td>---</td>
+                                        <td>---</td>
+                                        <td>---</td>
+                                        <td>---</td>
+                                        <td>---</td>
+                                        <td>---</td>
                                     </tr>
-                                    @elseif ($searchParams['group_by'] == 'key')
-                                    <tr>
-                                        <td>a</td>
-                                        <td>b</td>
-                                        <td>c</td>
-                                        <td>d</td>
-                                        <td>e</td>
-                                        <td>f</td>
-
-                                    </tr>
-                                    @else
-                                    <tr>
-                                        <td>a</td>
-                                        <td>b</td>
-                                        <td>c</td>
-                                        <td>d</td>
-                                        <td>e</td>
-                                        <td>f</td>
-                                    </tr>
-                                    @endif
                                 @endif
                             </tbody>
                         </table>
-
+                           
                     </div>
 
                 </div>
@@ -146,7 +158,7 @@
 
             <p class="pt-4 px-2 ">&nbsp;&nbsp;Futuramente, esta tela também pode ser utilizada para alterar as respostas da Aura que foram avaliadas negativamente :D</p>
 
-            <p class="pt-4 px-2 ">&nbsp;&nbsp;<i class="text-warning">Atenção</i>: se você utilizar o 'group by' a coluna 'rate' será um inteiro que confiz com quantas vezes a resposta foi avaliada</p>
+            <p class="pt-4 px-2 ">&nbsp;&nbsp;<i class="text-warning">Atenção</i>: se você utilizar o 'group by' <i class="text-danger">não</i> será possivel ordenar por colunas :(</p>
                 
           </div>
 

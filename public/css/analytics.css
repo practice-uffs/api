@@ -13,9 +13,8 @@
     
   }
 
-.table-body{
-  max-width: 100%;
-  overflow: scroll
-    /* height: 500px;
-    overflow-y: scroll; */
+
+.dropdown-menu {
+  max-height: 280px;
+  overflow-y: auto;
 }
