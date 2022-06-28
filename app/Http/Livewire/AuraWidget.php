@@ -87,7 +87,7 @@ class AuraWidget extends Component
         $this->addMessageToChat($this->inputMessage, 'user_message', false, $this->inputMessage, 'user');                             
 
         $encodedUrl = rawurlencode($this->inputMessage);
-        $requestUrl = '/v0/aura/nlp/' . $encodedUrl;
+        $requestUrl = '/v0/aura/nlp/domain/' . $encodedUrl;
         
         $messageRequest = Request::create($requestUrl, 'GET');
         
