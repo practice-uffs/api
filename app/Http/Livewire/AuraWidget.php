@@ -87,6 +87,8 @@ class AuraWidget extends Component
         return view('livewire.aura-widget');
     }
 
+
+
     public function sendMessage(){
 
         if ($this->inputMessage == ""){
@@ -99,7 +101,7 @@ class AuraWidget extends Component
                                         'assessed' => 2,  
                                         'category' => 'user_message'      
                                         ]);
-        $this->messageId++;                                     
+        $this->messageId++;                                             
 
         $encodedUrl = rawurlencode($this->inputMessage);
         $requestUrl = '/v0/aura/nlp/' . $encodedUrl;
@@ -162,7 +164,6 @@ class AuraWidget extends Component
                     $this->messageId++;
 
                 } else {
-
                     array_unshift($this->messages, ['id' => $this->messageId,
                                                     'message' => 'Não tenho resposta para isso.',
                                                     'source' => 'aura',
