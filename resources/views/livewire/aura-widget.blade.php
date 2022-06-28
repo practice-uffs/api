@@ -94,8 +94,8 @@
                                         <span wire:loading wire:target="consentUseOfData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Concordo
                                     </button>
-                                    <button class="btn btn-primary" wire:click="unonsentUseOfData()" >
-                                        <span wire:loading wire:target="unonsentUseOfData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <button class="btn btn-primary" wire:click="unconsentUseOfData()" >
+                                        <span wire:loading wire:target="unconsentUseOfData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Discordo
                                     </button>
                                 </div>
