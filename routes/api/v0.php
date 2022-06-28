@@ -16,6 +16,7 @@ use App\Http\Controllers\API\V0\AnalyticsController;
 use App\Http\Controllers\API\V0\WellBeingQuestionnaireController;
 use App\Http\Proxy\PracticeApiProxy;
 use App\Http\Livewire\AuraWidget;
+use App\Http\Livewire\ShowAnalytics;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,9 @@ Route::get('/checkin/marker', [CheckinController::class, 'marker']);
 
 // Aura Widget
 Route::get('/widgets/aura', AuraWidget::class);
+
+// Show Analytics 
+Route::get('/analytics/show', ShowAnalytics::class);
 
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
