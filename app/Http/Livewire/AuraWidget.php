@@ -77,13 +77,14 @@ class AuraWidget extends Component
         return view('livewire.aura-widget');
     }
 
+
+
     public function sendMessage(){
 
         if ($this->inputMessage == ""){
             return;
         }
-        $this->addMessageToChat($this->inputMessage, 'user_message', false, $this->inputMessage, 'user');
-                                           
+        $this->addMessageToChat($this->inputMessage, 'user_message', false, $this->inputMessage, 'user');                             
 
         $encodedUrl = rawurlencode($this->inputMessage);
         $requestUrl = '/v0/aura/nlp/' . $encodedUrl;

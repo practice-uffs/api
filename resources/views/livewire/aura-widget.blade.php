@@ -4,7 +4,7 @@
         <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img height="45px" width="45px" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
         <div class="wrapper">
     @endif
-    
+
         <div class="row justify-content-center h-100">
             @if($widgetSettings['type'] == 'button')
                 <div class="col-md-12 col-xl-12 chat h-100"  >
@@ -13,6 +13,7 @@
                 <div class="chat w-100 h-100"  >
                     <div class="card card-bg-theme-{{$widgetSettings['theme']}} border-radius-0 h-100" >
             @endif
+
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight header_height">
                             <div class="p-2">
@@ -39,9 +40,12 @@
                                 </div>
                             @endif
                         </div> 
-                    
                     </div>
+
                     <div class="card-body msg_card_body ">
+                        <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
+                            Aura está digitando...
+                        </div>
                     @if($widgetSettings['display_login_form'] == true)
                         <div class="d-flex justify-content-end mb-4">
                             <div class="msg_container_send msg_container_send_theme_{{$widgetSettings['theme']}}">
@@ -62,7 +66,10 @@
                                 @endif
                                 
                                 <div class="d-flex justify-content-around pt_10">
-                                    <button class="btn btn-primary" wire:click="performLogin()" >Fazer login</button>
+                                    <button class="btn btn-primary" wire:click="performLogin()" >
+                                        <span wire:loading wire:target="performLogin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Fazer login
+                                    </button>
                                 </div>
                             </div>
                             <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
@@ -83,24 +90,28 @@
                             <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
                                 Para que eu consiga evoluir constantemente, todas as mensagens e interações que você fizer comigo são armazenadas, na íntegra. As mensagens não estão associadas a você (a autoria é anonimizada). Você concorda com isso?
                                 <div class="d-flex justify-content-around pt_10">
-                                    <button class="btn btn-primary" wire:click="consentUseOfData()" >Concordo</button>
-                                    <button class="btn btn-primary" wire:click="unconsentUseOfData()" >Discordo</button>
+                                    <button class="btn btn-primary" wire:click="consentUseOfData()" >
+                                        <span wire:loading wire:target="consentUseOfData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Concordo
+                                    </button>
+                                    <button class="btn btn-primary" wire:click="unonsentUseOfData()" >
+                                        <span wire:loading wire:target="unonsentUseOfData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Discordo
+                                    </button>
                                 </div>
+                                
                             </div>
                         </div>
                     @endif
 
                     @foreach($messages as $message)
-
                         @if ($message['source'] == 'aura')
-
                             <div class="d-flex justify-content-start mb-4">
                                 <div class="img_cont_msg">
                                     <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                                 </div>
                                 
                                 <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
-                            
                                     {{ $message['message'] }}
 
                                     @if ($this->user['token'] != null && $user['consent_status'] == 1)
@@ -149,7 +160,6 @@
                                 </div>
                             </div>
                         @endif
-
                     @endforeach
 
                     @if ($user['token'] != null && $user['consent_status'] == 1 && $widgetSettings['history_loaded'] == false)
@@ -168,10 +178,10 @@
                         <div class="input-group" >
                             @if($widgetSettings['display_login_form'] == false && $widgetSettings['display_agree_form'] == false && $user['consent_status'] != 0)
                                 <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..." />
-                                <a class="input-group-text send_btn" wire:click="sendMessage()"><i class="fas fa-location-arrow"></i></a>
+                                <a class="input-group-text send_btn" wire:click="sendMessage"><i class="fas fa-location-arrow"></i></a>
                             @else
                                 <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control type_msg" placeholder="Escreva sua mensagem..." disabled />
-                                <a class="input-group-text send_btn" wire:click="sendMessage()" disabled><i class="fas fa-location-arrow"></i></a>
+                                <a class="input-group-text send_btn" wire:click="sendMessage" disabled><i class="fas fa-location-arrow"></i></a>
                             @endif
                         </div>
                     </div>
@@ -181,5 +191,4 @@
     @if($widgetSettings['type'] == 'button')
         </div>
     @endif
-    
 </div>
