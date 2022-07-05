@@ -111,7 +111,7 @@
                                     <img src="{{ asset('img/aura/aura_icon.png') }}" class="rounded-circle user_img_msg">
                                 </div>
                                 
-                                <div class="msg_container msg_container_theme_{{$widgetSettings['theme']}}">
+                                <div class="text-break msg_container msg_container_theme_{{$widgetSettings['theme']}}">
                                     {{ $message['message'] }}
 
                                     @if ($this->user['token'] != null && $user['consent_status'] == 1)
@@ -148,7 +148,7 @@
                             </div>
                         @else
                             <div class="d-flex justify-content-end mb-4">
-                                <div class="msg_container_send msg_container_send_theme_{{$widgetSettings['theme']}}">
+                                <div class="text-break msg_container_send msg_container_send_theme_{{$widgetSettings['theme']}}">
                                     {{ $message['message'] }}
                                 </div>
                                 <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
