@@ -112,7 +112,7 @@
                                 </div>
                                 
                                 <div class="text-break msg_container msg_container_theme_{{$widgetSettings['theme']}}">
-                                    {{ $message['message'] }}
+                                    {!! $message['message'] !!}
 
                                     @if ($this->user['token'] != null && $user['consent_status'] == 1)
                                         @if ($message['assessed'] == 2)    

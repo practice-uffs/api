@@ -234,6 +234,14 @@ body,html {
     color: #efefef;
 }
 
+.msg_container_theme_dark a {
+    color: #efefef;
+    text-decoration: underline;
+}
+
+.msg_container_theme_dark a:hover {
+    color: #efefef;
+}
 
 .msg_container_send {
     margin-top: auto;

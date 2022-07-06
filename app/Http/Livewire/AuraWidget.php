@@ -202,6 +202,15 @@ class AuraWidget extends Component
     }
 
     public function addMessageToChat(string $message, string $category, bool $save, string $userMessage = 'has_no_message', string $source = 'aura') {
+        if ($source ==  'aura') { // tratamento de links
+            if (preg_match('/\[(.+)\]\s*\((.+)\)/', $message)) {
+                $message = preg_replace('/\[(.+)\]\s*\((.+)\)/', '<a target="_blank" rel="noreferrer noopener" class="underline" href="$2">$1</a>', $message); // links no formato [texto](url)
+            } else {
+                $linkRegex = '/https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/';
+                $message = preg_replace($linkRegex, '<a target="_blank" rel="noreferrer noopener" class="underline" href="$0">$0</a>', $message);
+            }
+        }
+
         array_unshift($this->messages, ['id' => count($this->messages) + 1,
                                         'message' => $message,
                                         'source' => $source,
