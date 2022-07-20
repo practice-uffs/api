@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\API\V0;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use \CCUFFS\Scrap\AcademicCalendarUFFS;
+use App\Models\AcademicCalendar;
 
 class AcademicCalendarController extends Controller
 {
-    protected AcademicCalendarUFFS $academicCalendar;
     protected $months;
 
     public function __construct() {
-        $this->academicCalendar = new \CCUFFS\Scrap\AcademicCalendarUFFS();
         $this->months = [
             'Janeiro',
             'Fevereiro',
@@ -30,9 +27,9 @@ class AcademicCalendarController extends Controller
     }
 
     public function getCalendars() {
-        $calendar = $this->academicCalendar->fetchCalendars();
+        $calendars = AcademicCalendar::all();
 
-        return $calendar;
+        return $calendars;
     }
 
     public function getCurrentMonthCalendar() {
