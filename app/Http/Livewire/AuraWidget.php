@@ -15,6 +15,7 @@ class AuraWidget extends Component
     public $username;
     public $password;
     public $widgetSettings;
+    public $headerVisible = true;
     public $user;
 
     public function mount()
@@ -30,10 +31,10 @@ class AuraWidget extends Component
         $this->inputMessage = '';
 
         $this->widgetSettings = [
-            'theme' => 'light',
+            'theme' => 'dark',
             'type' => 'fullscreen',
             'history_loaded' => false,
-            'display_agree_form' => false,
+            'display_agree_form' => true,
             'display_login_form' => false
         ];
 
@@ -72,14 +73,18 @@ class AuraWidget extends Component
         }
     }
 
-    public function render()
-    {   
+    public function render() {   
         return view('livewire.aura-widget');
     }
-
-
+  
+    public function inputFocus() {   
+        $this->headerVisible = false;
+        $this->emit('hideHeader');
+    }
 
     public function sendMessage(){
+        $this->headerVisible = true;
+        $this->emit('hideHeader');
 
         if ($this->inputMessage == ""){
             return;
@@ -142,7 +147,9 @@ class AuraWidget extends Component
         return;
     }
 
-    public function performLogin(){
+    public function performLogin() {
+        $this->headerVisible = true;
+        $this->emit('hideHeader');
         if( $this->username != '' && $this->password != '' ){
             $request = Request::create('/v0/auth/', 'POST',array('user' => $this->username, 
                                                                 'password' => $this->password, 
@@ -284,5 +291,4 @@ class AuraWidget extends Component
         }
         $this->widgetSettings['history_loaded'] = true;
     }
-     
 }
