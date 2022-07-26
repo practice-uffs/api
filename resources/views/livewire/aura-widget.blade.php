@@ -1,3 +1,7 @@
+<div class="h-100">
+@if($academicCalendar['display-popup'])
+    @livewire('aura-academic-calendar')
+@else
 <div class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
 
     @if($widgetSettings['type'] == 'button')
@@ -191,4 +195,6 @@
     @if($widgetSettings['type'] == 'button')
         </div>
     @endif
+</div>
+@endif
 </div>

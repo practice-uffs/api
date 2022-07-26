@@ -16,6 +16,9 @@ class AuraWidget extends Component
     public $password;
     public $widgetSettings;
     public $user;
+    public $academicCalendar;
+
+    protected $listeners = ['toggleCalendarPopup'];
 
     public function mount()
     {
@@ -70,14 +73,16 @@ class AuraWidget extends Component
                 $this->user['token'] = null;
             }
         }
+
+        $this->academicCalendar = [
+            'display-popup' => false
+        ];
     }
 
     public function render()
     {   
         return view('livewire.aura-widget');
     }
-
-
 
     public function sendMessage(){
 
@@ -293,5 +298,8 @@ class AuraWidget extends Component
         }
         $this->widgetSettings['history_loaded'] = true;
     }
-     
+
+    public function toggleCalendarPopup() {
+        $this->academicCalendar['display-popup'] = !$this->academicCalendar['display-popup'];
+    }
 }
