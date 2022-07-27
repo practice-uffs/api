@@ -18,7 +18,7 @@
 
     <div class="calendar">
         <div class="calendar-header">
-            <div class="calendar-info"></div>
+            <div class="calendar-info">{{ $months[$calendar['month']] }}/{{ $year }}</div>
             <div>
                 <button class="change-month change-month--prev" wire:click="changeMonth('prev')"><i class="fas fa-angle-left"></i></button>
                 <button class="change-month change-month--next" wire:click="changeMonth('next')"><i class="fas fa-angle-right"></i></button>
@@ -36,7 +36,19 @@
         </div>
 
         <div class="calendar-days">
-            {{-- Generated Calendar --}}
+            @foreach($calendar['array'] as $week)
+                <div class="week">
+                    @foreach($week as $day)
+                        <div @class([
+                            'day',
+                            'day--not-weekend' => strlen($day[0]) != 0,
+                            'day--weekend' => strlen($day[0]) != 0 && $day[1] >= 6
+                        ])>
+                            <span>{{ $day[0] }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
