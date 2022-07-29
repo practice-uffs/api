@@ -26,23 +26,25 @@ class AcademicCalendarController extends Controller
         ];
     }
 
-    public function getCalendars() {
-        $calendars = AcademicCalendar::all();
+    public function getCalendars($campus = null) {
+        $calendars = AcademicCalendar::where('title', 'LIKE', '%' . $campus . '%')->get();
 
         return $calendars;
     }
 
-    public function getCurrentMonthCalendar() {
+    public function getCurrentMonthCalendar($campus = null) {
         $currentMonth = $this->months[(int) date('n') - 1];
         $currentYear = (int) date('Y');
-        $calendar = $this->getCalendars();
+        $calendar = $this->getCalendars($campus);
 
         $currentMonthCalendar = $this->getCalendarEventsByMonth($calendar, $currentMonth, $currentYear);
 
         return $currentMonthCalendar;
     }
 
-    public function getCalendarEventsByMonth($calendars, $month, $year) {
+    public function getCalendarEventsByMonth($month, $year, $campus = null) {
+        $calendars = $this->getCalendars($campus);
+
         $currentMonthEvents = [];
         foreach ($calendars as $calendar) {
             foreach ($calendar['data'] as $key => $calendarMonth) {
@@ -68,11 +70,11 @@ class AcademicCalendarController extends Controller
     }
 
     // Recebe uma data no formato y-m-d
-    public function getCalendarEventsByDate($date) {
+    public function getCalendarEventsByDate($date, $campus = null) {
         $dateCalendar = [];
         $date = strtotime($date);
 
-        $calendar = $this->getCalendars();
+        $calendar = $this->getCalendars($campus);
         $month = $this->months[(int) date('n', $date) - 1];
         $year = date('Y', $date);
         $monthCalendars = $this->getCalendarEventsByMonth($calendar, $month, $year);

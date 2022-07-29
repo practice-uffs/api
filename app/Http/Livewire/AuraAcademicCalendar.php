@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Livewire;
+use App\Http\Controllers\API\V0\AcademicCalendarController;
+
 
 use Livewire\Component;
 
@@ -8,6 +10,9 @@ class AuraAcademicCalendar extends Component
 {
     public $months;
     public $calendar;
+    public $academicCalendar;
+    public $campus;
+    public $theme;
 
     public function render()
     {
@@ -17,7 +22,7 @@ class AuraAcademicCalendar extends Component
         ]);
     }
 
-    public function mount()
+    public function mount($theme)
     {
         $this->months = [
             "Janeiro",
@@ -40,6 +45,10 @@ class AuraAcademicCalendar extends Component
             'array' => []
         ];
 
+        $this->campus = 'chapeco';
+        $this->theme = $theme;
+
+        $this->getCalendarEvents();
         $this->generateCalendar(date('m'), date('Y'));
     }
 
@@ -87,6 +96,25 @@ class AuraAcademicCalendar extends Component
                 $this->calendar['month'] = 0;
             }
         }
+        $this->getCalendarEvents();
         $this->generateCalendar($this->calendar['month'] + 1, $this->calendar['year']);
+    }
+
+    public function getCalendarEvents() {
+        $acController = new AcademicCalendarController();
+
+        $campus = [
+            'chapeco' => 'Chapecó',
+            'laranjeiras_do_sul' => 'Laranjeiras do Sul',
+            'erechim' => 'Erechim',
+            'cerro_largo' => 'Cerro Largo',
+            'realeza' => 'Realeza',
+            'passo_fundo' => 'Passo Fundo'
+        ];
+
+        $this->academicCalendar = $acController->getCalendarEventsByMonth($this->months[$this->calendar['month']], $this->calendar['year'], $campus[$this->campus]);
+        if (count($this->academicCalendar)) {
+            $this->academicCalendar = $this->academicCalendar[0];
+        }
     }
 }

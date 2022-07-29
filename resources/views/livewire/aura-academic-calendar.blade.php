@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page page--{{ $theme }}">
     <link rel="stylesheet" href="{{ asset('css/aura-calendar.css')}}">
 
     <div class="popup-header">
@@ -7,8 +7,8 @@
     <h1 class="title">Calendário Acadêmico</h1>
 
     <label class="select_label" for="campus">Selecione o campus:</label>
-    <select class="select_campus" id="campus">
-        <option value="chapeco" selected>Chapecó</option>
+    <select wire:model='campus' class="select_campus" id="campus" wire:change='getCalendarEvents'>
+        <option value="chapeco">Chapecó</option>
         <option value="laranjeiras_do_sul">Laranjeiras do Sul</option>
         <option value="erechim">Erechim</option>
         <option value="cerro_largo">Cerro Largo</option>
@@ -16,7 +16,7 @@
         <option value="passo_fundo">Passo Fundo</option>
     </select>
 
-    <div class="calendar">
+    <div class="calendar calendar--{{ $theme }}">
         <div class="calendar-header">
             <div class="calendar-info">{{ $months[$calendar['month']] }}/{{ $year }}</div>
             <div>
@@ -50,5 +50,24 @@
                 </div>
             @endforeach
         </div>
+    </div>
+
+    <div class="events events--{{ $theme }}">
+        @if (count($academicCalendar) > 0)
+            @foreach ($academicCalendar['events'] as $event)
+                <div class="event">
+                    <span>{{$event['period']}}</span> - 
+                    {{ $event['event'] }}
+                </div>
+            @endforeach
+
+            @foreach ($academicCalendar['festivities'] as $festivity)
+                <div class="event">
+                    {{ $festivity }}
+                </div>
+            @endforeach
+        @else
+            <div>Nenhum evento registrado para este mês!</div>
+        @endif
     </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="h-100">
 @if($academicCalendar['display-popup'])
-    @livewire('aura-academic-calendar')
+    @livewire('aura-academic-calendar', ['theme' => $widgetSettings['theme']])
 @else
 <div class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
 
