@@ -12,17 +12,19 @@ class AuraAcademicCalendar extends Component
     public $calendar;
     public $academicCalendar;
     public $campus;
-    public $theme;
+    public $widgetSettings;
 
     public function render()
     {
         return view('livewire.aura-academic-calendar', [
             'year' => $this->calendar['year'],
-            'month' => $this->calendar['month']
+            'month' => $this->calendar['month'],
+            'theme' => $this->widgetSettings['theme'],
+            'type' => $this->widgetSettings['type']
         ]);
     }
 
-    public function mount($theme)
+    public function mount($widgetSettings)
     {
         $this->months = [
             "Janeiro",
@@ -46,7 +48,7 @@ class AuraAcademicCalendar extends Component
         ];
 
         $this->campus = 'chapeco';
-        $this->theme = $theme;
+        $this->widgetSettings = $widgetSettings;
 
         $this->getCalendarEvents();
         $this->generateCalendar(date('m'), date('Y'));

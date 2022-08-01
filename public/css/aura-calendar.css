@@ -2,12 +2,18 @@
     background-color: #ECECEC;
     height: 100%;
     width: 100%;
-    overflow: scroll;
-    padding: 10px 15px 0 10px;
+    padding: 10px 0 0 10px;
 }
 
 .page--dark {
     background-color: #041C26;
+}
+
+.popup-body {
+    box-sizing: border-box;
+    max-height: 90%;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
 .title {
@@ -157,6 +163,7 @@
 .close-btn {
     font-size: 20px;
     padding: 0 10px;
+    margin-right: 10px;
     color: #2F7B9A;
     background-color: transparent;
     border: none;

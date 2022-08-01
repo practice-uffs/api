@@ -1,7 +1,5 @@
 <div class="h-100">
-@if($academicCalendar['display-popup'])
-    @livewire('aura-academic-calendar', ['theme' => $widgetSettings['theme']])
-@else
+
 <div class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
 
     @if($widgetSettings['type'] == 'button')
@@ -10,9 +8,12 @@
     @endif
 
         <div class="row justify-content-center h-100">
+            @if($academicCalendar['display-popup'])
+                @livewire('aura-academic-calendar', ['widgetSettings' => $widgetSettings    ])
+            @else
             @if($widgetSettings['type'] == 'button')
-                <div class="col-md-12 col-xl-12 chat h-100"  >
-                    <div class="card card-bg-theme-{{$widgetSettings['theme']}} border-radius-15 h-100" >
+            <div class="col-md-12 col-xl-12 chat h-100"  >
+                <div class="card card-bg-theme-{{$widgetSettings['theme']}} border-radius-15 h-100" >
             @elseif($widgetSettings['type'] == 'fullscreen')
                 <div class="chat w-100 h-100"  >
                     <div class="card card-bg-theme-{{$widgetSettings['theme']}} border-radius-0 h-100" >
@@ -191,10 +192,10 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     @if($widgetSettings['type'] == 'button')
         </div>
     @endif
 </div>
-@endif
 </div>
