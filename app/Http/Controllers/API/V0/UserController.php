@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\V0;
 use App\Auth\CredentialManager;
 use App\Models\App;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use \Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -35,4 +37,5 @@ class UserController extends Controller
     {
         return response()->json($request->user());
     }
+
 }
