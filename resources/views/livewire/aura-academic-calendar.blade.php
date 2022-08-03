@@ -42,8 +42,7 @@
                         @foreach($week as $day)
                             <div @class([
                                 'day',
-                                'day--not-weekend' => strlen($day[0]) != 0,
-                                'day--weekend' => strlen($day[0]) != 0 && $day[1] >= 6
+                                'day--weekend' => strlen($day[0]) != 0 && ($day[1] == 6 or $day[1] == 0)
                             ])>
                                 <span>{{ $day[0] }}</span>
                             </div>
