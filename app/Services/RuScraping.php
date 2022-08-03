@@ -13,11 +13,13 @@ class RuScraping
             $scraper = new RuScraping();
             $menu = $scraper->getMenuByWeekDay('chapeco','seg');
     */
-    protected $screaper;
+    protected $scraper;
 
     public function __construct()
     {   
+        
         $this->scraper = new \CCUFFS\Scrap\UniversityRestaurantUFFS();
+        
     }
 
     // Recebe o campus {cerro-largo, chapeco, erechim, laranjeiras-do-sul, passo-fundo, realeza}
