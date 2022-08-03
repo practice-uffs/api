@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Livewire;
-use App\Http\Controllers\API\V0\AcademicCalendarController;
+use App\Services\AcademicCalendarService;
 
 
 use Livewire\Component;
@@ -103,18 +103,9 @@ class AuraAcademicCalendar extends Component
     }
 
     public function getCalendarEvents() {
-        $acController = new AcademicCalendarController();
+        $acService = new AcademicCalendarService();
 
-        $campus = [
-            'chapeco' => 'Chapecó',
-            'laranjeiras_do_sul' => 'Laranjeiras do Sul',
-            'erechim' => 'Erechim',
-            'cerro_largo' => 'Cerro Largo',
-            'realeza' => 'Realeza',
-            'passo_fundo' => 'Passo Fundo'
-        ];
-
-        $this->academicCalendar = $acController->getCalendarEventsByMonth($this->months[$this->calendar['month']], $this->calendar['year'], $campus[$this->campus]);
+        $this->academicCalendar = $acService->getCalendarEventsByMonth($this->months[$this->calendar['month']], $this->calendar['year'], $this->campus);
         if (count($this->academicCalendar)) {
             $this->academicCalendar = $this->academicCalendar[0];
         }
