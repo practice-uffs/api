@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\V0;
-
-use App\Http\Controllers\Controller;
+namespace App\Services;
 use App\Models\AcademicCalendar;
 
-class AcademicCalendarController extends Controller
+class AcademicCalendarService
 {
     protected $months;
+    protected $campus;
 
     public function __construct() {
         $this->months = [
@@ -24,10 +23,23 @@ class AcademicCalendarController extends Controller
             'Novembro',
             'Dezembro'
         ];
+
+        $this->campus = [
+            'chapeco' => 'Chapecó',
+            'laranjeiras_do_sul' => 'Laranjeiras do Sul',
+            'erechim' => 'Erechim',
+            'cerro_largo' => 'Cerro Largo',
+            'realeza' => 'Realeza',
+            'passo_fundo' => 'Passo Fundo'
+        ];
     }
 
     public function getCalendars($campus = null) {
-        $calendars = AcademicCalendar::where('title', 'LIKE', '%' . $campus . '%')->get();
+        if (!isset($this->campus[$campus])){
+            return [];
+        }
+
+        $calendars = AcademicCalendar::where('title', 'LIKE', '%' . $this->campus[$campus] . '%')->get();
 
         return $calendars;
     }
@@ -35,9 +47,8 @@ class AcademicCalendarController extends Controller
     public function getCurrentMonthCalendar($campus = null) {
         $currentMonth = $this->months[(int) date('n') - 1];
         $currentYear = (int) date('Y');
-        $calendar = $this->getCalendars($campus);
 
-        $currentMonthCalendar = $this->getCalendarEventsByMonth($calendar, $currentMonth, $currentYear);
+        $currentMonthCalendar = $this->getCalendarEventsByMonth($currentMonth, $currentYear, $campus);
 
         return $currentMonthCalendar;
     }
@@ -64,9 +75,9 @@ class AcademicCalendarController extends Controller
         return $currentMonthEvents;
     }
 
-    public function getCurrentDateEvents() {
+    public function getCurrentDateEvents($campus = null) {
         $currentDay = date('y-m-d');
-        return $this->getCalendarEventsByDate($currentDay);
+        return $this->getCalendarEventsByDate($currentDay, $campus);
     }
 
     // Recebe uma data no formato y-m-d
@@ -74,10 +85,9 @@ class AcademicCalendarController extends Controller
         $dateCalendar = [];
         $date = strtotime($date);
 
-        $calendar = $this->getCalendars($campus);
         $month = $this->months[(int) date('n', $date) - 1];
         $year = date('Y', $date);
-        $monthCalendars = $this->getCalendarEventsByMonth($calendar, $month, $year);
+        $monthCalendars = $this->getCalendarEventsByMonth($month, $year, $campus);
 
         if (isset($monthCalendars)) {
             foreach ($monthCalendars as $monthCalendar) {
