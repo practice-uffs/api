@@ -63,19 +63,25 @@ class JetstreamServiceProvider extends ServiceProvider
             $password = Hash::make($info->pessoa_id);
 
             $user = User::where(['uid' => $info->uid])->first();
-            $data = [
-                'uid' => $info->uid,
-                'email' => $info->email,
-                'name' => $info->name,
-                'password' => $password
-            ];
 
             if($user) {
+                $data = [
+                    'uid' => $info->uid,
+                    'email' => $info->email,
+                    'name' => $info->name,
+                    'password' => $password
+                ];
                 $user->update($data);
             } else {
+                $data = [
+                    'uid' => $info->uid,
+                    'email' => $info->email,
+                    'name' => $info->name,
+                    'password' => $password,
+                    'aura_consent' => 0
+                ];
                 $user = User::create($data);
             }
-
             return $user;
         });
     }

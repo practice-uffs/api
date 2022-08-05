@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+
 class AuraNLP
 {
     protected $config;
@@ -24,8 +27,13 @@ class AuraNLP
 
     public function fetch($route, $text)
     {
+       
         $url = $this->config['api_url'] . "/$route/" . rawurlencode($text);
-        $response = $this->client->get($url);
+        try {
+            $response = $this->client->get($url);
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+        }
 
         return json_decode($response->getBody()->getContents(), true);
     }
