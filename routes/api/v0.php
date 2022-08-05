@@ -45,13 +45,13 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('user/notify/push', [NotificationController::class, 'push']);
 
     // Environment
-    Route::get('env', [EnvironmentController::class, 'index']);        
+    Route::get('env', [EnvironmentController::class, 'index']);
 
     // Check-in
     Route::post('/checkin', [CheckinController::class, 'store']);
 
     // Informações acadêmicas
-    Route::get('/aluno/historico', [AlunoController::class, 'historico']);    
+    Route::get('/aluno/historico', [AlunoController::class, 'historico']);
 
     // Proxy para apis de outros serviços
     // Mural
@@ -73,7 +73,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
 // Test routes
 if (env('APP_ENV') === 'local') {
     Route::group(['prefix' => '/test'], function () {
-        Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');    
-        Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
+        Route::get('/passport', [TestController::class, 'passport'])->name('test.passport');
+        Route::get('/credentials', [TestController::class, 'credentials'])->name('test.credentials');
     });
 }
