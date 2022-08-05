@@ -19,7 +19,8 @@ class AuthController extends Controller
     }
 
     protected function createPassport($appId, $uid, $email, $name)
-    {
+    {   
+        
         if ($appId == null || $appId == 0) {
             return null;
         }
@@ -78,7 +79,7 @@ class AuthController extends Controller
      *     )
      */
     public function index(Request $request)
-    {
+    {   
         $this->validate($request, [
             'user' => 'required',
             'password' => 'required',
@@ -86,7 +87,6 @@ class AuthController extends Controller
 
         $input = $request->all();
         $info = $this->attemptAuthentication($input);
-
         if ($info === null) {
             return response()->json([
                 'message' => 'Usuário ou senha incorretos',
@@ -97,21 +97,25 @@ class AuthController extends Controller
         }
 
         $user = $this->credentialManager->createUserFromPassportInfo($info);
+ 
         $passport = $this->createPassport($request->input('app_id'),
                                           $info['uid'],
                                           $info['email'],
                                           $info['name']);
-
         $this->createScrapersIfNeeded($user, $input);
+        
+        $userFromDatabase = User::where(['uid' => $info['uid']])->first();
 
         return response()->json([
             'passport' => $passport,
             'user' => [
+                'id' => $userFromDatabase->id,
                 'name' => Str::title($info['name']),
                 'email' => $info['email'],
                 'username' => $info['username'],
                 'uid' => $info['uid'],
-                'pessoa_id' => $info['pessoa_id']
+                'pessoa_id' => $info['pessoa_id'],
+                'aura_consent' => $userFromDatabase->aura_consent
             ]
         ]);
     }

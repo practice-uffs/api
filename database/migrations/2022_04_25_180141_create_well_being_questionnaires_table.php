@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppsTable extends Migration
+class CreateWellBeingQuestionnairesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateAppsTable extends Migration
      */
     public function up()
     {
-        Schema::create('apps', function (Blueprint $table) {
+        Schema::create('well_being_questionnaires', function (Blueprint $table) {
             $table->id();
-            $table->text('secret');
-            $table->string('slug')->unique();
-            $table->text('api_url');
-            $table->string('name')->nullable();
-            $table->string('domain')->nullable();
-            $table->text('description')->nullable();
+            $table->foreignId('user_id')->index();
+            $table->string('type', 40)->index();
+            $table->json('data');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateAppsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('apps');
+        Schema::dropIfExists('well_being_questionnaires');
     }
 }

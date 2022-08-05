@@ -38,10 +38,25 @@ class AuraController extends Controller
      */
     public function index(string $route, string $text) {
         $response = $this->auraNLP->fetch($route, $text);
+        return response(
+            $response,
+            Response::HTTP_OK   
+        );
+    }
+
+    public function mix(string $text) {
+        $responseQNA = $this->auraNLP->fetch('qna', $text);
+        $response = $this->auraNLP->fetch('domain', $text);
+        
+        if ($responseQNA != null){
+            if (array_key_exists('answer', $responseQNA)) {
+                $response = $responseQNA;
+            } 
+        }
 
         return response(
             $response,
-            Response::HTTP_OK
+            Response::HTTP_OK   
         );
     }
 }

@@ -149,11 +149,11 @@ class CredentialManager
 
         // Se o token não for válido, o método abaixo levanta uma exceção.
         $payload = $this->checkPassport($jwt, $key);
-
+        
         $appId = $payload->app_id;
         $informedUser = (array) $payload->user;
         $user = User::where('uid', $informedUser['uid'])->first();
-
+ 
         if (!$user) {
             $user = $this->createUserFromPassportInfo($informedUser);
         }
@@ -171,6 +171,7 @@ class CredentialManager
     }
 
     public function createUserFromPassportInfo(array $info) {
+        
         if (empty($info['uid']) || empty($info['email'])) {
             throw new \Exception('Missing uid or email in passport info');
         }
@@ -179,19 +180,26 @@ class CredentialManager
         $password = Hash::make($uid . $info['email']);
 
         $user = User::where(['uid' => $uid])->first();
-        $data = [
-            'uid' => $uid,
-            'email' => $info['email'],
-            'name' => $info['name'],
-            'password' => $password
-        ];
+
 
         if($user) {
+            $data = [
+                'uid' => $uid,
+                'email' => $info['email'],
+                'name' => $info['name'],
+                'password' => $password
+            ];
             $user->update($data);
         } else {
+            $data = [
+                'uid' => $uid,
+                'email' => $info['email'],
+                'name' => $info['name'],
+                'password' => $password,
+                'aura_consent' => 0
+            ];
             $user = User::create($data);
         }
-
         return $user;
     }
 }
