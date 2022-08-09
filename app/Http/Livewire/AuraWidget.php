@@ -31,7 +31,7 @@ class AuraWidget extends Component
         $this->inputMessage = '';
 
         $this->widgetSettings = [
-            'theme' => 'dark',
+            'theme' => 'light',
             'type' => 'fullscreen',
             'history_loaded' => false,
             'display_agree_form' => true,
@@ -228,7 +228,7 @@ class AuraWidget extends Component
             $this->widgetSettings['display_agree_form'] = false;
             $this->user['consent_status'] = 0;
             $this->addMessageToChat(
-                'O histórico de suas mensagens foi excluído e não armazenaremos mais os teus dados relacionados à Aura... No entanto, não posso mais conversar com você :(, caso queira conversar comigo, me dê a permissão para armazenar seus dados clicando do menu no canto superior direito',
+                'Eu, não posso mais conversar com você :(, caso queira conversar comigo, atualize a página e me dê o seu consentimento',
                 'accepted_aura_consent', 
                 false
             );

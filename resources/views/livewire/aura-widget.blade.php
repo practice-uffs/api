@@ -1,17 +1,7 @@
 <div class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
-    @if($widgetSettings['type'] == 'button')
-        <input type="checkbox" id="check"> <label class="chat-btn" for="check"><img class="open-button" src="{{ asset('img/aura/aura_icon.png') }}" /></label>
-        <div class="wrapper">
-    @endif
-
         <div class="row justify-content-center h-100">
-            @if($widgetSettings['type'] == 'button')
-                <div class="col-md-12 col-xl-12 chat h-100"  >
-                    <div class="card chat-background border-radius-15" >
-            @elseif($widgetSettings['type'] == 'fullscreen')
                 <div class="chat w-100 h-100"  >
                     <div class="card chat-background border-radius-0" >
-            @endif
                     <div id="header" wire:ignore class="header">
                         <div class="chat-header">
                             <img src="{{ asset('img/aura/aura_icon.png') }}" class="logo">
@@ -19,21 +9,6 @@
                                 <p class="chat-header-text">Assistente virtual</p>
                                 <p class="chat-header-text">AURA</p>
                             </div>
-                            <!-- @if ($this->user['token'] != null && $widgetSettings['display_agree_form'] == false)
-                                <div class="ml-auto p-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            @if ($user['consent_status'] == 1)
-                                                <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Discordar com o uso de dados</a>
-                                            @else
-                                                <a class="dropdown-item" href="#" wire:click="displayAgreeForm()">Concordar com o uso de dados</a>
-                                            @endif
-                                        </div>
-                                    </div> 
-                                </div>
-                            @endif -->
                         </div> 
                     </div>
 
@@ -46,12 +21,12 @@
                             <div class="msg-container-send">
                                 <label>
                                     Login (idUFFS):
-                                    <input wire:model="username" wire:keydown.enter="performLogin" type="text" class="form-control text-input" wire:click="inputFocus" placeholder="Seu id UFFS">
+                                    <input wire:model="username" wire:keydown.enter="performLogin" type="text" class="form-control text-input" wire:click="inputFocus()" placeholder="Seu id UFFS">
                                 </label>
                                 <br>
                                 <label>
                                     Senha:
-                                    <input wire:model="password" type="password" wire:keydown.enter="performLogin" class="form-control text-input" wire:click="inputFocus" placeholder="Digite sua senha">
+                                    <input wire:model="password" type="password" wire:keydown.enter="performLogin" class="form-control text-input" wire:click="inputFocus()" placeholder="Digite sua senha">
                                 </label>
                                 
                                 @if($loginErrorMessage != '')
@@ -67,13 +42,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- <div style="overflow:hidden; height:40px; width:40px; border-radius:50%;">
-                                @if ($user['profile_pic'] != '')
-                                    <img src="{{ $user['profile_pic'] }}" class="img-fluid">
-                                @else
-                                    <img src="{{ asset('img/aura/user.png') }}" class="img-fluid">
-                                @endif
-                            </div> -->
                         </div>
                     @endif
                     @if ($widgetSettings['display_agree_form'] == true)
@@ -105,10 +73,10 @@
                                         @if ($message['assessed'] == 2)    
                                             <div class="d-flex justify-content-between">
                                                 <button class="rate-icon" wire:click="assessAnswer('{{$message['category']}}','{{$message['userMessage']}}',0,{{$message['id']}})">
-                                                    <img src="{{ asset('img/aura/doubt.png') }}" class="rate-icon" alt="Apreciar mensagem">
+                                                    <img src="{{ asset('img/aura/doubt.png') }}" class="rate-icon" alt="Mensagem sem sentido">
                                                 </button>
                                                 <button class="rate-icon" wire:click="assessAnswer('{{$message['category']}}','{{$message['userMessage']}}',1,{{$message['id']}})">
-                                                    <img src="{{ asset('img/aura/heart.png') }}" class="rate-icon" alt="Mensagem sem sentido">
+                                                    <img src="{{ asset('img/aura/heart.png') }}" class="rate-icon" alt="Apreciar mensagem">
                                                 </button>
                                             </div>
                                         @else
@@ -150,11 +118,11 @@
             
                     <div class="input-bar" >
                         <div class="input-group" >
-                            @if($widgetSettings['display_login_form'] == false && $widgetSettings['display_agree_form'] == false && $user['consent_status'] != 0)
-                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" wire:click="inputFocus" class="form-control text-input" placeholder="O que deseja saber?" />
+                            @if($widgetSettings['display_login_form'] == false && $user['consent_status'] != 0)
+                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" wire:click="inputFocus()" class="form-control text-input" placeholder="O que deseja saber?" />
                                 <a class="input-group-text send-button" wire:click="sendMessage"><img src="{{ asset('img/aura/sendIcon.png') }}" class="send-icon"></a>
                             @else
-                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" class="form-control text-input" placeholder="O que deseja saber?" disabled />
+                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" wire:click="inputFocus()" type="text" class="form-control text-input" placeholder="O que deseja saber?" disabled />
                                 <a class="input-group-text send-button" wire:click="sendMessage" disabled><img src="{{ asset('img/aura/sendIcon.png') }}" class="send-icon"></a>
                             @endif
                         </div>
@@ -162,15 +130,12 @@
                 </div>
             </div>
         </div>
-    @if($widgetSettings['type'] == 'button')
-        </div>
-    @endif
 </div>
 
 <script>
     var lastScrollTop = 0;
     function handleHeader() {
-        if (window.innerWidth < 450) {
+        if (window.innerWidth < 449) {
             navbar = document.getElementById('header');
             chat = document.getElementById('chat-body');
 
