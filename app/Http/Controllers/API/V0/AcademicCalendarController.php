@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V0;
 use App\Http\Controllers\Controller;
 use App\Services\AcademicCalendarService;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +24,13 @@ class AcademicCalendarController extends Controller
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'campus' => 'nullable|string'
+            'campus' => [
+                'nullable',
+                'string',
+                Rule::in(['cerro-largo', 'chapeco', 'erechim', 'laranjeiras-do-sul', 'passo-fundo', 'realeza']),
+            ]
+        ], [
+            'in' => 'The :attribute must be one of the following values: :values'
         ]);
 
         if ($validator->fails()) {
@@ -43,9 +50,24 @@ class AcademicCalendarController extends Controller
 
     public function getByMonth(Request $request) {
         $validator = Validator::make($request->all(), [
-            'month' => 'required|numeric|min:0|max:11',
-            'year' => 'required|numeric|digits:4',
-            'campus' => 'nullable|string'
+            'month' => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:11'
+            ],
+            'year' => [
+                'required',
+                'numeric',
+                'digits:4'
+            ],
+            'campus' => [
+                'nullable',
+                'string',
+                Rule::in(['cerro-largo', 'chapeco', 'erechim', 'laranjeiras-do-sul', 'passo-fundo', 'realeza']),
+            ]
+        ], [
+            'in' => 'The :attribute must be one of the following values: :values'
         ]);
 
         if ($validator->fails()) {
@@ -65,9 +87,18 @@ class AcademicCalendarController extends Controller
 
     public function getByDate(Request $request) {
         $validator = Validator::make($request->all(), [
-            'date' => 'required|date_format:Y-m-d',
-            'campus' => 'nullable|string'
-        ]);
+            'date' => [
+                'required',
+                'date_format:d/m/Y'
+            ],
+            'campus' => [
+                'required',
+                'string',
+                Rule::in(['cerro-largo', 'chapeco', 'erechim', 'laranjeiras-do-sul', 'passo-fundo', 'realeza']),
+            ]
+        ], [
+            'in' => 'The :attribute must be one of the following values: :values'
+        ]); 
 
         if ($validator->fails()) {
             return response()->json(
@@ -76,7 +107,7 @@ class AcademicCalendarController extends Controller
             ); 
         }
 
-        $calendars = $this->academicCalendarService->getCalendarEventsByDate($request['date'], $request['campus']);
+        $calendars = $this->academicCalendarService->getCalendarEventsByDate(date("Y-m-d", strtotime(str_replace('/', '-', $request['date']))), $request['campus']);
 
         return response()->json(
             $calendars, 

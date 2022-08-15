@@ -26,11 +26,11 @@ class AcademicCalendarService
 
         $this->campus = [
             'chapeco' => 'Chapecó',
-            'laranjeiras_do_sul' => 'Laranjeiras do Sul',
+            'laranjeiras-do-sul' => 'Laranjeiras do Sul',
             'erechim' => 'Erechim',
-            'cerro_largo' => 'Cerro Largo',
+            'cerro-largo' => 'Cerro Largo',
             'realeza' => 'Realeza',
-            'passo_fundo' => 'Passo Fundo'
+            'passo-fundo' => 'Passo Fundo'
         ];
     }
 
