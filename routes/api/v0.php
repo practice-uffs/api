@@ -14,6 +14,7 @@ use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
 use App\Http\Controllers\API\V0\AnalyticsController;
 use App\Http\Controllers\API\V0\WellBeingQuestionnaireController;
+use App\Http\Controllers\API\V0\RuController;
 use App\Http\Proxy\PracticeApiProxy;
 use App\Http\Livewire\AuraWidget;
 use App\Http\Livewire\ShowAnalytics;
@@ -67,6 +68,11 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'show']);
     Route::patch('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'update']);
     Route::delete('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'destroy']);
+
+    // Cardápio do RU
+    Route::get('/ru-menu', [RuController::class, 'index']);
+    Route::get('/ru-menu/get-by-week-day', [RuController::class, 'getByWeekDay']);
+    Route::get('/ru-menu/get-by-date', [RuController::class, 'getByDate']);
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
