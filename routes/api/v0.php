@@ -14,6 +14,7 @@ use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
 use App\Http\Controllers\API\V0\AnalyticsController;
 use App\Http\Controllers\API\V0\WellBeingQuestionnaireController;
+use App\Http\Controllers\API\V0\AcademicCalendarController;
 use App\Http\Proxy\PracticeApiProxy;
 use App\Http\Livewire\AuraWidget;
 use App\Http\Livewire\ShowAnalytics;
@@ -39,6 +40,11 @@ Route::get('/widgets/aura', AuraWidget::class);
 
 // Show Analytics 
 Route::get('/analytics/show', ShowAnalytics::class);
+
+// Calendário Acadêmico
+Route::get('/academic-calendar', [AcademicCalendarController::class, 'index']);
+Route::get('/academic-calendar/get-by-month', [AcademicCalendarController::class, 'getByMonth']);
+Route::get('/academic-calendar/get-by-date', [AcademicCalendarController::class, 'getByDate']);
 
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
@@ -67,6 +73,7 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'show']);
     Route::patch('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'update']);
     Route::delete('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'destroy']);
+
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);

@@ -26,17 +26,21 @@ class AcademicCalendarService
 
         $this->campus = [
             'chapeco' => 'Chapecó',
-            'laranjeiras_do_sul' => 'Laranjeiras do Sul',
+            'laranjeiras-do-sul' => 'Laranjeiras do Sul',
             'erechim' => 'Erechim',
-            'cerro_largo' => 'Cerro Largo',
+            'cerro-largo' => 'Cerro Largo',
             'realeza' => 'Realeza',
-            'passo_fundo' => 'Passo Fundo'
+            'passo-fundo' => 'Passo Fundo'
         ];
     }
 
     public function getCalendars($campus = null) {
-        if (!isset($this->campus[$campus])){
+        if ($campus != null && !isset($this->campus[$campus])){
             return [];
+        }
+
+        if ($campus == null) {
+            return AcademicCalendar::all();
         }
 
         $calendars = AcademicCalendar::where('title', 'LIKE', '%' . $this->campus[$campus] . '%')->get();
@@ -55,6 +59,7 @@ class AcademicCalendarService
 
     public function getCalendarEventsByMonth($month, $year, $campus = null) {
         $calendars = $this->getCalendars($campus);
+        $month = $this->months[$month];
 
         $currentMonthEvents = [];
         foreach ($calendars as $calendar) {
@@ -85,7 +90,7 @@ class AcademicCalendarService
         $dateCalendar = [];
         $date = strtotime($date);
 
-        $month = $this->months[(int) date('n', $date) - 1];
+        $month = (int) date('n', $date) - 1;
         $year = date('Y', $date);
         $monthCalendars = $this->getCalendarEventsByMonth($month, $year, $campus);
 
