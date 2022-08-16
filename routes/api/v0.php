@@ -41,6 +41,11 @@ Route::get('/widgets/aura', AuraWidget::class);
 // Show Analytics 
 Route::get('/analytics/show', ShowAnalytics::class);
 
+// Calendário Acadêmico
+Route::get('/academic-calendar', [AcademicCalendarController::class, 'index']);
+Route::get('/academic-calendar/get-by-month', [AcademicCalendarController::class, 'getByMonth']);
+Route::get('/academic-calendar/get-by-date', [AcademicCalendarController::class, 'getByDate']);
+
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
 
@@ -69,10 +74,6 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::patch('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'update']);
     Route::delete('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'destroy']);
 
-    // Calendário Acadêmico
-    Route::get('/academic-calendar', [AcademicCalendarController::class, 'index']);
-    Route::get('/academic-calendar/get-by-month', [AcademicCalendarController::class, 'getByMonth']);
-    Route::get('/academic-calendar/get-by-date', [AcademicCalendarController::class, 'getByDate']);
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
