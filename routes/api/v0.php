@@ -41,6 +41,11 @@ Route::get('/widgets/aura', AuraWidget::class);
 // Show Analytics 
 Route::get('/analytics/show', ShowAnalytics::class);
 
+// Cardápio do RU
+Route::get('/ru-menu', [RuController::class, 'index']);
+Route::get('/ru-menu/get-by-week-day', [RuController::class, 'getByWeekDay']);
+Route::get('/ru-menu/get-by-date', [RuController::class, 'getByDate']);
+
 // Authendicated routes
 Route::group(['middleware' => 'jwt.practice'], function () {
 
@@ -68,11 +73,6 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'show']);
     Route::patch('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'update']);
     Route::delete('/app-bem-estar/questionnaire/{id}', [WellBeingQuestionnaireController::class, 'destroy']);
-
-    // Cardápio do RU
-    Route::get('/ru-menu', [RuController::class, 'index']);
-    Route::get('/ru-menu/get-by-week-day', [RuController::class, 'getByWeekDay']);
-    Route::get('/ru-menu/get-by-date', [RuController::class, 'getByDate']);
 
     // Notification
     Route::get('user/notify/push', [NotificationController::class, 'push']);
