@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c820367ea666389de8223e4351182b16",
+    "content-hash": "195449b10237407be3c660259a2797ae",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -619,6 +619,47 @@
                 "source": "https://github.com/ccuffs/uffs-ca-scraping/tree/master"
             },
             "time": "2022-03-19T21:38:26+00:00"
+        },
+        {
+            "name": "ccuffs/uffs-ru-scraping",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ccuffs/uffs-ru-scraping.git",
+                "reference": "3eb68ad24ec557861712a7240260bb49bdbea80b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ccuffs/uffs-ru-scraping/zipball/3eb68ad24ec557861712a7240260bb49bdbea80b",
+                "reference": "3eb68ad24ec557861712a7240260bb49bdbea80b",
+                "shasum": ""
+            },
+            "require": {
+                "paquettg/php-html-parser": "^3.1.1"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CCUFFS\\Scrap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alisson Luan de Lima Peloso",
+                    "email": "alisson.luan2000@gmail.com"
+                }
+            ],
+            "description": "Biblioteca para obter dados dos restaurantes universitários da UFFS de forma automatizada",
+            "support": {
+                "issues": "https://github.com/ccuffs/uffs-ru-scraping/issues",
+                "source": "https://github.com/ccuffs/uffs-ru-scraping/tree/master"
+            },
+            "time": "2022-07-26T11:08:17+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -12944,7 +12985,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ccuffs/uffs-ca-scraping": 20
+        "ccuffs/uffs-ca-scraping": 20,
+        "ccuffs/uffs-ru-scraping": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
