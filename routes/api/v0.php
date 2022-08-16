@@ -14,6 +14,7 @@ use App\Http\Controllers\API\V0\TestController;
 use App\Http\Controllers\API\V0\UserController;
 use App\Http\Controllers\API\V0\AnalyticsController;
 use App\Http\Controllers\API\V0\WellBeingQuestionnaireController;
+use App\Http\Controllers\API\V0\RuController;
 use App\Http\Controllers\API\V0\AcademicCalendarController;
 use App\Http\Proxy\PracticeApiProxy;
 use App\Http\Livewire\AuraWidget;
@@ -40,6 +41,11 @@ Route::get('/widgets/aura', AuraWidget::class);
 
 // Show Analytics 
 Route::get('/analytics/show', ShowAnalytics::class);
+
+// Cardápio do RU
+Route::get('/ru-menu', [RuController::class, 'index']);
+Route::get('/ru-menu/get-by-week-day', [RuController::class, 'getByWeekDay']);
+Route::get('/ru-menu/get-by-date', [RuController::class, 'getByDate']);
 
 // Calendário Acadêmico
 Route::get('/academic-calendar', [AcademicCalendarController::class, 'index']);
