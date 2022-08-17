@@ -1,9 +1,9 @@
 <div id="app" class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
-    <example-component></example-component>
+    {{-- <example-component></example-component> --}}
         <div class="row justify-content-center h-100">
                 <div class="chat w-100 h-100"  >
                     <div class="card chat-background border-radius-0" >
-                    <div id="header" wire:ignore class="header">
+                    <div id="header" v-show="showHeader" class="header">
                         <div class="chat-header">
                             <img src="{{ asset('img/aura/aura_icon.png') }}" class="logo">
                             <div class="aura-info">
@@ -22,12 +22,12 @@
                             <div class="msg-container-send">
                                 <label>
                                     Login (idUFFS):
-                                    <input wire:model="username" wire:keydown.enter="performLogin" type="text" class="form-control text-input" wire:click="inputFocus()" placeholder="Seu id UFFS">
+                                    <input wire:model="username" wire:keydown.enter="performLogin" type="text" class="form-control text-input" placeholder="Seu id UFFS">
                                 </label>
                                 <br>
                                 <label>
                                     Senha:
-                                    <input wire:model="password" type="password" wire:keydown.enter="performLogin" class="form-control text-input" wire:click="inputFocus()" placeholder="Digite sua senha">
+                                    <input wire:model="password" type="password" wire:keydown.enter="performLogin" class="form-control text-input" placeholder="Digite sua senha">
                                 </label>
                                 
                                 @if($loginErrorMessage != '')
@@ -116,22 +116,23 @@
                     @endif
 
                     </div>
-            
-                    <div class="input-bar" >
-                        <div class="input-group" >
-                            @if($widgetSettings['display_login_form'] == false && $user['consent_status'] != 0)
-                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" type="text" wire:click="inputFocus()" class="form-control text-input" placeholder="O que deseja saber?" />
-                                <a class="input-group-text send-button" wire:click="sendMessage"><img src="{{ asset('img/aura/sendIcon.png') }}" class="send-icon"></a>
-                            @else
-                                <input wire:model="inputMessage" wire:keydown.enter="sendMessage" wire:click="inputFocus()" type="text" class="form-control text-input" placeholder="O que deseja saber?" disabled />
-                                <a class="input-group-text send-button" wire:click="sendMessage" disabled><img src="{{ asset('img/aura/sendIcon.png') }}" class="send-icon"></a>
-                            @endif
-                        </div>
-                    </div>
+                    <input-component></input-component>
                 </div>
             </div>
         </div>
 </div>
+
+
+
+<script>
+  export default {
+    data() {
+      return {
+          showHeader: true;
+      }
+    }
+  }
+</script>
 
 <script>
     var lastScrollTop = 0;
@@ -140,13 +141,13 @@
             navbar = document.getElementById('header');
             chat = document.getElementById('chat-body');
 
-            if(chat.scrollTop > lastScrollTop){ 
-                showHeader();
-            }
+           // if(chat.scrollTop > lastScrollTop){ 
+           //     showHeader();
+           // }
             
-            else{
-                hideHeader();
-            }
+          //  else{
+           //     hideHeader();
+           // }
             lastScrollTop = chat.scrollTop; 
         };
     };
@@ -157,14 +158,14 @@
         navbar.style.zIndex='0';
     };
 
-    function showHeader() {
-        navbar = document.getElementById('header');
-        navbar.style.opacity='1';
-        navbar.style.zIndex='1';
-    };
+   // function showHeader() {
+   //     navbar = document.getElementById('header');
+   //     navbar.style.opacity='1';
+  //      navbar.style.zIndex='1';
+ //   };
 </script>
 
-<script>
+{{-- <script>
     document.addEventListener('livewire:load', function () {
         if (window.innerWidth < 450) {
             Livewire.on('hideHeader', function () {
@@ -173,7 +174,7 @@
             });
         }
     });
-</script>
+</script> --}}
 
 @if($widgetSettings['theme'] == 'light')
     <style>

@@ -21,9 +21,9 @@ import Vue from 'vue';
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('chat-component', require('./components/ChatComponent.vue').default);
 Vue.component('message-component', require('./components/MessageComponent.vue').default);
 Vue.component('input-component', require('./components/InputComponent.vue').default);
+Vue.component('chat-component', require('./components/ChatComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,11 +31,16 @@ Vue.component('input-component', require('./components/InputComponent.vue').defa
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
+ 
 const app = new Vue({
     el: '#app',
 
-    data: {
-        messages: []
+    data () {
+        return {
+            messages: [],
+            showHeader: true,
+        }
     },
     created() {
      //   this.fetchMessages();
