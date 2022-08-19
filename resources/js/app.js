@@ -24,6 +24,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('message-component', require('./components/MessageComponent.vue').default);
 Vue.component('input-component', require('./components/InputComponent.vue').default);
 Vue.component('chat-component', require('./components/ChatComponent.vue').default);
+Vue.component('header-component', require('./components/HeaderComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,18 +44,9 @@ const app = new Vue({
         }
     },
     created() {
-     //   this.fetchMessages();
+        
     },
     methods: {
-        // fetchMessages() {
-        //     //GET the messages
-          
-        // },
-        // //Receives the message that was emitted from the ChatForm Vue component
-        // addMessage(message) {
-        //     //Pushes it to the messages array
-        //     this.messages.push(message);
-            
-        // }
+      
     }
 });

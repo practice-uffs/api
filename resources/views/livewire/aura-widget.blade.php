@@ -1,17 +1,9 @@
-<div id="app" class="container-fluid container-fluidd-{{$widgetSettings['theme']}} h-100" >
-    {{-- <example-component></example-component> --}}
+<div id="app" class="container-fluid container-fluid-{{$widgetSettings['theme']}} h-100" >
         <div class="row justify-content-center h-100">
                 <div class="chat w-100 h-100"  >
                     <div class="card chat-background border-radius-0" >
-                    <div id="header" v-show="showHeader" class="header">
-                        <div class="chat-header">
-                            <img src="{{ asset('img/aura/aura_icon.png') }}" class="logo">
-                            <div class="aura-info">
-                                <p class="chat-header-text">Assistente virtual</p>
-                                <p class="chat-header-text">AURA</p>
-                            </div>
-                        </div> 
-                    </div>
+                    
+                    <header-component :showheader.sync="showHeader"></header-component>
 
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
                         <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
@@ -116,23 +108,12 @@
                     @endif
 
                     </div>
-                    <input-component></input-component>
+                    <input-component :showheader.sync="showHeader"></input-component>
                 </div>
             </div>
         </div>
 </div>
 
-
-
-<script>
-  export default {
-    data() {
-      return {
-          showHeader: true;
-      }
-    }
-  }
-</script>
 
 <script>
     var lastScrollTop = 0;
@@ -164,17 +145,6 @@
   //      navbar.style.zIndex='1';
  //   };
 </script>
-
-{{-- <script>
-    document.addEventListener('livewire:load', function () {
-        if (window.innerWidth < 450) {
-            Livewire.on('hideHeader', function () {
-                var showHead = @this.get('headerVisible')
-                showHead ? showHeader() : hideHeader()
-            });
-        }
-    });
-</script> --}}
 
 @if($widgetSettings['theme'] == 'light')
     <style>
