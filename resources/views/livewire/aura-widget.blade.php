@@ -1,4 +1,4 @@
-<div id="app" class="container-fluid container-fluid-{{$widgetSettings['theme']}} h-100" >
+<div id="app" class="container-fluid h-100" >
         <div class="row justify-content-center h-100">
                 <div class="chat w-100 h-100"  >
                     <div class="card chat-background border-radius-0" >
@@ -6,10 +6,12 @@
                     <header-component :showheader.sync="showHeader"></header-component>
 
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
-                        <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
-                            Aura está digitando...
-                        </div>
-                    @if($widgetSettings['display_login_form'] == true)
+                        <message-component :message="messages"></message-component>
+                        {{-- <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
+                            Aura está digitando... achar algum substituto em Vue
+                        </div>  --}} 
+
+                    {{-- @if($widgetSettings['display_login_form'] == true)
                         <div class="d-flex justify-content-end mb-4">
                             <div class="msg-container-send">
                                 <label>
@@ -54,58 +56,7 @@
                                 
                             </div>
                         </div>
-                    @endif
-
-                    @foreach($messages as $message)
-                        @if ($message['source'] == 'aura')
-                            <div class="d-flex justify-content-start received-message mb-4">
-                                <div class="msg-container">
-                                    {{ $message['message'] }}
-
-                                    @if ($this->user['token'] != null && $user['consent_status'] == 1)
-                                        @if ($message['assessed'] == 2)    
-                                            <div class="d-flex justify-content-between">
-                                                <button class="rate-icon" wire:click="assessAnswer('{{$message['category']}}','{{$message['userMessage']}}',0,{{$message['id']}})">
-                                                    <img src="{{ asset('img/aura/doubt.png') }}" class="rate-icon" alt="Mensagem sem sentido">
-                                                </button>
-                                                <button class="rate-icon" wire:click="assessAnswer('{{$message['category']}}','{{$message['userMessage']}}',1,{{$message['id']}})">
-                                                    <img src="{{ asset('img/aura/heart.png') }}" class="rate-icon" alt="Apreciar mensagem">
-                                                </button>
-                                            </div>
-                                        @else
-                                            <div class="d-flex justify-content-end">
-                                                <div>
-                                                @if ($message['assessed'] == 0)    
-                                                    <small class="mr-2 text-danger">Mensagem avaliada!</small>
-                                                @elseif ($message['assessed'] == 1)    
-                                                    <small class="mr-2 text-success">Mensagem avaliada!</small>
-                                                @elseif ($message['assessed'] == -1)    
-                                                    <small class="mr-2 text-danger">Não foi possível avaliar a resposta.</small>
-                                                @endif
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endif
-                                </div>
-                            </div>
-                        @else
-                            <div class="d-flex justify-content-end mb-4">
-                                <div class="msg-container-send">
-                                    {{ $message['message'] }}
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
-
-                    @if ($user['token'] != null && $user['consent_status'] == 1 && $widgetSettings['history_loaded'] == false)
-                        <div>
-                            <a wire:click="loadHistory">
-                                <p class="w-100 pt-3 pb-3 text-center text-muted cursor-pointer">
-                                    <u>Mostrar mensagens anteriores</u>
-                                </p>
-                            </a>
-                        </div>
-                    @endif
+                    @endif --}}
 
                     </div>
                     <input-component :showheader.sync="showHeader"></input-component>
@@ -168,7 +119,7 @@
         --placeholder: #7796A0;
     }
     .send-icon {
-            content: url("{{ asset('img/aura/sendIconDark.png') }}");
+            content: url("/img/aura/sendIconDark.png");
     }
     </style>
 @endif

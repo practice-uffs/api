@@ -9,25 +9,16 @@
 
 <script>
 export default {
-    props: ["messages"],
-};
-</script>
+    props: ["messages", "showheader"],
 
-<script>
-export default {
-    //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
-    // props: ["user"],
     data() {
         return {
-            showHeader: true, 
             inputMessage: "",
         };
     },
     methods: {
         changeHeaderDisplay() {
-          this.showHeader = !this.showHeader;
-          console.log(this.showHeader);
-          this.$emit('handleHeader', this.showHeader);
+            this.$emit('update:showheader', !this.showheader);
         },  
 
         sendMessage() {
