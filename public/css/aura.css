@@ -8,7 +8,20 @@
     --input-font-color: #000;
     --font-color: #2F7B9A;
     --placeholder: rgb(202, 35, 35);
+    --send-icon-url: url("/img/aura/sendIcon.png");
 }
+
+:root.dark-theme {
+    --theme: #041C26;
+    --container: #153E4B;
+    --input-font-color: #FFF;
+    --input-color: #153E4B;
+    --font-color: #FCAE17;
+    --placeholder: #7796A0;
+    --send-icon-url: url("/img/aura/sendIconDark.png");
+}
+
+
 
 main {
     font-family: sen;
@@ -200,6 +213,7 @@ label > .text-input {
 .send-icon {
     height: 100%;
     width: 100%;
+    content: var(--send-icon-url)!important;
 }
 
 .user_img {

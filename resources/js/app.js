@@ -39,13 +39,36 @@ const app = new Vue({
 
     data: {
         messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2}],
-        showHeader: true
+        showHeader: true,
+        userTheme: "light-theme",
     },
 
-    created() {
-        
+    mounted() {
+        this.setTheme(this.userTheme);
     },
     methods: {
-      
+        toggleTheme() {
+            const activeTheme = this.userTheme;
+            if (activeTheme === "dark-theme") {
+              this.setTheme("dark-theme");
+            } else {
+              this.setTheme("light-theme");
+            }
+        },
+        setTheme(theme) {
+            //localStorage.setItem("user-theme", theme); //TODO: Salvar para mais tarde
+            this.userTheme = theme;
+            document.documentElement.className = theme;
+        },
+        getMediaPreference() {
+            const hasDarkPreference = window.matchMedia(
+              "(prefers-color-scheme: dark)"
+            ).matches;
+            if (hasDarkPreference) {
+              return "dark-theme";
+            } else {
+              return "light-theme";
+            }
+        },
     }
 });

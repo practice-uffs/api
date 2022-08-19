@@ -77,7 +77,7 @@
            //     showHeader();
            // }
             
-          //  else{
+           //  else{
            //     hideHeader();
            // }
             lastScrollTop = chat.scrollTop; 
@@ -93,33 +93,6 @@
    // function showHeader() {
    //     navbar = document.getElementById('header');
    //     navbar.style.opacity='1';
-  //      navbar.style.zIndex='1';
- //   };
+   //     navbar.style.zIndex='1';
+   // };
 </script>
-
-@if($widgetSettings['theme'] == 'light')
-    <style>
-    :root {
-        --theme: #ECECEC;
-        --container: #D9D9D9;
-        --input-font-color: #000;
-        --input-color: #BDD0D7;
-        --font-color: #2F7B9A;
-        --placeholder: #6F6F6F;
-    }
-    </style>
-@else
-    <style>
-    :root {
-        --theme: #041C26;
-        --container: #153E4B;
-        --input-font-color: #FFF;
-        --input-color: #153E4B;
-        --font-color: #FCAE17;
-        --placeholder: #7796A0;
-    }
-    .send-icon {
-            content: url("/img/aura/sendIconDark.png");
-    }
-    </style>
-@endif

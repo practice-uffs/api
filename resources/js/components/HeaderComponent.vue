@@ -10,14 +10,20 @@
     </div>
 </template>
 
+
+
 <script>
 export default {
     props: ['showheader'],
     
     data() {
         return {
-            showHeader: this.showheader
+            showHeader: this.showheader,
+            theme: this.apptheme
         };
     },
+
+     mounted() {
+    }
 }
 </script>
