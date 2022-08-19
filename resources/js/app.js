@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 
+import { message } from 'laravel-mix/src/Log';
 // window.Vue = require('vue');
 import Vue from 'vue';
 
@@ -23,7 +24,6 @@ import Vue from 'vue';
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('message-component', require('./components/MessageComponent.vue').default);
 Vue.component('input-component', require('./components/InputComponent.vue').default);
-Vue.component('chat-component', require('./components/ChatComponent.vue').default);
 Vue.component('header-component', require('./components/HeaderComponent.vue').default);
 
 /**
@@ -37,12 +37,11 @@ Vue.component('header-component', require('./components/HeaderComponent.vue').de
 const app = new Vue({
     el: '#app',
 
-    data () {
-        return {
-            messages: [],
-            showHeader: true,
-        }
+    data: {
+        messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2}],
+        showHeader: true
     },
+
     created() {
         
     },
