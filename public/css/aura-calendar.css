@@ -1,0 +1,160 @@
+.page {
+    background-color: #ECECEC;
+    height: 100%;
+    width: 100%;
+    padding: 10px 0 0 10px;
+}
+
+.page--dark {
+    background-color: #041C26;
+}
+
+.popup-body {
+    box-sizing: border-box;
+    max-height: 90%;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.title {
+    color: #2F7B9A;
+    font-size: 28px;
+    padding-top: 10px;
+}
+
+.calendar {
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 25px;
+    max-width: 400px;
+}
+
+.calendar--dark {
+    background-color: #153E4B;
+    color: #ECECEC;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #888;
+}
+
+.calendar-info {
+    font-weight: bold;
+}
+
+.calendar-week-days {
+    margin-top: 12px;
+}
+
+.calendar-week-days, .week {
+    display: flex;
+    justify-content: space-around;
+}
+
+.day {
+    flex: 1;
+    padding: 5px;
+    width: 100%;
+    margin: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10.52%;
+    position: relative;
+}
+
+.day span {
+    position: absolute;
+    top:50%; 
+    left:50%; 
+    transform:translate(-50%, -50%); 
+    color: #333333;
+    font-weight: 600;
+}
+
+.calendar--dark .day span {
+    color: #e1e1e1;
+}
+
+.day--weekend span {
+    color: #777;
+}
+
+.calendar--dark .day--weekend span {
+    color: #999;
+}
+
+.change-month {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.change-month:active, .change-month:focus {
+    outline: none;
+}
+
+.events {
+    margin-top: 20px;
+}
+
+.event {
+    padding: 5px 0;
+}
+
+.event span {
+    font-weight: bold;
+}
+
+.calendar--dark .change-month, .page--dark .select_label {
+    color: #ECECEC;
+}
+
+.events--dark {
+    color: #ECECEC;
+}
+
+.select_campus {
+    display: block;
+    max-width: 400px;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+}
+
+.page--dark .select_campus {
+    display: block;
+    max-width: 400px;
+    width: 100%;
+    padding: 8px;
+    background-color: #153E4B;
+    color: #ECECEC;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.close-btn {
+    font-size: 20px;
+    padding: 0 10px;
+    margin-right: 10px;
+    color: #2F7B9A;
+    background-color: transparent;
+    border: none;
+}
+
+.page--dark .close-btn {
+    color: #D9D9D9;
+}

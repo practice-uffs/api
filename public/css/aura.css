@@ -87,12 +87,12 @@ input:checked ~.chat-btn > .open-button {
     bottom: 100px;
     width: 500px;
     height: 500px;
-    opacity: 0;
+    display: none;
     transition: all 0.4s
 }
 
 #check:checked~.wrapper {
-    opacity: 1
+    display: block;
 }
 
 #check {
