@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V0\AlunoController;
 use App\Http\Controllers\API\V0\ApiProxyController;
 use App\Http\Controllers\API\V0\AuraController;
+use App\Http\Controllers\API\V0\AuraChatController;
 use App\Http\Controllers\API\V0\ChannelsController;
 use App\Http\Controllers\API\V0\NotificationController;
 use App\Http\Controllers\API\V0\AuthController;
@@ -59,6 +60,13 @@ Route::group(['middleware' => 'jwt.practice'], function () {
     Route::get('/aura/nlp/{route}/{text}', [AuraController::class, 'index']);
     Route::get('/aura/nlp/{text}', [AuraController::class, 'mix']);
     Route::match(['GET', 'POST'], 'interact', [InteractionController::class, 'index']);
+
+    Route::get('/aura/chat', [AuraChatController::class, 'index']);
+    Route::get('/aura/chat/consent-status', [AuraChatController::class, 'getConsentStatus']);
+    Route::post('/aura/chat/consent-status', [AuraChatController::class, 'setConsentStatus']);
+    Route::get('/aura/chat/history', [AuraChatController::class, 'getAuraHistory']);
+    Route::post('/aura/chat/history/add-message', [AuraChatController::class, 'addMessageToHistory']);
+    Route::delete('/aura/chat/history', [AuraChatController::class, 'deleteAuraHistory']);
 
     // Channels
     Route::post('user/channels', [ChannelsController::class, 'store']);
