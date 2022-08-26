@@ -7,7 +7,7 @@
     --input-color: #BDD0D7;
     --input-font-color: #000;
     --font-color: #2F7B9A;
-    --placeholder: rgb(202, 35, 35);
+    --placeholder: #090909;
     --send-icon-url: url("/img/aura/sendIcon.png");
 }
 
@@ -21,6 +21,17 @@
     --send-icon-url: url("/img/aura/sendIconDark.png");
 }
 
+
+/* Necessário para que o vue reconheça as transições  */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 
 
 main {
@@ -286,7 +297,7 @@ label > .text-input {
     min-width: 75px;
 }
 
-.received-message:last-of-type {
+.chat-ctn:first-of-type {
     margin-top: 17%;
 } 
 
