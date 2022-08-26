@@ -73,26 +73,24 @@
             navbar = document.getElementById('header');
             chat = document.getElementById('chat-body');
 
-           // if(chat.scrollTop > lastScrollTop){ 
-           //     showHeader();
-           // }
+            if(chat.scrollTop > lastScrollTop){ 
+                displayHeader();
+            }
             
-           //  else{
-           //     hideHeader();
-           // }
+            else{
+                hideHeader();
+            }
             lastScrollTop = chat.scrollTop; 
         };
     };
 
     function hideHeader() {
-        navbar = document.getElementById('header');
+        navbar = document.querySelector('.header');
         navbar.style.opacity='0';
-        navbar.style.zIndex='0';
     };
 
-   // function showHeader() {
-   //     navbar = document.getElementById('header');
-   //     navbar.style.opacity='1';
-   //     navbar.style.zIndex='1';
-   // };
+    function displayHeader() {
+        navbar = document.querySelector('.header');
+        navbar.style.opacity='';
+    };
 </script>
