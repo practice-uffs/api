@@ -41,6 +41,7 @@ const app = new Vue({
         messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2}],
         showHeader: true,
         userTheme: "light-theme",
+        userToken: "",
     },
 
     mounted() {
