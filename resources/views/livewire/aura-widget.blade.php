@@ -6,7 +6,7 @@
                     <header-component :showheader.sync="showHeader"></header-component>
 
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
-                        <message-component :message="messages"></message-component>
+                        <message-component :message.sync="messages"></message-component>
                         {{-- <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
                             Aura está digitando... achar algum substituto em Vue
                         </div>  --}} 
@@ -59,7 +59,7 @@
                     @endif --}}
 
                     </div>
-                    <input-component :showheader.sync="showHeader"></input-component>
+                    <input-component :usertoken.sync="userToken" :messages.sync="messages" :showheader.sync="showHeader"></input-component>
                 </div>
             </div>
         </div>

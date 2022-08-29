@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Auth\CredentialManager;
+use Illuminate\Http\Response;
+
 use Closure;
 
 class PracticeJwtPassport
@@ -27,7 +29,7 @@ class PracticeJwtPassport
         try {
             $this->credentialManager->checkPassportThenLocalyAuthenticate($request->bearerToken());
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_UNAUTHORIZED);
         }
         return $next($request);
     }
