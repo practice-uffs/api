@@ -6,10 +6,10 @@
                 {{ message.message }}
                 <!-- <div v-if="user.token != 'null' && user.consent == '1'"> -->
                     <div v-if="message.assessed == '2'" class="d-flex justify-content-between">
-                        <button class="rate-icon" @click="rateMessage(0)"> 
+                        <button class="rate-icon" @click="rateMessage(message, 0)"> 
                             <img src="/img/aura/doubt.png" class="rate-icon" alt="Mensagem sem sentido">
                         </button>
-                        <button class="rate-icon" @click="rateMessage(1)">
+                        <button class="rate-icon" @click="rateMessage(message, 1)">
                             <img src="/img/aura/heart.png" class="rate-icon" alt="Apreciar a mensagem">
                         </button>
                     </div>
@@ -33,18 +33,46 @@
 
 <script>
 export default {
-    props: ['message'],
+    props: ['message', 'usertoken'],
     
     data() {
         return {
-            msgs: this.message
+            msgs: this.message,
+            userToken: this.usertoken,
+            assessing: false,
         };
     },
     
     methods: {
-        rateMessage(rate) {
-            this.$emit('update:showheader', !this.showheader);
-            //wire:click="assessAnswer('{{$message['category']}}','{{$message['userMessage']}}',0,{{$message['id']}})
+        rateMessage(message, rate) {
+            if (this.assessing == true) {
+                return;
+            }
+
+            this.assessing = true;
+
+            axios({
+                method: "POST",
+                url: "/v0/analytics/",
+                headers: {
+                    "Authorization": `Bearer ${this.userToken}`,
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    "app_id": "1",
+                    "action": "aura_feedback",
+                    "key": message.category,
+                    "value": message.userMessage,
+                    "rate": rate,
+                }
+            }).then(() => {
+                this.msgs[message.id - 1].assessed = rate;
+                this.assessing = false;
+            }).catch(() => {
+                this.msgs[message.id - 1].assessed = -1;
+                this.assessing = false;
+            });
+
         }
     },
 };

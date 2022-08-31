@@ -6,7 +6,7 @@
                     <header-component :showheader.sync="showHeader"></header-component>
 
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
-                        <message-component :message.sync="messages"></message-component>
+                        <message-component :usertoken.sync="userToken" :message.sync="messages"></message-component>
                         {{-- <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
                             Aura está digitando... achar algum substituto em Vue
                         </div>  --}} 
