@@ -5,6 +5,8 @@
                     
                     <header-component :showheader.sync="showHeader"></header-component>
 
+                    <login-component :showlogin.sync="showLogin"></login-component>
+
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
                         <message-component :usertoken.sync="userToken" :message.sync="messages"></message-component>
                         {{-- <div wire:loading.delay wire:target="sendMessage" class="aura_typing text-secondary">
