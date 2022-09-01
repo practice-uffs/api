@@ -38,7 +38,7 @@ const app = new Vue({
     el: '#app',
 
     data: {
-        messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2}],
+        messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2, userMessage: "has_no_message", category: "welcome_message"}],
         showHeader: true,
         userTheme: "light-theme",
         userToken: "",

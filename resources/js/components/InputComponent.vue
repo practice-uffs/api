@@ -30,7 +30,16 @@ export default {
             }
             this.disabled =  true;
 
-            this.messages.push({id: this.messages.length + 1, message: this.inputMessage, source: "user", assessed: 2})
+            this.messages.push({id: this.messages.length + 1, message: this.inputMessage, source: "user"})
+
+            var auraAnswer = {
+                id: this.messages.length + 1,
+                message: null,
+                source: "aura",
+                assessed: 2,
+                userMessage: this.inputMessage,
+                category: null
+            };
 
             var encodedMessage = encodeURIComponent(this.inputMessage);
             var requestUrl = "/v0/aura/nlp/domain/" + encodedMessage
@@ -43,35 +52,27 @@ export default {
                 }
             }).then((response) => {
                 const data = response.data;
-                var auraAnswer = "";
 
                 if (data.answer != undefined) {
-                    auraAnswer = data.answer;
+                    auraAnswer.message = data.answer;
+                    auraAnswer.category = data.intent;
                 } else {
-                    auraAnswer = "Não tenho resposta para isso.";
+                    auraAnswer.message = "Não tenho resposta para isso.";
+                    auraAnswer.category = "aura_has_no_response";
                 }
 
-                this.messages.push({id: this.messages.length + 1, message: auraAnswer, source: "aura", assessed: 2})
-
+                this.messages.push(auraAnswer)
                 this.disabled =  false;
-
             }).catch((error) => {
                 if (error.response.status == 401) {
-                    this.messages.push({
-                        id: this.messages.length + 1, 
-                        message: "Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:", 
-                        source: "aura", 
-                        assessed: 2
-                    })
+                    auraAnswer.message = "Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:";
+                    auraAnswer.category = "user_not_authenticated";
                     // Mostrar o formulário de login
                 } else if(error.response.status == 500) {
-                    this.messages.push({
-                        id: this.messages.length + 1, 
-                        message: "Algo de errado está acontecendo com meus servidores, bip bop.", 
-                        source: "aura", 
-                        assessed: 2
-                    })
+                    auraAnswer.message = "Algo de errado está acontecendo com meus servidores, bip bop.";
+                    auraAnswer.category = "aura_could_not_respond";
                 }
+                this.messages.push(auraAnswer)
                 this.disabled =  false;
             });
 
