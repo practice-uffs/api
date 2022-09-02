@@ -227,20 +227,24 @@ label > .text-input {
     content: var(--send-icon-url)!important;
 }
 
-.user_img {
-    height: 100%;
+.hide-pass-icon {
+    position: relative;
+    top:-36px;
+    right:-90%;
+    width:0;
+}
+
+.login-popup {
+    display: flex;
+    padding: 25px;
+    position: absolute;
+    top: 13.68%;
     width: 100%;
-}
-
-
-.user_img_msg {
-    height: 40px;
-    width: 40px;
-}
-
-.img_cont_msg {
-    height: 54px;
-    width: 40.5px;
+    height: calc(100% - 13.68%);
+    left: 0;
+    z-index: 2;
+    background: var(--theme);
+    flex-direction: column;
 }
 
 .header {
@@ -300,22 +304,6 @@ label > .text-input {
 .chat-ctn:first-of-type {
     margin-top: 17%;
 } 
-
-.msg_time {
-    position: absolute;
-    left: 0;
-    bottom: -15px;
-    color: rgba(255, 255, 255, .5);
-    font-size: 10px
-}
-
-.msg_time_send {
-    position: absolute;
-    right: 0;
-    bottom: -15px;
-    color: rgba(255, 255, 255, .5);
-    font-size: 10px
-}
 
 .rate-icon {
 	height: calc(min(8vw, 27px));
@@ -381,6 +369,10 @@ label > .text-input {
         position: absolute;
         top: 100%;
         border-radius: 0 0 0 15px!important;
+    }
+    .login-popup {
+        top: 0;
+        height: 100%; 
     }
     .input-group {
         width: 92% !important;

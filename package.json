@@ -30,6 +30,9 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.1.2",
+        "@fortawesome/free-solid-svg-icons": "^6.1.2",
+        "@fortawesome/vue-fontawesome": "^2.0.8",
         "laravel-echo": "^1.13.1",
         "laravel-echo-server": "^1.6.3",
         "pusher": "^5.0.1",
