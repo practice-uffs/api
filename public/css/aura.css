@@ -9,6 +9,8 @@
     --font-color: #2F7B9A;
     --placeholder: #090909;
     --send-icon-url: url("/img/aura/sendIcon.png");
+    --sucess-color: #008080;
+    --warning-color: #D86A2C;
 }
 
 :root.dark-theme {
@@ -247,6 +249,19 @@ label > .text-input {
     flex-direction: column;
 }
 
+.consent-popup {
+    display: flex;
+    padding: 25px;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 13.68%);
+    left: 0;
+    top: 13.68%;
+    z-index: 2;
+    background: var(--theme);
+    flex-direction: column;
+}
+
 .header {
     height: 13.68%;
     position: fixed;
@@ -261,6 +276,7 @@ label > .text-input {
 .logo {
     height: 75%;
     padding-left: 3%;
+    z-index: 1;
 }
 
 .aura-info {
@@ -325,8 +341,19 @@ label > .text-input {
     cursor: pointer;
 }
 
-.pt_10 {
-    padding-top: 10px;
+.cons-icon {
+    transform: rotate(270deg);
+    transition: 0.5s;
+}
+
+.menu-options {
+    left: 0;
+    height: 30px;
+    line-height: 21px;
+    background-color: var(--theme);
+    position: absolute;
+    width: 90%;
+    transition: 0.5s;
 }
 
 
@@ -378,4 +405,12 @@ label > .text-input {
         width: 92% !important;
         margin-left: 5%;
     }
+    .consent-popup {
+        top: 0;
+        height: 100%; 
+    }
+    .menu-options {
+        width: 78%;
+    }
+
 }

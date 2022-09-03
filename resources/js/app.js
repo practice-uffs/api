@@ -19,6 +19,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faEyeLowVision } from '@fortawesome/free-solid-svg-icons'
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,13 +29,14 @@ import { faEyeLowVision } from '@fortawesome/free-solid-svg-icons'
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
- library.add(faEye, faEyeLowVision)
+ library.add(faEye, faEyeLowVision, faChevronUp)
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('message-component', require('./components/MessageComponent.vue').default);
+Vue.component('consent-component', require('./components/ConsentComponent.vue').default);
 Vue.component('header-component', require('./components/HeaderComponent.vue').default);
 Vue.component('input-component', require('./components/InputComponent.vue').default);
 Vue.component('login-component', require('./components/LoginComponent.vue').default);
@@ -51,6 +54,7 @@ const app = new Vue({
 
     data: {
         messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2, userMessage: "has_no_message", category: "welcome_message"}],
+        showConsentPopup: false,
         showHeader: true,
         showLogin: true,
         userTheme: "light-theme",
