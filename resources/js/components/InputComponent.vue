@@ -30,7 +30,10 @@ export default {
             }
             this.disabled =  true;
 
-            this.messages.push({id: this.messages.length + 1, message: this.inputMessage, source: "user"})
+            let userMessage = {id: this.messages.length + 1, message: this.inputMessage, source: "user"};
+
+            this.messages.push(userMessage);
+            this.saveMessage(userMessage);
 
             var auraAnswer = {
                 id: this.messages.length + 1,
@@ -62,7 +65,8 @@ export default {
                 }
 
                 this.messages.push(auraAnswer)
-                this.disabled =  false;
+                this.saveMessage(auraAnswer)
+                this.disabled =  false;        
             }).catch((error) => {
                 if (error.response.status == 401) {
                     auraAnswer.message = "Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:";
@@ -73,11 +77,24 @@ export default {
                     auraAnswer.category = "aura_could_not_respond";
                 }
                 this.messages.push(auraAnswer)
+                this.saveMessage(auraAnswer)
                 this.disabled =  false;
             });
-
+ 
             this.inputMessage = "";
         },
+        saveMessage(message) {
+            axios({
+                method: "POST",
+                url: "/v0/aura/chat/history/add-message",
+                headers: {
+                    Authorization: `Bearer ${this.userToken}`
+                },
+                data: {
+                    "message": message
+                }
+            });
+        }
     },
 };
 </script>
