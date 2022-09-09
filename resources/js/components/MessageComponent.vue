@@ -46,7 +46,6 @@ export default {
     data() {
         return {
             msgs: this.message,
-            userToken: this.usertoken,
             assessing: false,
             loadedHistory: false
         };
@@ -64,7 +63,7 @@ export default {
                 method: "POST",
                 url: "/v0/analytics/",
                 headers: {
-                    "Authorization": `Bearer ${this.userToken}`,
+                    "Authorization": `Bearer ${this.usertoken}`,
                     "Content-Type": "application/json",
                 },
                 data: {
@@ -91,12 +90,13 @@ export default {
                 method: "GET",
                 url: "/v0/aura/chat/history",
                 headers: {
-                    Authorization: `Bearer ${this.userToken}`
+                    Authorization: `Bearer ${this.usertoken}`
                 }
             }).then((response) => {
                 let data = response.data;                
                 this.msgs = data.aura_history.concat(this.msgs);
                 this.toggleSpinner();
+                this.$emit('update:message', this.msgs);
             }).catch(() => {
                 this.msgs.unshift({id: this.msgs.length + 1, message: "Não foi possível carregar seu histórico de mensagens.", source: "aura"});
                 this.toggleSpinner();

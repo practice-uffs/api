@@ -59,6 +59,7 @@ const app = new Vue({
 
     mounted() {
         this.setTheme(this.userTheme);
+        this.getUserTokenFromUrl();        
     },
     methods: {
         toggleTheme() {
@@ -84,5 +85,19 @@ const app = new Vue({
               return "light-theme";
             }
         },
+        getUserTokenFromUrl() {
+            const url = new URL(location.href);
+            const urlToken = url.searchParams.get('token');
+
+            axios({
+                method: "GET",
+                url: "/v0/user/",
+                headers: {
+                    Authorization: `Bearer ${urlToken}`
+                }
+            }).then(()=>{
+                this.userToken = urlToken;
+            }).catch(e => console.error(e));
+        }
     }
 });

@@ -22,61 +22,61 @@ class AuraWidget extends Component
 
     public function mount()
     {
-        $this->messages[0] = ['id' => 1,
-                              'message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
-                              'source' => 'aura',
-                              'userMessage' => 'has_no_message',
-                              'assessed' => 2,  
-                              'category' => 'welcome_message' 
-                            ];
+        // $this->messages[0] = ['id' => 1,
+        //                       'message' => 'Olá! Eu sou a AURA, uma assistente virtual desenvolvida pelo PRACTICE, converse comigo!',
+        //                       'source' => 'aura',
+        //                       'userMessage' => 'has_no_message',
+        //                       'assessed' => 2,  
+        //                       'category' => 'welcome_message' 
+        //                     ];
         
-        $this->inputMessage = '';
+        // $this->inputMessage = '';
 
-        $this->widgetSettings = [
-            'theme' => 'light',
-            'type' => 'fullscreen',
-            'history_loaded' => false,
-            'display_agree_form' => false,
-            'display_login_form' => false
-        ];
+        // $this->widgetSettings = [
+        //     'theme' => 'light',
+        //     'type' => 'fullscreen',
+        //     'history_loaded' => false,
+        //     'display_agree_form' => false,
+        //     'display_login_form' => false
+        // ];
 
-        $this->user = [
-            'token' => request()->token,
-            'id' => 0,
-            'profile_pic' => '',
-            'consent_status' => -1 // -1: not answered; 1: agreed, 0: disagreed
-        ];
+        // $this->user = [
+        //     'token' => request()->token,
+        //     'id' => 0,
+        //     'profile_pic' => '',
+        //     'consent_status' => -1 // -1: not answered; 1: agreed, 0: disagreed
+        // ];
 
-        if (request()->type == "button"){
-            $this->widgetSettings['type'] = "button";
-        }
-        if (request()->theme == "dark") {
-            $this->widgetSettings['theme'] = "dark";
-        }  
+        // if (request()->type == "button"){
+        //     $this->widgetSettings['type'] = "button";
+        // }
+        // if (request()->theme == "dark") {
+        //     $this->widgetSettings['theme'] = "dark";
+        // }  
 
-        if ($this->user['token'] != null) {
-            $request = Request::create('/v0/user/', 'GET');
-            $request->headers->set('Authorization', 'Bearer '.$this->user['token']);
+        // if ($this->user['token'] != null) {
+        //     $request = Request::create('/v0/user/', 'GET');
+        //     $request->headers->set('Authorization', 'Bearer '.$this->user['token']);
 
-            $response = json_decode(app()->handle($request)->getContent());
+        //     $response = json_decode(app()->handle($request)->getContent());
     
-            if ($response != null) {
-                if (property_exists($response, 'error')) {
-                    $this->user['token'] = null;
-                } else {
-                    $this->user['id'] = $response->id;
-                    $this->user['profile_pic'] = "https://cc.uffs.edu.br/avatar/iduffs/".$response->uid;
-                    $consentStatus = AuraChatController::consentStatus($response->id)['aura_consent'];
-                    $this->user['consent_status'] = $consentStatus == 1 ? $consentStatus : -1;
-                }
-            } else {
-                $this->user['token'] = null;
-            }
-        }
+        //     if ($response != null) {
+        //         if (property_exists($response, 'error')) {
+        //             $this->user['token'] = null;
+        //         } else {
+        //             $this->user['id'] = $response->id;
+        //             $this->user['profile_pic'] = "https://cc.uffs.edu.br/avatar/iduffs/".$response->uid;
+        //             $consentStatus = AuraChatController::consentStatus($response->id)['aura_consent'];
+        //             $this->user['consent_status'] = $consentStatus == 1 ? $consentStatus : -1;
+        //         }
+        //     } else {
+        //         $this->user['token'] = null;
+        //     }
+        // }
 
-        $this->academicCalendar = [
-            'display-popup' => false
-        ];
+        // $this->academicCalendar = [
+        //     'display-popup' => false
+        // ];
     }
 
     public function render()
