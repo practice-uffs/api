@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "195449b10237407be3c660259a2797ae",
+    "content-hash": "b5f29eff58dd2d6dcbd901434c23a801",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -622,22 +622,21 @@
         },
         {
             "name": "ccuffs/uffs-ru-scraping",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccuffs/uffs-ru-scraping.git",
-                "reference": "3eb68ad24ec557861712a7240260bb49bdbea80b"
+                "reference": "699b8c5a20832d064e5b47b6b3df49c2d5f76314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccuffs/uffs-ru-scraping/zipball/3eb68ad24ec557861712a7240260bb49bdbea80b",
-                "reference": "3eb68ad24ec557861712a7240260bb49bdbea80b",
+                "url": "https://api.github.com/repos/ccuffs/uffs-ru-scraping/zipball/699b8c5a20832d064e5b47b6b3df49c2d5f76314",
+                "reference": "699b8c5a20832d064e5b47b6b3df49c2d5f76314",
                 "shasum": ""
             },
             "require": {
                 "paquettg/php-html-parser": "^3.1.1"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -657,9 +656,9 @@
             "description": "Biblioteca para obter dados dos restaurantes universitários da UFFS de forma automatizada",
             "support": {
                 "issues": "https://github.com/ccuffs/uffs-ru-scraping/issues",
-                "source": "https://github.com/ccuffs/uffs-ru-scraping/tree/master"
+                "source": "https://github.com/ccuffs/uffs-ru-scraping/tree/v1.0.0"
             },
-            "time": "2022-07-26T11:08:17+00:00"
+            "time": "2022-09-09T14:00:46+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -3607,6 +3606,64 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.7.2"
             },
             "time": "2022-03-23T12:38:24+00:00"
+        },
+        {
+            "name": "laravel/ui",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/ui.git",
+                "reference": "444072cb2f8baaa15172c5cde2bd30d188c3b7e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/444072cb2f8baaa15172c5cde2bd30d188c3b7e7",
+                "reference": "444072cb2f8baaa15172c5cde2bd30d188c3b7e7",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^8.0",
+                "illuminate/filesystem": "^8.0",
+                "illuminate/support": "^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Ui\\UiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Ui\\": "src/",
+                    "Illuminate\\Foundation\\Auth\\": "auth-backend/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel UI utilities and presets.",
+            "keywords": [
+                "laravel",
+                "ui"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/ui/issues",
+                "source": "https://github.com/laravel/ui/tree/v3.1.0"
+            },
+            "time": "2020-11-03T19:51:21+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -12985,13 +13042,12 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ccuffs/uffs-ca-scraping": 20,
-        "ccuffs/uffs-ru-scraping": 20
+        "ccuffs/uffs-ca-scraping": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0"
+        "php": "7.3||^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
