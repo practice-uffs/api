@@ -10,7 +10,7 @@
 </template>
 
 <script>
-export default { 
+export default {  
     props: ['showconsentpop', 'usertoken'],
     
     data() {
@@ -23,7 +23,6 @@ export default {
         handleConsent(resposta) {
             //TODO: Processar todo a parte de limpar o histórico
             this.$emit('update:showconsentpop', !this.showconsentpop);
-            console.log(this.showconsentpop)
         },
     },
 }

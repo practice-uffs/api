@@ -19,7 +19,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faEyeLowVision } from '@fortawesome/free-solid-svg-icons'
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,7 +30,7 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
- library.add(faEye, faEyeLowVision, faChevronUp)
+ library.add(faEye, faEyeLowVision, faEllipsisVertical, faXmark)
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
