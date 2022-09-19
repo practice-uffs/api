@@ -14,7 +14,6 @@ export default {
     data() {
         return {
             inputMessage: "",
-            userToken: this.usertoken,
             disabled:  false,
         };
     },
@@ -30,7 +29,10 @@ export default {
             }
             this.disabled =  true;
 
-            this.messages.push({id: this.messages.length + 1, message: this.inputMessage, source: "user"})
+            let userMessage = {id: this.messages.length + 1, message: this.inputMessage, source: "user"};
+
+            this.messages.push(userMessage);
+            this.saveMessage(userMessage);
 
             var auraAnswer = {
                 id: this.messages.length + 1,
@@ -42,13 +44,13 @@ export default {
             };
 
             var encodedMessage = encodeURIComponent(this.inputMessage);
-            var requestUrl = "/v0/aura/nlp/domain/" + encodedMessage
+            var requestUrl = "/v0/aura/nlp/domain/" + encodedMessage;
 
             axios({
                 method: "GET",
                 url: requestUrl,
                 headers: {
-                    Authorization: `Bearer ${this.userToken}`
+                    Authorization: `Bearer ${this.usertoken}`
                 }
             }).then((response) => {
                 const data = response.data;
@@ -61,8 +63,9 @@ export default {
                     auraAnswer.category = "aura_has_no_response";
                 }
 
-                this.messages.push(auraAnswer)
-                this.disabled =  false;
+                this.messages.push(auraAnswer);
+                this.saveMessage(auraAnswer);
+                this.disabled =  false;        
             }).catch((error) => {
                 if (error.response.status == 401) {
                     auraAnswer.message = "Para poder conversar comigo você precisa estar autenticado(a). Por favor autentique-se:";
@@ -72,12 +75,25 @@ export default {
                     auraAnswer.message = "Algo de errado está acontecendo com meus servidores, bip bop.";
                     auraAnswer.category = "aura_could_not_respond";
                 }
-                this.messages.push(auraAnswer)
+                this.messages.push(auraAnswer);
+                this.saveMessage(auraAnswer);
                 this.disabled =  false;
             });
-
+ 
             this.inputMessage = "";
         },
+        saveMessage(message) {
+            axios({
+                method: "POST",
+                url: "/v0/aura/chat/history/add-message",
+                headers: {
+                    Authorization: `Bearer ${this.usertoken}`
+                },
+                data: {
+                    "message": message
+                }
+            });
+        }
     },
 };
 </script>
