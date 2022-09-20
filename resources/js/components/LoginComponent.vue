@@ -6,14 +6,15 @@
             <p>Senha</p>
             <input v-model="userPass" name="userPassId" @keyup.enter="login()" :type="this.showPass? 'text':'password'" id="userPassword" class="form-input" placeholder="Escreva sua Senha"/>
             <div class="hide-pass-icon" @click="showPass = !showPass">
-                <div v-if="!showPass"><font-awesome-icon icon="fa-solid fa-eye"/></div>
-                <div v-if="showPass"><font-awesome-icon icon="fa-solid fa-eye-low-vision"/></div>
+                <TransitionGroup name="difuse" tag="div"> 
+                    <div key="0" v-if="!showPass"><font-awesome-icon icon="fa-solid fa-eye"/></div>
+                    <div key="1" v-if="showPass"><font-awesome-icon icon="fa-solid fa-eye-low-vision"/></div>
+                </TransitionGroup>
             </div>
-
             <button class="" @keyup.enter="login()" @click="login()">login</button>
         </div>
     </div>
-</template>
+</template> 
 
 <script>
     export default {

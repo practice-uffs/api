@@ -9,6 +9,8 @@
     --font-color: #2F7B9A;
     --placeholder: #090909;
     --send-icon-url: url("/img/aura/sendIcon.png");
+    --sucess-color: #008080;
+    --warning-color: #D86A2C;
 }
 
 :root.dark-theme {
@@ -21,18 +23,32 @@
     --send-icon-url: url("/img/aura/sendIconDark.png");
 }
 
-
 /* Necessário para que o vue reconheça as transições  */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: all 0.6s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 
+.difuse-enter-active {
+    transition: all 0.5s ease;
+}
+.difuse-leave-active {
+    display: none;
+    transition: all 0 ease;
+}
+
+.difuse-enter {
+    opacity: 0;
+    
+}
+.difuse-leave-to {
+    opacity: 0;
+}
 
 main {
     font-family: sen;
@@ -247,6 +263,19 @@ label > .text-input {
     flex-direction: column;
 }
 
+.consent-popup {
+    display: flex;
+    padding: 25px;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 13.68%);
+    left: 0;
+    top: 13.68%;
+    z-index: 2;
+    background: var(--theme);
+    flex-direction: column;
+}
+
 .header {
     height: 13.68%;
     position: fixed;
@@ -261,6 +290,7 @@ label > .text-input {
 .logo {
     height: 75%;
     padding-left: 3%;
+    z-index: 1;
 }
 
 .aura-info {
@@ -325,10 +355,20 @@ label > .text-input {
     cursor: pointer;
 }
 
-.pt_10 {
-    padding-top: 10px;
+/* Usado também para as transisões do Vue */
+.header-menu {
+    align-self: center;
 }
 
+.menu-options {
+    left: 0;
+    height: 30px;
+    line-height: 21px;
+    background-color: var(--theme);
+    position: absolute;
+    width: 90%;
+    transition: 0.5s;
+}
 
 @media(min-width: 450px) {
     .chat-background {
@@ -378,4 +418,12 @@ label > .text-input {
         width: 92% !important;
         margin-left: 5%;
     }
+    .consent-popup {
+        top: 0;
+        height: 100%; 
+    }
+    .menu-options {
+        width: 78%;
+    }
+
 }
