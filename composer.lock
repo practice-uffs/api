@@ -622,16 +622,16 @@
         },
         {
             "name": "ccuffs/uffs-ru-scraping",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccuffs/uffs-ru-scraping.git",
-                "reference": "699b8c5a20832d064e5b47b6b3df49c2d5f76314"
+                "reference": "060f333b35b1eb4d0a5f4338dd468dd0ef63ee8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccuffs/uffs-ru-scraping/zipball/699b8c5a20832d064e5b47b6b3df49c2d5f76314",
-                "reference": "699b8c5a20832d064e5b47b6b3df49c2d5f76314",
+                "url": "https://api.github.com/repos/ccuffs/uffs-ru-scraping/zipball/060f333b35b1eb4d0a5f4338dd468dd0ef63ee8f",
+                "reference": "060f333b35b1eb4d0a5f4338dd468dd0ef63ee8f",
                 "shasum": ""
             },
             "require": {
@@ -656,9 +656,9 @@
             "description": "Biblioteca para obter dados dos restaurantes universitários da UFFS de forma automatizada",
             "support": {
                 "issues": "https://github.com/ccuffs/uffs-ru-scraping/issues",
-                "source": "https://github.com/ccuffs/uffs-ru-scraping/tree/v1.0.0"
+                "source": "https://github.com/ccuffs/uffs-ru-scraping/tree/v1.0.1"
             },
-            "time": "2022-09-09T14:00:46+00:00"
+            "time": "2022-09-19T12:16:51+00:00"
         },
         {
             "name": "composer/ca-bundle",
