@@ -60,6 +60,7 @@ const app = new Vue({
         showLogin: true,
         userTheme: "light-theme",
         userToken: "",
+        dataUseAllowed: false
     },
 
     mounted() {
@@ -102,7 +103,43 @@ const app = new Vue({
                 }
             }).then(()=>{
                 this.userToken = urlToken;
+                this.getUserConsentStatus();
             }).catch(e => console.error(e));
+        },
+        getUserConsentStatus() {
+            axios({
+                method: "GET",
+                url: "/v0/aura/chat/consent-status",
+                headers: {
+                    Authorization: `Bearer ${this.userToken}`
+                }
+            }).then((response)=>{
+                if (response.data.aura_consent == "1") {
+                    this.dataUseAllowed = true;
+                } else {
+                    this.dataUseAllowed = false;
+                }
+            }).catch(e => console.error(e));
+        },
+        userDenyUseOfData() {
+            this.dataUseAllowed = false;
+            this.messages.push({
+                id: 1, 
+                message: "Mensagem falando que não é possível usar a Aura sem consentir com o uso de dados e falando que é possível mudar esta escolha caso o usuário deseje", 
+                source: "aura",
+                userMessage: "has_no_message", 
+                category: "user_not_consent"
+            });
+        },
+        userAllowUseOfData() {
+            this.dataUseAllowed = true;
+            this.messages.push({
+                id: 1, 
+                message: "Mensagem agradecendo e falando que agora o usuário pode utilizar a Aura normalmente", 
+                source: "aura",
+                userMessage: "has_no_message", 
+                category: "user_not_consent"
+            });
         }
     }
 });

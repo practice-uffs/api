@@ -4,7 +4,7 @@
         <br>Você aceita que alguns dos seus dados sejam armazenados?
         <div style="display: flex;justify-content: space-around; margin-top:50px">
             <button class="accept" @click="handleConsent(1)">Permitir</button>
-            <button class="deny" @click="handleConsent(2)">Negar</button>
+            <button class="deny" @click="handleConsent(0)">Negar</button>
         </div>
     </div>
 </template>
@@ -20,9 +20,28 @@ export default {
     },
 
     methods: {
-        handleConsent(resposta) {
-            //TODO: Processar todo a parte de limpar o histórico
+        handleConsent(consentStatus) {
             this.$emit('update:showconsentpop', !this.showconsentpop);
+
+            axios({
+                method: "POST",
+                url: "/v0/aura/chat/consent-status",
+                headers: {
+                    "Authorization": `Bearer ${this.usertoken}`,
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    "consent_status": consentStatus,
+                }
+            }).then(() => {
+                if (consentStatus) {
+                    this.$emit('userallow');
+                } else {
+                    this.$emit('userdeny');
+                }
+            }).catch((e) => {
+                console.log(e.response)
+            });
         },
     },
 }
