@@ -118,6 +118,13 @@ const app = new Vue({
                     this.dataUseAllowed = true;
                 } else {
                     this.dataUseAllowed = false;
+                    this.messages.push({
+                        id: 1, 
+                        message: "Mensagem falando que não é possível usar a Aura sem consentir com o uso de dados e falando que é possível mudar esta escolha caso o usuário deseje", 
+                        source: "aura",
+                        userMessage: "has_no_message", 
+                        category: "user_not_consent"
+                    });
                 }
             }).catch(e => console.error(e));
         },
