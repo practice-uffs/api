@@ -6,7 +6,7 @@
                     <header-component :usertoken.sync="userToken" :showconsentpop.sync="showConsentPopup" :showheader.sync="showHeader"></header-component>
 
                     <login-component :usertoken.sync="userToken" :showlogin.sync="showLogin"></login-component>
-                    <consent-component :showconsentpop.sync="showConsentPopup"></consent-component>
+                    <consent-component @userallow="userAllowUseOfData()" @userdeny="userDenyUseOfData()" :usertoken.sync="userToken" :showconsentpop.sync="showConsentPopup"></consent-component>
 
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
                         <message-component :usertoken.sync="userToken" :message.sync="messages"></message-component>
@@ -14,7 +14,7 @@
                             Aura está digitando... achar algum substituto em Vue
                         </div>  --}} 
                     </div>
-                    <input-component :usertoken.sync="userToken" :messages.sync="messages" :showheader.sync="showHeader"></input-component>
+                    <input-component :datauseallowed.sync='dataUseAllowed' :usertoken.sync="userToken" :messages.sync="messages" :showheader.sync="showHeader"></input-component>
                 </div>
             </div>
         </div>
