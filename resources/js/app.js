@@ -57,7 +57,7 @@ const app = new Vue({
         messages: [{id: 1, message: "Olá! Eu me chamo aura, sua assistente virtual.", source: "aura", assessed: 2, userMessage: "has_no_message", category: "welcome_message"}],
         showConsentPopup: false,
         showHeader: true,
-        showLogin: true,
+        showLogin: false,
         userTheme: "light-theme",
         userToken: "",
     },
@@ -94,15 +94,19 @@ const app = new Vue({
             const url = new URL(location.href);
             const urlToken = url.searchParams.get('token');
 
-            axios({
-                method: "GET",
-                url: "/v0/user/",
-                headers: {
-                    Authorization: `Bearer ${urlToken}`
-                }
-            }).then(()=>{
-                this.userToken = urlToken;
-            }).catch(e => console.error(e));
-        }
+            if (urlToken) {
+                axios({
+                    method: "GET",
+                    url: "/v0/user/",
+                    headers: {
+                        Authorization: `Bearer ${urlToken}`
+                    }
+                }).then(()=>{
+                    this.userToken = urlToken;
+                }).catch(() => this.showLogin = true);
+            } else {
+                this.showLogin = true;
+            }
+        },
     }
 });

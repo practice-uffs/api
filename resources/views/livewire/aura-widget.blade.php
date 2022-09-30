@@ -5,7 +5,7 @@
                     
                     <header-component :usertoken.sync="userToken" :showconsentpop.sync="showConsentPopup" :showheader.sync="showHeader"></header-component>
 
-                    <login-component :showlogin.sync="showLogin"></login-component>
+                    <login-component :usertoken.sync="userToken" :showlogin.sync="showLogin"></login-component>
                     <consent-component :showconsentpop.sync="showConsentPopup"></consent-component>
 
                     <div id="chat-body" class="chat-body msg_card_body" onscroll="handleHeader()">
