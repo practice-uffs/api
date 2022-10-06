@@ -11,6 +11,7 @@
                     <div key="1" v-if="showPass"><font-awesome-icon icon="fa-solid fa-eye-low-vision"/></div>
                 </TransitionGroup>
             </div>
+            <div v-if="error" class="error-message">Usuário ou senha inválidos!</div>
             <button class="" @keyup.enter="login()" @click="login()">login</button>
         </div>
     </div>
@@ -18,7 +19,7 @@
 
 <script>
     export default {
-        props: ["showlogin"],
+        props: ["showlogin", "usertoken"],
 
         data() {
             return {
@@ -26,11 +27,35 @@
                 userId: "",
                 userPass: "",
                 showPass: false,
+                error: false
             };
         },
         methods: {
             login() {
-                this.$emit('update:showlogin', !this.showlogin);
+                if (this.userId == "" || this.userPass ==  "") {
+                    this.error = true;
+                    return;
+                }
+
+                axios({
+                    method: "POST",
+                    url: "/v0/auth/",
+                    headers: {
+                    "Authorization": `Bearer ${this.usertoken}`,
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    "user": this.userId,
+                    "app_id": 1,
+                    "password": this.userPass
+                }
+                }).then((response)=>{
+                    this.$emit('update:showlogin', false);
+                    this.$emit('update:usertoken', response.data.passport);
+                }).catch((e) => {
+                    this.error = true;
+                    this.$emit('update:showlogin', true);
+                });
             }, 
         },
     };
@@ -62,6 +87,11 @@ button {
     border: none;
     border-radius: 40px;
     width: 45%;
+}
+
+.error-message {
+    color: #f54542;
+    text-align: center;
 }
 </style>
 

@@ -95,6 +95,11 @@ export default {
             }).then((response) => {
                 let data = response.data;                
                 this.msgs = data.aura_history.concat(this.msgs);
+
+                for (let i = 0; i < this.msgs.length; i++) {
+                    this.msgs[i].id = i + 1;
+                }
+
                 this.toggleSpinner();
                 this.$emit('update:message', this.msgs);
             }).catch(() => {
